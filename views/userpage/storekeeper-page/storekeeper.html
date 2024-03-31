@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../publicfiles/css/product.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+
+</head>
+
+<body>
+
+
+
+  <header class="staffheader">
+
+    <div>
+      <h1>AMU-ICT-STORE</h1>
+    </div>
+
+    <div class="menu-bar">
+      <i class="fas fa-bars fa-2x menubar" id="menubar"></i>
+    </div>
+
+    <div class="links">
+
+      <!-- <li><a href="#request">request</a></li> -->
+
+      <a href="/recoredtransaction">RECORED</a>
+      <a href="/recoredreturnedproduct">RETURNED</a>
+      <!-- <a href="#addproduct">addproduct</a>         -->
+
+      <div class="dropdown">
+        <i class="fas fa-user user-icon"></i>
+        <div class="dropdown-content">
+          <a href="#" style="font-size: 15px;">loged as storekeeper</a>
+          <a href="/<%= roles %>" id="roleselectoption" style="font-size: 15px;">
+            <%= roles %>
+          </a>
+          <a href="#" style="font-size: 15px" id="usershow">User help</a>
+          <a href="/logout" style="font-size: 15px;"> <i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+
+
+      <script>
+
+
+        const roleselectoption = document.getElementById('roleselectoption')
+
+        if (roleselectoption.innerText === '') {
+          roleselectoption.remove()
+        }</script>
+
+
+    </div>
+  </header>
+
+
+
+
+
+
+
+
+
+  <body>
+
+
+
+    <div class="container mb-3" id="addproduct" style="margin-top: 100px;">
+      <h2 class="loginh2">Add product</h2>
+      <form id="addProductForm" action="/add" method="post"
+        onsubmit="return confirm('Are you sure you want to add the product?') && submitForm(event)">
+        <div class="mb-3 mt-3">
+          <label for="Pname">Pname:</label>
+          <input type="text" class="form-control w-100" id="Pname" placeholder="Enter Pname" name="pName" required>
+        </div>
+        <div class="mb-3">
+          <label for="pnumber">Product Number:</label>
+          <input type="number" class="form-control w-100" id="pnumber" placeholder="Enter product number" name="pNumber"
+            required>
+        </div>
+        <div class="mb-3">
+          <label for="description">Description:</label>
+          <input type="text" class="form-control w-100" name="description" id="description" placeholder="description"
+            required>
+        </div>
+
+        <div class="mb-3">
+          <label for="pgiver">Product provider:</label>
+          <input type="text" class="form-control w-100" name="Pgiver" id="pgiver" placeholder="product provider"
+            required />
+        </div>
+
+        <button type="submit" class="btn btn-primary form-control w-100" id="submitBtn">Submit</button>
+      </form>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      function submitForm(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+        // Get the form data based on the input values
+        const pName = document.getElementById('Pname').value;
+        const pNumber = document.getElementById('pnumber').value;
+        const description = document.getElementById('description').value;
+        const Pgiver = document.getElementById('pgiver').value;
+
+        // Make an AJAX request to the backend
+        // Replace the URL and data with your actual values
+        axios.post('/add', { pName, pNumber, description, Pgiver })
+          .then(response => {
+            if (response.data.success) {
+              alert('new product added successfully!');
+              location.reload();
+            } else {
+              alert(' submission declined. Please try again.');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+          });
+      }
+    </script>
+
+
+
+
+
+    <section class="product-section" id="product" style="margin-top: 100px;">
+      <h2>Product List</h2>
+      <h3 class="error" id="errorMessage">
+        <%= error %>
+      </h3>
+      <label for="searchInput">Search by name:</label>
+      <input type="text" id="searchInput" />
+
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Description</th>
+
+            <th>edit</th>
+          </tr>
+        </thead>
+        <tbody id="productsContainer"></tbody>
+      </table>
+
+      <div class="pagination-controls">
+        <button id="previousBtn" disabled>Previous</button>
+        <button id="nextBtn">Next</button>
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+  </body>
+
+
+
+
+
+  <section id="UserHelp" class="userhelp">
+    <div>
+      <i class="fas fa-times" id="userhelpremove" style="
+              color: black;
+              position: absolute;
+              top: 30px;
+              right: 50px;
+              font-size: 30px;
+            "></i>
+      <h1>User Help</h1>
+      <p>
+        This section provides information and instructions to assist storekeeper
+        in effectively utilizing the system.
+      </p>
+
+      <h3>1.1 Getting Started</h3>
+      <h5>Introduction to the system and its purpose for storekeeper</h5>
+      <p>
+        Welcome to the AMU ICT Store user help guide for Store Keepers. This guide aims to
+        provide you with a comprehensive understanding of the system's purpose and functionality
+        to help you efficiently manage products and perform relevant tasks as a Store Keeper.
+      </p>
+
+      <p>
+        The AMU ICT Store empowers Store Keepers with the ability to add, edit, and delete
+        products, as well as manage product deliveries once they have been approved by the
+        manager. This system serves as a centralized platform for managing inventory, tracking
+        product details, and ensuring smooth product delivery processes.
+      </p>
+
+      <h5>Purpose of the System:</h5>
+      <p>
+        The primary purpose of the AMU ICT Store for Store Keepers is to streamline the
+        management of products and facilitate the delivery process. As a Store Keeper, you can
+        add new products, update existing product information, delete products if necessary, and
+        record product deliveries after they have been approved by the manager.
+
+      </p>
+
+      <p>
+        <span style="color: #0082e6; font-size: 18px"> NAVIGATION: </span>To get started with the system as a Store
+        Keeper, follow these steps:
+      </p>
+      <ol>
+        <li>Land on the login page of the system.</li>
+        <li>Enter your valid username and password.</li>
+        <li>
+          lick on the "Login" button, and you will be directed to the Store Keeper homepage.
+        </li>
+      </ol>
+
+      <h5>Overview of User Interface Elements Relevant to Store Keepers:
+      </h5>
+      <p>
+        Once logged in as a Store Keeper, you will have access to the following elements:
+      </p>
+
+
+      <p>
+        <span style="color: #0082e6; font-size: 18px"> Dashboard:</span>The dashboard provides an overview of important
+        information and quick access
+        to key functions for Store Keepers. It may display statistics related to products, pending
+        deliveries, or any other relevant data.
+      </p>
+
+      <h5>Adding a Product:</h5>
+      <p>
+        To add a new product to the system, follow these steps:
+      </p>
+      <ol>
+        <li>
+          On the Store Keeper dashboard, locate the "Add Product" option.
+        </li>
+        <li>
+          Fill in the required details for the new product, such as product name, description,
+          quantity, and any other necessary information.
+        </li>
+        <li>
+          Review the entered information for accuracy.
+        </li>
+        <li>Submit the form to add the new product to the system.</li>
+      </ol>
+
+      <h5>Editing a Product:</h5>
+      <p>
+        To update or edit an existing product's information, follow these steps:
+      </p>
+      <ol>
+        <li>On the Store Keeper dashboard, navigate to the "Product List" or "Manage Products"
+          section</li>
+        <li>
+          Locate the product you want to edit from the list of available products.
+        </li>
+        <li>
+          Click on the product's name or a designated "Edit" button to access the product details.
+        </li>
+        <li>Update the necessary information in the provided form fields.</li>
+        <li>
+          Review the changes for accuracy.
+        </li>
+        <li>Click on the "Update" or "Save" button to apply the changes to the product.</li>
+      </ol>
+
+
+
+
+      <h5>Deleting a Product:</h5>
+      <p>
+        To remove a product from the system, follow these steps:
+      </p>
+      <ol>
+        <li>On the Store Keeper dashboard, navigate to the "Product List" or "Manage Products"
+          section</li>
+        <li>
+          Locate the product you want to edit from the list of available products.
+        </li>
+        <li>
+          Locate the product you wish to delete from the list </li>
+
+        <li>Click on the product's name or a designated "Delete" button to initiate the deletion
+          process.</li>
+        <li>
+          Confirm the deletion prompt or follow any additional steps as required by the system.
+
+        </li>
+        <p>Please note that deleting a product will permanently remove it from the system.</p>
+      </ol>
+
+
+
+
+      <h5>Recording Product Delivery:</h5>
+      <p>
+        To record the delivery of a product after it has been approved by the manager, follow
+        these steps:
+      </p>
+      <ol>
+        <li>On the navigation bar, find the option to record product delivery.</li>
+        <li>
+          Click on the "Record Delivery" option to access the delivery recording page. </li>
+
+        <li>Review the entered information for accuracy.</li>
+        <li>
+
+          Click on the taken button to approve the product is taken </li>
+      </ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <h3>1.2 Frequently Asked Questions (FAQs) for storekeeper</h3>
+
+      <h5>Q1:How do I add a new product to the system?</h5>
+
+      <p>
+        A: To add a new product, log in to the system as a Store Keeper, navigate to the dashboard,
+        and locate the "Add Product" option. Click on it, fill in the required details for the new
+        product (such as name, description,quantity), review the information, and submit
+        the form to add the product to the system.
+      </p>
+
+      <h5>Q2:Can I edit the information of an existing product?
+      </h5>
+
+      <p>
+        A:Yes, as a Store Keeper, you have the ability to edit the information of existing products.
+        On the dashboard, find the "Product List" or "Manage Products" section, locate the product
+        you want to edit, click on its name or the designated "Edit" button, make the necessary
+        changes in the provided form fields, review the updates, and save the changes.
+      </p>
+
+      <h5>
+        Q3:How can I delete a product from the system?
+      </h5>
+
+      <p>
+        A:To delete a product, go to the "Product List" or "Manage Products" section on the
+        dashboard, find the product you wish to delete, click on its name or the designated
+        "Delete" button, and confirm the deletion prompt. Please note that deleting a product will
+        permanently remove it from the system.
+
+      </p>
+
+
+      <h5>
+        Q3:How do I record a product delivery?
+      </h5>
+
+      <p>
+        After a product has been approved by the manager for delivery, you can record the
+        delivery in the system. On the navigation bar, look for the option to "Record Delivery."
+        Click on it to access the delivery recording page.
+        Review the information and click on taken button to record the product delivery.
+
+      </p>
+
+
+
+      <h5>
+        Q5: Can I view the list of products in the system?
+      </h5>
+
+      <p>
+        Yes, as a Store Keeper, you can view the list of products. On the dashboard or navigation
+        bar, locate the option to "View Products" or "Product List." Click on it to access the
+        product listing page, where you can browse through the available products and view their
+        details.
+
+
+      </p>
+
+
+      <h5>
+        Q6: How can I check the quantity of a specific product in the inventory?
+      </h5>
+
+      <p>
+        To check the quantity of a specific product in the inventory, you can either view the
+        product details on the product listing page or search for the product using the search
+        functionality, if available. The product information will include the current quantity
+        available.
+
+
+      </p>
+
+
+      <h5>
+        Q6: What should I do if there is a discrepancy between the physical inventory and the system's
+        inventory?
+      </h5>
+
+      <p>
+        If you notice a discrepancy between the physical inventory and the system's inventory, it is
+        important to report it to the relevant authority, such as the manager or inventory control
+        team. They can investigate and take appropriate actions to reconcile the inventory
+        records.
+
+
+      </p>
+
+      <p>Remember, these FAQs are meant to provide general information, and specific procedures
+        may vary based on the system you are using. If you have any further questions or need
+        assistance, don't hesitate to seek support from your system administrator or relevant
+        personnel.</p>
+    </div>
+  </section>
+
+
+
+  <footer>
+
+
+    <p>&copy; Copyright © 2023 AMU-ICT-STORE-MANAGEMENT - All rights reserved ®</p>
+
+  </footer>
+
+
+
+
+  <!-- axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+
+
+    const userhelpshow = document.getElementById("usershow");
+    const CloseUserHelp = document.getElementById("userhelpremove");
+
+    userhelpshow.addEventListener("click", () => {
+      document.getElementById("UserHelp").style.display = "block";
+    });
+
+    CloseUserHelp.addEventListener("click", () => {
+      document.getElementById("UserHelp").style.display = "none";
+    });
+
+
+    // for the menubar
+    const menubar1 = document.getElementById('menubar')
+    const links1 = document.querySelector('.links')
+
+    const x = document.querySelectorAll('.links a')
+
+    menubar1.addEventListener('click', () => {
+
+      links1.classList.toggle('addedlink')
+      menubar1.classList.toggle('fa-times')
+
+    })
+
+    x.forEach((x) => {
+
+      x.addEventListener('click', () => {
+
+        links1.classList.toggle('addedlink')
+        menubar1.classList.remove('fa-times')
+
+      })
+
+
+    })
+
+
+
+
+    const errorMessage = document.getElementById("errorMessage");
+    errorMessage.style.display = "block"; // make sure the error message is visible
+    setTimeout(() => {
+      errorMessage.style.display = "none"; // hide the error message after 3 seconds
+    }, 3000);
+
+  </script>
+
+  <script src="/js/storekeeper.js"></script>
+  <!-- Add this code at the bottom of your HTML file, just before the closing body tag -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</body>
+</body>
+
+</html>

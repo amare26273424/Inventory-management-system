@@ -1,0 +1,57 @@
+
+*{
+    
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+
+
+
+
+.managerworks{
+  
+    padding-top: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+   
+    
+}
+.managerworks a{
+   
+    text-decoration: none;
+    font-size: 27px;
+    height: 40px;
+    border-radius: 10px; 
+   color: black;
+  
+}
+
+.managerworks a:hover{
+
+
+  border: none;
+  background-color:white;
+  border-bottom: 3px solid #0082e6;
+  transition: 0ms;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

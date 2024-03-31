@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link href="../../publicfiles/css/product.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <header class="staffheader">
+      <div>
+        <h1>AMU-ICT-STORE</h1>
+      </div>
+
+      <div class="menu-bar">
+        <i class="fas fa-bars fa-2x menubar" id="menubar"></i>
+      </div>
+
+      <div class="links">
+        <!-- <li><a href="#request">request</a></li> -->
+
+        <a href="#product" id="showproduct">PRODUCTS</a>
+        <a href="./html/transactions.html">TRANSACTION</a>
+
+        <div class="dropdown">
+          <i class="fas fa-user user-icon"></i>
+          <div class="dropdown-content">
+            <a href="#" style="font-size: 15px">loged as staff</a>
+            <a
+              href="/<%= roles %>"
+              id="roleselectoption"
+              style="font-size: 15px"
+              ><%= roles %></a
+            >
+            <a  href='#' style="font-size: 15px" id="usershow">User help</a>
+            <a href="3" style="font-size: 15px">
+              <i class="fas fa-sign-out-alt" onclick="logoutfunction()"></i>
+              Logout</a
+            >
+          </div>
+        </div>
+
+        <script>
+          const roleselectoption = document.getElementById("roleselectoption");
+
+          if (roleselectoption.innerText === "") {
+            roleselectoption.remove();
+          }
+        </script>
+      </div>
+    </header>
+
+    <section
+      id="request"
+      style="margin-top: 40px; padding-top: 60px; height: auto"
+    >
+      <div class="container mb-3">
+        <h2 class="loginh2">Request Form</h2>
+        <form
+          id="requestForm"
+          action="/request"
+          method="POST"
+          onsubmit="return  confirm(`you are requesting ${requestproductname.value} product with ${requestnumber.value} number`) && validation(event)"
+        >
+          <!-- <div class="mb-3 mt-3">
+          <label for="name">FullName:</label> 
+          <input type="text" class="form-control" id="name" placeholder="Enter you name" name="name"  required>
+        </div> -->
+
+          <!-- <div class="mb-3">
+          <label for="email">email:</label> 
+          <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+        </div> -->
+
+          <div class="mb-3">
+            <label for="pname">Product Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="pname"
+              placeholder="Enter product name"
+              name="pname"
+              required
+              readonly
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="pnumber">Number Of Item:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="pnumber"
+              placeholder="Enter number of item"
+              name="pnumber"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="Description">Description:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="Description"
+              placeholder="Enter Description"
+              name="description"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="type">Type of product:</label>
+            <select
+              class="form-control"
+              id="type"
+              name="typeofproduct"
+              required
+              onchange="toggleDateInputs()"
+            >
+              <option value="consumable" selected>Consumable</option>
+              <option value="returned">Returned</option>
+            </select>
+
+            <div id="dateInputsContainer" style="display: none">
+              <div class="mb-3">
+                <label for="returnedDate">Returned Date:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="returnedDate"
+                  name="returnedDate"
+                />
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary form-control"
+            id="submitBtn"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section
+      class="product-section productlist"
+      id="product"
+      style="
+        margin-top: 50px;
+        padding-top: 50px;
+        min-height: 90vh;
+        margin-bottom: 40px;
+      "
+    >
+      <h2 style="margin-bottom: 50px">Product List</h2>
+      <label for="searchInput">Search by name:</label>
+      <input type="text" id="searchInput" style="margin-bottom: 20px" />
+
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th>addeddate</th>
+          </tr>
+        </thead>
+        <tbody id="productsContainer"></tbody>
+      </table>
+
+      <div class="pagination-controls">
+        <button id="previousBtn" disabled>Previous</button>
+        <button id="nextBtn">Next</button>
+      </div>
+    </section>
+
+    <section id="UserHelp" class="userhelp">
+      <div >
+        <i
+          class="fas fa-times"
+          id="userhelpremove"
+          style="
+            color: black;
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            font-size: 30px;
+          "
+        ></i>
+        <h1>User Help</h1>
+        <p>
+          This section provides information and instructions to assist
+          staffmember in effectively utilizing the system.
+        </p>
+        <!-- <h2>1. User Role 1: Staff</h2> -->
+        <h3>1.1 Getting Started</h3>
+        <h5>Introduction to the system and its purpose for Staff Member</h5>
+        <p>
+          Welcome to the AMU ICT Store user help guide for staff members. This
+          guide aims to provide you with a comprehensive understanding of the
+          system's purpose and functionality to help you effectively navigate
+          and utilize its features.
+        </p>
+
+        <p>
+          The AMU ICT Store is designed to streamline the process of managing
+          product requests, approvals, and viewing relevant information for
+          staff members like yourself. It serves as a centralized platform for
+          requesting products, tracking the status of your requests, viewing
+          product details, and accessing your previous records.
+        </p>
+
+        <h5>Purpose of the System:</h5>
+        <p>
+          The primary purpose of the AMU ICT Store is to facilitate a smooth and
+          efficient workflow for staff members when it comes to requesting
+          products and managing related processes. With this system, you can
+          easily initiate product requests, view the approval or decline status
+          of your requests, and access information about available products and
+          your previous records.
+        </p>
+
+        <p>
+          <span style="color: #0082e6; font-size: 18px"> NAVIGATION: </span>Land
+          on the login page of the system Enter a valid username and password
+          Click on Login button and you will land on Staff Member Homepage
+          Overview of user interface elements relevant to Staff.
+        </p>
+        <h5>Get Ready:</h5>
+        <h5>to observe the Staff Member Page, follow these steps:</h5>
+        <p>
+          Once logged in, you will land on the Store Management Staff Dashboard.
+        </p>
+        <h5>Filling the Form:</h5>
+
+        <ol>
+          <li>
+            On the dashboard or navigation bar, find the option to fill a form.
+          </li>
+          <li>Click on the form option to access the form submission page.</li>
+          <li>Fill in the necessary details as required by the form.</li>
+          <li>Review the form for accuracy and completeness.</li>
+          <li>Submit the form to complete the process.</li>
+        </ol>
+
+        <h5>Viewing Products:</h5>
+        <ol>
+          <li>On the navigation bar, locate the option to view products.</li>
+          <li>
+            Click on the product option to access the product listing page.
+          </li>
+          <li>Browse through the available products.</li>
+        </ol>
+
+        <h5>Viewing Transactions:</h5>
+        <ol>
+          <li>On the navigation bar, find the option to view transactions.</li>
+          <li>
+            Click on the transaction option to access the transaction history
+            page.
+          </li>
+          <li>Review the list of transactions and their details.</li>
+        </ol>
+
+        <h3>1.2 Frequently Asked Questions (FAQs) for Staff Members</h3>
+
+        <h5>
+          Q1: How do I access the Store Management System as a staff member?
+        </h5>
+
+        <p>
+          A: To access the Store Management System, go to the login page and
+          enter your valid username and password. Click on the Login button to
+          proceed to the system.
+        </p>
+
+        <h5>Q2: How can request a product?</h5>
+
+        <p>
+          A: To request a product, navigate to the request form within the
+          system.double click the product and the form product name will fill
+          and Fill in the required details such as the, quantity, and any
+          additional notes or specifications. Submit the form to initiate the
+          product request.
+        </p>
+
+        <h5>Q3: How can I track the status of my product request?</h5>
+
+        <p>
+          A: You can track the status of your product request within the system.
+          Check the relevant section or page where your requests are listed. The
+          system will provide updates on the approval or decline status of your
+          request.
+        </p>
+        <h5>Q4: Can I view the products available in the store?</h5>
+
+        <p>
+          A: Yes, you can view the products available in the store. Use the
+          navigation menu to access the product listing page. Browse through the
+          available products and click on a specific product to view its details
+          such as description, price, and stock availability.
+        </p>
+
+        <h5>Q5: How can I view my previous records or transaction history?</h5>
+
+        <p>
+          A: To view your previous records or transaction history, navigate to
+          the transaction history page or a similar section within the system.
+          You will find a list of your past transactions along with relevant
+          details.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        &copy; Copyright © 2023 AMU-ICT-STORE-MANAGEMENT - All rights reserved ®
+      </p>
+    </footer>
+
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+      const menubar1 = document.getElementById("menubar");
+      const links1 = document.querySelector(".links");
+      const userhelpshow = document.getElementById("usershow");
+      const CloseUserHelp = document.getElementById("userhelpremove");
+
+      userhelpshow.addEventListener("click", () => {
+        document.getElementById("UserHelp").style.display = "block";
+      });
+
+      CloseUserHelp.addEventListener("click", () => {
+        document.getElementById("UserHelp").style.display = "none";
+      });
+
+      const x = document.querySelectorAll(".links a");
+
+      menubar1.addEventListener("click", () => {
+        links1.classList.toggle("addedlink");
+        menubar1.classList.toggle("fa-times");
+      });
+
+      x.forEach((x) => {
+        x.addEventListener("click", () => {
+          links1.classList.toggle("addedlink");
+          menubar1.classList.remove("fa-times");
+        });
+      });
+
+      const requestnumber = document.getElementById("pnumber");
+      const requestproductname = document.getElementById("pname");
+
+      function validation(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        axios
+          .get(`/productname/${requestproductname.value}`)
+          .then((response) => {
+            const availableproduct = response.data.pNumber;
+            if (requestnumber.value > availableproduct) {
+              alert(
+                `the requested value is greaterthan avaliable product the avaliable product of  ${requestproductname.value} is ${availableproduct} `
+              );
+            } else {
+              event.target.submit(); // Submit the form if validation passes
+            }
+          })
+          .catch((error) => {
+            // Handle any errors that occurred during the request
+            console.error("Error during validation request:", error);
+            alert(
+              "the name is not mached to any products please enter the correct name."
+            );
+          });
+      }
+
+      window.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const response = await axios.get("/request");
+          const products = response.data;
+
+          products.forEach((item) => {
+            if (item.typeofproduct === "returned" && item.status === "taken") {
+              const returnedDate = new Date(item.returnedDate);
+              const currentDate = new Date();
+              const daysLeft = Math.floor(
+                (returnedDate - currentDate) / (1000 * 60 * 60 * 24)
+              );
+
+              if (daysLeft < 0) {
+                alert(
+                  `You have passes ${-daysLeft} days  to return ${
+                    item.pname
+                  } with ${item.pnumber} number and you take for ${
+                    item.description
+                  }`
+                );
+              }
+            }
+          });
+        } catch (error) {
+          console.error("Error retrieving products:", error);
+        }
+      });
+
+      /*toggle the products*/
+
+      document.getElementById("showproduct").addEventListener("click", () => {
+        document.getElementById("product").classList.toggle("addproductlist");
+      });
+
+      /* show returned date and loan date for returned */
+
+      function toggleDateInputs() {
+        var typeSelect = document.getElementById("type");
+        var dateInputsContainer = document.getElementById(
+          "dateInputsContainer"
+        );
+
+        var returnedDateInput = document.getElementById("returnedDate");
+
+        if (typeSelect.value === "returned") {
+          dateInputsContainer.style.display = "block";
+
+          returnedDateInput.required = true;
+        } else {
+          dateInputsContainer.style.display = "none";
+
+          returnedDateInput.required = false;
+        }
+      }
+
+      // checkin the value
+    </script>
+
+    <script src="../../publicfiles/js/staffproducts.js"></script>
+
+    <!-- Add this code at the bottom of your HTML file, just before the closing body tag -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../../publicfiles/css/product.css">
+</head>
+<body>
+
+
+  <button onclick="goBack()">Go Back</button>
+
+  <script>
+  function goBack() {
+    window.history.back();
+  }
+  </script>
+
+    <section class="product-section" id="product"  style="height: auto;margin-bottom: 100px;">
+        <h2> Daily Transaction</h2>
+        <hr>
+        <table>
+          <thead>
+            <tr>
+               <th>Name of Staff</th>
+               <th>Product Name</th>             
+               <th>Product Number</th>
+               <th>type of product</th>
+               <th>Purpose</th>
+               <th>date</th>
+            </tr>
+          </thead>
+          <tbody id="products">
+            <!-- Product rows will be added dynamically with JavaScript -->
+          </tbody>
+        </table>
+
+        <div class="pagination-controls">
+          <button id="previousBtn" disabled>Previous</button>
+          <button id="nextBtn">Next</button>
+        </div>
+        
+      </section>
+
+
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      
+     <script src="../../../publicfiles/js/dailytransaction.js"></script>
+
+</body>
+</html>

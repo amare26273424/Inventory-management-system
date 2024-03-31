@@ -1,0 +1,158 @@
+body{
+    margin: 0 0;
+}
+.login{ 
+    box-sizing: border-box;
+     overflow: hidden; 
+    width: 100vw;
+    height: 100vh;
+    background-image: linear-gradient(to bottom right,white,#0082e6b9);
+   display: flex;
+   justify-content: space-evenly;  
+   padding-top: 15vh;
+}
+.photo{
+    width: 400px;
+    height: 400px;
+    /* background-color: red; */
+}
+.container{
+    /* background-color: black; */
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+.container form{
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 15px;
+
+}
+
+.container form div{
+    display: flex;
+    flex-direction: column;
+}
+.maininput input{
+    height: 37px;
+    width: 350px;
+    border: none;
+    outline: none;
+    box-shadow:  2px 2px 5px  gray;
+    padding-left: 28px ;  
+    color:#666666 ;
+  
+}
+.loginh2{
+    font-size: 30px;
+    font-weight: 900;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+}
+
+.maininput{
+    row-gap: 5px; 
+}
+
+.maininput label{
+    font-size: 23px;
+    color: #666666;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+}
+
+.showicon{
+  background-color:white;
+  border: none;
+  box-shadow:  1px 0px 0px  gray;
+ 
+}
+.btn{
+    text-transform: uppercase;
+    width: 380px;
+    height: 37px;
+    font-size: 20px;
+    font-weight: 900;
+    color: white;
+    background-color: #0082e6b9;
+    border: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+}
+.btn:hover{
+    font-size: 22px;  
+}
+.passworddiv input{
+   width: 325px;
+   
+}
+
+
+#formcheck{
+    display: inline-block;
+    margin-left: -195px;
+}
+
+
+
+
+
+@media screen and (max-width:900px) {
+
+
+body{
+    background-image: url('../photo/Group 116.png');
+    background-repeat: no-repeat;
+    background-position: center;
+   
+ }   
+.photo{
+    display: none;
+}
+
+.login{ 
+    
+    background-image: linear-gradient(to bottom right,white,#0082e675);
+   
+}
+
+}
+
+
+
+
+@media screen and (max-width:580px) {
+
+    .maininput input{
+      
+        width: 250px;
+        
+      
+    }
+    
+
+    .passworddiv input{
+        width: 225px;
+        
+     }
+
+     
+.btn{
+   
+    width: 280px;
+   
+}
+
+#formcheck{
+    margin-left: -145px;
+}
+
+    }
+
+

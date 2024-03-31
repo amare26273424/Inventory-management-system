@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+<body>
+
+  <button onclick="goBack()">Go Back</button>
+
+  <script>
+  function goBack() {
+    window.history.back();
+  }
+  </script>
+
+    <section class="product-section" id="product">
+        <h2>requestList</h2>
+        <hr>
+        <table>
+          <thead>
+            <tr>
+              <th>Name of Staff</th>
+              <th>Product Name</th>             
+              <th>Product Number</th>
+              <th>Purpose</th>            
+              <th>status</th>
+            </tr>
+          </thead>
+          <tbody id="products">
+            <!-- Product rows will be added dynamically with JavaScript -->
+          </tbody>
+        </table>
+      </section>
+
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      
+      <script src="/js/storekeeperreturnedapprove.js">
+      </script>
+
+</body>
+</html>

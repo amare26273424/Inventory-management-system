@@ -1,0 +1,551 @@
+*{
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* Set the width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #0082e6b9; /* Set the color of the scrollbar thumb */
+}
+
+html{
+  scroll-behavior: smooth;
+}
+/* header strt*/
+nav {
+  background: #0082e6b9;
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  top: 0%;
+  z-index: 1;
+}
+
+label.logo {
+  color: white;
+  font-size: 35px;
+  line-height: 80px;
+  padding: 0 100px;
+  font-weight: bold;
+}
+
+nav ul {
+  float: right;
+  margin-right: 100px;
+}
+
+nav ul li {
+  display: inline-block;
+  line-height: 80px;
+  margin: 0 5px;
+}
+
+nav ul li a {
+  color: white;
+  font-size: 17px;
+  text-transform: uppercase;
+  padding: 7px 13px;
+  border-radius: 3px;
+  text-decoration: none;
+}
+
+a.active, a:hover {
+  background: #1b9bff;
+  transition: .5s;
+}
+
+
+.checkbtn {
+  font-size: 30px;
+  color: white;
+  float: right;
+  line-height: 80px;
+  margin-right: 40px;
+  cursor: pointer;
+  display: none;
+}
+
+#check {
+  display: none;
+}
+
+
+@media screen and (max-width: 952px) {
+  label.logo {
+      font-size: 30px;
+      padding-left: 50px;
+  }
+
+  nav ul li a {
+      font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 874px) {
+  .checkbtn {
+      display: block;
+  }
+
+  nav ul {
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      background: #2c3e50;
+      top: 80px;
+      left: -100%;
+      text-align: center;
+      transition: all 0.5s;
+  }
+
+  nav ul li {
+      display: block;
+      margin: 50px 0;
+      line-height: 30px;
+  }
+
+  nav ul li a {
+      font-size: 20px;
+  }
+
+  a.active, a:hover {
+      background: none;
+      color: #0082e6;
+  }
+
+  #check:checked ~ ul {
+      left: 0;
+  }
+}
+/*header end*/
+
+/* home page start */
+
+#homepage{
+  margin-top: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 25vh;
+  background-image: url('/photo/cable.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation:anima1 6000ms  0ms infinite ;
+}
+#homepage h1{
+  font-size: 50px;
+     color: #0082e6;
+}
+
+@keyframes anima1{
+  51%{
+    background-image: url('/photo/harddisk.jpg');
+  }
+}
+
+
+/* homepage end */
+
+
+
+
+/*start of the product styles*/
+.product-section, .request-section{
+  margin: 40px auto;
+  width: 80%;
+  height: 80vh;
+  
+}
+
+h2 {
+  text-align: center;
+  color: #0082e6;
+}
+
+
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.product-section input[type="text"] {
+  width: 200px;
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 5px;
+  text-align: left; /* Align the input to the left */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+}
+
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+/* thead {
+  background-color: #f0f0f0;
+} */
+
+tbody tr:nth-child(odd) {
+  background-color: #EEF9FC ;
+}
+
+.pagination-controls {
+  margin-top: 20px;
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #0082e6;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+
+
+/*end of the product*/
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+ 
+  /* background-color: #0082e682; */
+}
+
+
+/* .mb-3{
+  row-gap: 0px;
+  margin-bottom: 0px;
+} */
+
+
+td button{
+
+  width: 80px;
+  height: 30px;
+  border-radius: 10px;
+  color: white;
+  border: none;
+}
+
+td  .verfiybtn{
+  background-color: green;
+
+}
+
+td .declinebtn{
+  background-color: red;
+}
+
+td button:hover{
+  scale: 1.1;
+}
+
+
+
+/*for the admin */
+/* .userlist{
+  display: none;
+} */
+#adduser{
+margin-bottom: 50px;
+padding-top: 50px;
+
+}
+
+
+
+
+
+
+/*       for admin userlistcss           */
+
+
+   /* .userlist{
+            display: block;
+          }
+    .addeduserlist{
+      display: none;
+    } */
+
+
+
+    /* staff member for product list*/
+    .productlist{
+      display: none;
+    }
+    .addproductlist{
+      display: block;
+    }
+
+
+/* for staff member transaction errorMessage*/
+
+#errorMessage{
+  text-align: center;
+  color: green;
+}
+
+
+
+
+
+
+#request{
+  height: 90vh;
+ 
+ 
+}
+
+#request h2{
+  color: #0082e6cb;
+  font-size: 40px;
+}
+
+#request .mb-3 input{
+
+     background-color: #EEF9FC;
+}
+
+
+
+#request  select{
+
+  background-color: #EEF9FC;
+}
+
+#request button{
+  background-color: #0082e6;
+  margin-top: 15px;
+ 
+}
+#request button:hover{
+  
+  font-size: 17px;
+ 
+}
+
+.staffheader{
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0 7vw;
+  background-color: #0082e6b9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+.staffheader h1{ 
+  color: white;
+}
+
+.staffheader .links{
+  display: flex;
+  column-gap: 30px;
+  
+}
+
+
+
+
+
+
+
+
+.staffheader .links a{ 
+    text-decoration: none;
+    color: white;
+    font-size: 25px;
+
+ }
+
+ .staffheader .links a:hover{ 
+  background-color: #a7c6cb;
+
+}
+
+
+ 
+
+
+ .menu-bar{
+  display: none;
+ }
+
+
+
+ #addProductForm input {
+  background-color: #EEF9FC;
+ }
+
+ #adduser select {
+  background-color: #EEF9FC;
+ }
+
+
+ @media screen and (max-width:900px) {
+
+  .staffheader .links{
+    display:none;
+    
+    
+  }
+  .menu-bar{
+      display: block;
+     }
+
+     .staffheader   .addedlink{
+      overflow-x: hidden;
+      display: flex;
+      background-color: white;
+      width: 100vw;
+      height: 90vh;
+      text-transform: uppercase;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      position: fixed;
+      top: 70px;
+      right: 0;
+      left: 0;
+      padding-bottom: 50px;
+      
+  }
+
+  .staffheader   .addedlink a{
+   
+    color: black;
+    font-size: 30px;
+
+    
+}
+
+
+
+.staffheader select{
+  width: 150px;
+}
+
+.staffheader select{
+  background-color: black;
+  color: white;
+}
+
+.staffheader select:hover,select:checked,select:focus{
+background-color: black;
+color: white;
+}
+
+
+footer p {
+  
+        font-size: 12px;   
+ 
+}
+
+ }
+
+
+ 
+
+
+
+
+ .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.user-icon {
+  font-size: 34px; /* Adjust the size as needed */
+ 
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #0082e6;
+  width: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  size: 18px;
+  display: block;
+  text-decoration: none;
+  color: black;
+  padding: 8px 16px;
+  
+}
+
+.dropdown-content a:hover {
+  background-color: #a7c6cb;
+}
+
+
+
+@media screen and (max-width:553px) {
+
+
+  #product{
+    height: auto;
+  }
+  
+  
+  }
+
+
+
+
+
+  .userhelp {
+    display: none;
+    padding: 5vh 5vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; /* Set the bottom position to enable vertical scrolling */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    z-index: 9999;
+    background-color: white;
+    color: #0082e6;
+}
+
+.userhelp p, ol{
+  color: black;
+}

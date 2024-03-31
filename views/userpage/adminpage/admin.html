@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../../publicfiles/css/product.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <header class="staffheader">
+      <div>
+        <h1>AMU-ICT-STORE</h1>
+      </div>
+
+      <div class="menu-bar">
+        <i class="fas fa-bars fa-2x menubar" id="menubar"></i>
+      </div>
+
+      <div class="links">
+        <!-- <li><a href="#request">request</a></li> -->
+        <a href="./html/alltransaction.html">all transactions</a>
+        <a href="#product" id="userlistbtn">USER LIST</a>
+
+        <div class="dropdown">
+          <i class="fas fa-user user-icon"></i>
+          <div class="dropdown-content">
+            <a href="#" style="font-size: 15px">loged as admin</a>
+            <a
+              href="/<%= roles %>"
+              id="roleselectoption"
+              style="font-size: 15px"
+              ><%= roles %></a
+            >
+            <a href="#" style="font-size: 15px" id="usershow">User help</a>
+            <a href="/logout" style="font-size: 15px">
+              <i class="fas fa-sign-out-alt"></i> Logout</a
+            >
+          </div>
+        </div>
+
+        <script>
+          const roleselectoption = document.getElementById("roleselectoption");
+
+          if (roleselectoption.innerText === "") {
+            roleselectoption.remove();
+          }
+        </script>
+      </div>
+    </header>
+
+    <div class="container mb-3" id="adduser" style="margin-top: 20px">
+      <h2 class="loginh2">Add User</h2>
+      <h4 class="error" style="color: green"><%= error %></h4>
+      <form
+        action="/adduser"
+        method="post"
+        onsubmit="return validateForm() && submitForm(event) "
+      >
+        <div class="mb-3 mt-3">
+          <label for="name">Name of User:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder="Name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email">Email of User:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            placeholder="Email"
+            name="email"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="password">Password:</label>
+          <div class="input-group">
+            <input
+              type="password"
+              class="form-control addpassword"
+              name="password"
+              id="password"
+              placeholder="Password"
+              minlength="4"
+              pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$"
+              required
+            />
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="showPassword"
+            >
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <span
+            >The password must be a minimum of 6 characters in length and
+            contain at least 1 letter and 1 Number</span
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="confirmPassword">Confirm Password:</label>
+          <div class="input-group">
+            <input
+              type="password"
+              class="form-control addpassword"
+              id="confirmPassword"
+              placeholder="Confirm Password"
+              minlength="4"
+              pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$"
+              required
+            />
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="showConfirmPassword"
+            >
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="role">Role of User:</label>
+          <select
+            style="height: 80px"
+            class="form-control"
+            name="role"
+            id="role"
+            multiple
+            size="2"
+            required
+            onchange="limitOptions(this)"
+          >
+            <option value="" disabled>Select Role</option>
+            <option value="staff">Staff</option>
+            <option value="storekeeper">Storekeeper</option>
+            <option value="manager">Manager</option>
+            <!-- <option value="administrator">Administrator</option> -->
+            <option value="admin">admin</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <section
+      class="product-section userlist"
+      id="product"
+      style="margin-top: 100px; margin-bottom: 100px; padding-top: 80px"
+    >
+      <h2>User List</h2>
+      <hr />
+      <input type="text" id="search" placeholder="Search users" />
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>email</th>
+
+            <th>role</th>
+            <th>update</th>
+          </tr>
+        </thead>
+        <tbody id="products">
+          <!-- Product rows will be added dynamically with JavaScript -->
+        </tbody>
+      </table>
+      <div class="pagination-controls">
+        <button id="previousBtn" disabled>Previous</button>
+        <button id="nextBtn">Next</button>
+      </div>
+    </section>
+
+    <section id="UserHelp" class="userhelp">
+      <div>
+        <i
+          class="fas fa-times"
+          id="userhelpremove"
+          style="
+            color: black;
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            font-size: 30px;
+          "
+        ></i>
+        <h1>User Help</h1>
+        <p>
+          This section provides information and instructions to assist Admin in
+          effectively utilizing the system.
+        </p>
+        <!-- <h2>1. User Role 1: Staff</h2> -->
+        <h3>1.1 Getting Started</h3>
+        <h5>Introduction to the system and its purpose for Admin</h5>
+        <p>
+          Welcome to the AMU ICT Store user help guide for Admin. This guide
+          aims to provide you with a comprehensive understanding of the system's
+          purpose and functionality to help you effectively manage user accounts
+          and perform administrative tasks.
+        </p>
+
+        <p>
+          The AMU ICT Store offers administrative capabilities to streamline
+          user management, access control, and system configuration. As an
+          admin, you have the authority to add, update, and view user accounts,
+          ensuring that the system operates smoothly and securely.
+        </p>
+
+        <h5>Purpose of the System:</h5>
+        <p>
+          The primary purpose of the AMU ICT Store for administrators is to
+          provide the necessary tools and functionalities to manage user
+          accounts, maintain system security, and configure settings. As an
+          admin, you can add new users, update user information, and view the
+          list of registered users. Additionally, you have the ability to
+          perform administrative tasks such as configuring system settings and
+          managing access permissions.
+        </p>
+
+        <p>
+          <span style="color: #0082e6; font-size: 18px"> NAVIGATION: </span>To
+          get started with the system as a Manager, follow these steps:
+        </p>
+        <ol>
+          <li>Land on the login page of the system.</li>
+          <li>Enter your valid username and password.</li>
+          <li>
+            you will land on Admin Dashboard Overview of user interface elements
+            relevant to Admin.
+          </li>
+        </ol>
+
+        <h5>Overview of User Interface Elements Relevant to Admin:</h5>
+        <p>
+          Once logged in as a Admin, you will have access to the following
+          elements
+        </p>
+        <!-- <h5>Get Ready:</h5> -->
+
+        <p>
+          <span style="color: #0082e6; font-size: 18px"> Dashboard:</span>The
+          dashboard provides an overview of important information and quick
+          access to key functions for Admin.
+        </p>
+
+        <h5>Adding a User:</h5>
+        <p>To Add new user follow these steps:</p>
+        <ol>
+          <li>
+            On the dashboard or navigation bar, find the option to add a user.
+          </li>
+          <li>
+            Click on the add user option to access the user creation form.
+          </li>
+          <li>
+            Fill in the required details for the new user, such as username,
+            password, role, and any other necessary information.
+          </li>
+          <li>Review the entered information for accuracy.</li>
+          <li>Submit the form to create the new user account.</li>
+        </ol>
+
+        <h5>Updating a User:</h5>
+        <p>
+          To access daily or weekly reports, providing insights into store
+          activities, follow these steps:
+        </p>
+        <ol>
+          <li>
+            Click on the user list option to access the page displaying all the
+            registered users.
+          </li>
+          <li>Locate the user whose information you want to update</li>
+          <li>
+            Click on the user's name or a designated "Edit" button to access the
+            user details
+          </li>
+          <li>Update the necessary information in the provided form fields.</li>
+          <li>Review the changes for accuracy.</li>
+          <li>
+            Click on the "Update" or "Save" button to apply the changes to the
+            user's profile.
+          </li>
+        </ol>
+
+        <h5>Viewing Users:</h5>
+
+        <ol>
+          <li>
+            On the dashboard or navigation bar, find the option to view the list
+            of users.
+          </li>
+          <li>
+            Click on the user list option to access the page displaying all the
+            registered users.
+          </li>
+          <li>
+            On the user list page, you can view information such as usernames,
+            roles, and other relevant details of each user.
+          </li>
+          <li>
+            Utilize filters or search functionality, if available, to find
+            specific users based on certain criteria.
+          </li>
+        </ol>
+
+        <h5>Deleting a User:</h5>
+
+        <ol>
+          <li>
+            On the dashboard or navigation bar, locate the option to view the
+            list of users.
+          </li>
+          <li>
+            Click on the user list option to access the page displaying all the
+            registered users.
+          </li>
+          <li>Locate the user you want to delete from the system.</li>
+
+          <li>
+            Click on the user's name or a designated "Delete" button to initiate
+            the deletion process
+          </li>
+          <li>
+            Confirm the deletion prompt or follow any additional steps as
+            required by the system.
+          </li>
+
+          <p>
+            Please note that deleting a user account will permanently remove the
+            user's access and associated data from the system.
+          </p>
+        </ol>
+
+        <h3>1.2 Frequently Asked Questions (FAQs) for manager</h3>
+
+        <h5>Q1: How can I add a new user to the Store Management System?</h5>
+
+        <p>
+          A: As an admin, you have the authority to add new users to the system.
+          To do so, follow these steps: Access the admin panel or dashboard of
+          the Store Management System. Look for the "Add User" option, which is
+          usually available in the navigation menu or a designated section.
+          Click on the "Add User" option to access the user creation form. Fill
+          in the required details for the new user, such as username, password,
+          role, and any other necessary information. Double-check the entered
+          information for accuracy. Click on the "Submit" or "Add User" button
+          to create the new user account.
+        </p>
+
+        <h5>
+          Q2: How can I update user information in the Store Management System?
+        </h5>
+
+        <p>
+          A: If you need to update user information, including username,
+          password, or role, follow these steps: Access the admin panel or
+          dashboard of the Store Management System. Navigate to the "User List"
+          page or section, usually available in the navigation menu. Locate the
+          user whose information you want to update. Click on the user's name or
+          a designated "Edit" button to access the user details. Update the
+          necessary information in the provided form fields. Review the changes
+          for accuracy. Click on the "Update" or "Save" button to apply the
+          changes to the user's profile.
+        </p>
+
+        <h5>
+          Q3: How can I view the list of users in the Store Management System?
+        </h5>
+
+        <p>
+          A: To view the list of users registered in the system, follow these
+          steps: Access the admin panel or dashboard of the Store Management
+          System. Look for the "User List" option, usually available in the
+          navigation menu or a designated section. Click on the "User List"
+          option to access the page displaying all the registered users. On the
+          user list page, you can view information such as usernames, roles, and
+          other relevant details of each user. Utilize filters or search
+          functionality, if available, to find specific users based on certain
+          criteria.
+        </p>
+
+        <h5>Q4: Can I delete a user account in the Store Management System?</h5>
+
+        <p>
+          A: Yes, as an admin, you have the authority to delete user accounts if
+          necessary. To delete a user account, follow these steps: Access the
+          admin panel or dashboard of the Store Management System. Navigate to
+          the "User List" page or section, usually available in the navigation
+          menu. Locate the user you want to delete from the system. Click on the
+          user's name or a designated "Delete" button to initiate the deletion
+          process. Confirm the deletion prompt or follow any additional steps as
+          required by the system. Please note that deleting a user account will
+          permanently remove the user's access and associated data from the
+          system.
+        </p>
+
+        <h5>
+          Q5: What should I do if I have further questions or issues with user
+          management in the system?
+        </h5>
+
+        <p>
+          A: If you have any additional questions or encounter any issues
+          related to user management in the Store Management System, please
+          contact the system administrator or the designated support contact
+          within your organization. They will be able to provide you with
+          further assistance and guidance specific to your system configuration
+          and requirements.
+        </p>
+        <p>
+          Remember, these FAQs are intended to provide general information, and
+          specific procedures may vary based on the system you are using. If you
+          have any further questions or need assistance, don't hesitate to seek
+          support from your system administrator or relevant personnel.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        &copy; Copyright © 2023 AMU-ICT-STORE-MANAGEMENT - All rights reserved ®
+      </p>
+    </footer>
+
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="../../publicfiles/js/admin.js"></script>
+
+    <script>
+      const userhelpshow = document.getElementById("usershow");
+      const CloseUserHelp = document.getElementById("userhelpremove");
+
+      userhelpshow.addEventListener("click", () => {
+        document.getElementById("UserHelp").style.display = "block";
+      });
+
+      CloseUserHelp.addEventListener("click", () => {
+        document.getElementById("UserHelp").style.display = "none";
+      });
+      // for menubar
+      const menubar1 = document.getElementById("menubar");
+      const links1 = document.querySelector(".links");
+
+      const x = document.querySelectorAll(".links a");
+
+      menubar1.addEventListener("click", () => {
+        links1.classList.toggle("addedlink");
+        menubar1.classList.toggle("fa-times");
+      });
+
+      x.forEach((x) => {
+        x.addEventListener("click", () => {
+          links1.classList.toggle("addedlink");
+          menubar1.classList.remove("fa-times");
+        });
+      });
+
+      function limitOptions(selectElement) {
+        var selectedOptions = Array.from(selectElement.selectedOptions);
+
+        if (selectedOptions.length > 2) {
+          selectedOptions.slice(2).forEach(function (option) {
+            option.selected = false;
+          });
+
+          alert("You can only select up to two roles.");
+        }
+      }
+
+      function validateForm() {
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+          alert(
+            "Passwords do not match. Please make sure the passwords match."
+          );
+          return false;
+        }
+
+        return confirm("Are you sure you want to add the user?");
+      }
+
+      function submitForm(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        // Get the form data based on the input values
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+        const roleOptions = document.querySelectorAll("#role option:checked");
+        const role = Array.from(roleOptions).map((option) => option.value);
+
+        // Make an AJAX request to the backend
+        // Replace the URL and data with your actual values
+        axios
+          .post("/adduser", { name, email, password, confirmPassword, role })
+          .then((response) => {
+            if (response.data.success) {
+              alert("New user added successfully!");
+              location.reload();
+            } else {
+              alert(`Submission declined. ${response.data.message}`);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again later.");
+          });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../publicfiles/css/details.css">
+  
+</head>
+
+<!-- <a href='../ma-page/index.html'>back home</a> -->
+
+<body>
+  
+  <button onclick="goBack()">Go Back</button>
+
+  <script>
+  function goBack() {
+    window.history.back();
+  }
+  </script>
+
+    <table>
+      <thead>
+         <tr>
+             <th>Product Name</th>
+             <th>Product Number</th>
+             <th>Description</th>
+             <th>product giver</th>
+             <th>addeddate</th>
+             <th>id</th>
+        </tr>
+       </thead>
+      
+       <tbody id="products">
+
+          
+
+<!-- Add more rows for additional products -->
+        </tbody>
+  </table>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+
+  <script>
+
+const detailcontainer = document.querySelector('#products');
+ const params = window.location.search
+ const id = new URLSearchParams(params).get('id')
+
+ const showTask = async () => {
+   try {
+     const response = await axios.get(`/product/${id}`);
+     const task = response.data;
+
+     if (task) {
+      const name = task.pName;
+      const number = task.pNumber;
+      const pgiver = task.Pgiver
+      const description = task.description;
+      const id =task._id
+      const addedDate = task.addedDate
+
+       detailcontainer.innerHTML = `
+        
+         
+        
+       <tr>
+               
+               <td>${name}</td>
+               <td> ${number}</td>
+               <td> ${description}</td>
+               
+               <td>amare</td>
+               <td> ${addedDate}</td>
+               <td>${id}</td>
+              
+               
+        </tr>
+
+          
+        
+       `;
+     } else {
+       detailcontainer.innerHTML = 'there is some error';
+     }
+   } 
+   catch (error) {
+     detailcontainer.innerHTML = error.message;
+   }
+ };
+ showTask();
+
+  </script>
+</body>
+</html>

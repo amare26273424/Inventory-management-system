@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="../publicfiles/css/login.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  </head>
+  <body>
+    <section class="login">
+      <div class="container">
+        <h2 class="loginh2">LOG IN</h2>
+        <form onsubmit="sendData(event)">
+          <div class="maininput">
+            <label for="email">User Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Enter email"
+              name="email"
+              required
+            />
+          </div>
+          <div class="maininput">
+            <label for="pwd">User password:</label>
+            <div class="passworddiv" style="display: flex; flex-direction: row">
+              <input
+                type="password"
+                class="form-control"
+                id="pwd"
+                placeholder="Enter password"
+                name="password"
+                minlength="4"
+                required
+              />
+              <button class="showicon" type="button" id="showPassword">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <div id="formcheck">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="remember"
+                id="checkbox"
+              />
+              <label for="checkbox" style="font-size: 17px"> Remember me</label>
+            </div>
+          </div>
+          <button type="submit" class="btn">Log In</button>
+        </form>
+      </div>
+
+      <div class="photo">
+        <img src="../publicfiles/photo/Group 116.png" alt="photo" />
+      </div>
+    </section>
+
+    <script>
+      function sendData(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Retrieve the individual form field values
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("pwd").value;
+        var rememberMe = document.getElementById("checkbox").checked;
+
+        // Create an object with the form data
+        var formData = {
+          email: email,
+          password: password,
+          rememberMe: rememberMe,
+        };
+
+        // Send the form data using Axios
+        axios
+          .post("/login", formData)
+          .then(function (response) {
+            // Handle the response from the server
+            if (response.data.success) {
+              if (response.data.role == "manager") {
+                window.location.href = "../userpage/manager-page/manager.html";
+              } else if (response.data.role == "storekeeper") {
+                window.location.href =
+                  "../userpage/storekeeper-page/storekeeper.html";
+              } else if (response.data.role == "staff") {
+                window.location.href =
+                  "../userpage/staffmember-page/staff.html";
+              } else {
+                window.location.href = "../userpage/adminpage/admin.html";
+              }
+            } else {
+              toastr.error(`${response.data.message}`, "", {
+                positionClass: "toast-top-center",
+              });
+            }
+          })
+          .catch(function (error) {
+            // Handle any errors that occur during the request
+            console.log(error);
+          });
+
+        // Return false to prevent the default form submission
+        return false;
+      }
+
+      document
+        .getElementById("showPassword")
+        .addEventListener("click", function () {
+          var passwordInput = document.getElementById("pwd");
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+          } else {
+            passwordInput.type = "password";
+            this.innerHTML = '<i class="fas fa-eye"></i>';
+          }
+        });
+    </script>
+  </body>
+</html>

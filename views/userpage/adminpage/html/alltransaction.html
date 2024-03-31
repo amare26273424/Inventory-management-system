@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../../publicfiles/css/product.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+     
+</head>
+<body>
+    
+
+                   
+   <section class="product-section" id="product" style="margin-top: 100px;">
+    <h2>Product List</h2>
+    <label for="searchInput">Search by name:</label>
+    <input type="text" id="searchInput" />
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name of Staff</th>
+          <th>Product Name</th>             
+          <th>Product Number</th> 
+          <th>description</th>
+          <th>date</th>
+          <th>type</th> 
+          <th>staus</th>
+        </tr>
+      </thead>
+      <tbody id="productsContainer"></tbody>
+    </table>
+
+    <div class="pagination-controls">
+      <button id="previousBtn" disabled>Previous</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </section>
+  
+      
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+
+
+const productsContainer = document.getElementById("productsContainer");
+const previousBtn = document.getElementById("previousBtn");
+const nextBtn = document.getElementById("nextBtn");
+const searchInput = document.getElementById("searchInput");
+const productsPerPage = 7;
+
+let currentPage = 1;
+let totalProducts = 0;
+let products = [];
+
+async function getProducts() {
+  try {
+    const response = await axios.get("/requests");
+    products = response.data;
+    totalProducts = products.length;
+
+    // Sort the products array in reverse order
+    products.reverse();
+
+    displayProducts(products.slice(0, productsPerPage));
+    setupPagination();
+    setupSearch();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function displayProducts(products) {
+  const productsHTML = products
+    .map((item) => {
+      const name = item.name;
+    const pname = item.pname;
+    const number = item.pnumber;
+    const purpose = item.description;
+    const typeofproduct = item.typeofproduct;
+    const status = item.status;
+    const requestId = item._id;
+    const loanDate = new Date(item.loanDate);
+    const formattedLoanDate = loanDate.toISOString().split('T')[0];
+
+      return `
+        <tr>
+          <td>${name}</td>
+          <td>${pname}</td>
+          <td>${number}</td>
+          <td>${purpose}</td>
+          <td>${formattedLoanDate}</td>
+          <td>${typeofproduct}</td>
+          <td>${status}</td>
+         
+        </tr>
+      `;
+    })
+    .join("");
+
+  productsContainer.innerHTML = productsHTML;
+}
+
+function setupPagination() {
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+
+  if (totalPages > 1) {
+    previousBtn.disabled = true;
+
+    nextBtn.addEventListener("click", () => {
+      currentPage++;
+      previousBtn.disabled = false;
+
+      if (currentPage === totalPages) {
+        nextBtn.disabled = true;
+      }
+
+      displayProducts(getCurrentPageProducts());
+    });
+
+    previousBtn.addEventListener("click", () => {
+      currentPage--;
+      nextBtn.disabled = false;
+
+      if (currentPage === 1) {
+        previousBtn.disabled = true;
+      }
+
+      displayProducts(getCurrentPageProducts());
+    });
+  }
+}
+
+function getCurrentPageProducts() {
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const endIndex = startIndex + productsPerPage;
+
+  return products.slice(startIndex, endIndex);
+}
+
+function setupSearch() {
+  searchInput.addEventListener("input", () => {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+
+    if (searchTerm) {
+      const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm)
+      );
+
+      displayProducts(filteredProducts.slice(0, productsPerPage));
+    } else {
+      displayProducts(getCurrentPageProducts());
+    }
+  });
+}
+
+getProducts();
+
+
+// deleting the product
+
+function confirmDelete(userId) {
+    const confirmation = confirm("Are you sure you want to delete this user?");
+    if (confirmation) {
+      const productName = prompt("Please enter the name of the product to confirm deletion:");     
+      axios.get(`/product/${userId}`)
+        .then((response) => {
+          const item = response.data;
+          if (productName === item.pName) {
+            axios.delete(`/deleteproduct/${userId}`)
+              .then((response) => {
+                alert('Product deleted successfully');
+                getProducts();
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          } else {
+            alert('Product name does not match. Deletion canceled.');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }
+  
+  </script>
+</body>
+</html>
