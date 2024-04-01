@@ -11,7 +11,7 @@ let products = [];
 async function getProducts() {
   try {
     const response = await axios.get("/products");
-    products = response.data;
+    products = response.data.products;
     totalProducts = products.length;
 
     // Sort the products array in reverse order
@@ -115,28 +115,34 @@ getProducts();
 
 // deleting the product
 
-function confirmDelete(userId) {
-    const confirmation = confirm("Are you sure you want to delete this user?");
+function confirmDelete(productId) {
+    const confirmation = confirm("Are you sure you want to delete this product?");
     if (confirmation) {
       const productName = prompt("Please enter the name of the product to confirm deletion:");     
-      axios.get(`/product/${userId}`)
+      axios.get(`/product/${productId}`)
         .then((response) => {
-          const item = response.data;
+          const item = response.data.product;
           if (productName === item.pName) {
-            axios.delete(`/deleteproduct/${userId}`)
+            axios.delete(`/deleteproduct/${productId}`)
               .then((response) => {
-                alert('Product deleted successfully');
+                toastr.success('product deleted successfully!', "", {
+                  positionClass: "toast-bottom-center",
+                });
                 getProducts();
               })
               .catch((error) => {
-                console.error(error);
+                toastr.error(error.message, "", {
+                  positionClass: "toast-bottom-center",
+                });
               });
           } else {
             alert('Product name does not match. Deletion canceled.');
           }
         })
         .catch((error) => {
-          console.error(error);
+          toastr.error(error.message, "", {
+            positionClass: "toast-bottom-center",
+          });
         });
     }
   }

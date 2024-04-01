@@ -12,6 +12,14 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+         <!-- Toast link -->
+         <link
+         rel="stylesheet"
+         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+       />
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+     
 
 </head>
 
@@ -120,7 +128,7 @@
           .then(response => {
             if (response.data.success) {
               toastr.success('new product added successfully!', "", {
-                positionClass: "toast-top-center",
+                positionClass: "toast-bottom-center",
               });
               
               location.reload();
@@ -145,9 +153,6 @@
 
     <section class="product-section" id="product" style="margin-top: 100px;">
       <h2>Product List</h2>
-      <h3 class="error" id="errorMessage">
-        <%= error %>
-      </h3>
       <label for="searchInput">Search by name:</label>
       <input type="text" id="searchInput" />
 
@@ -500,11 +505,11 @@
 
 
 
-    const errorMessage = document.getElementById("errorMessage");
-    errorMessage.style.display = "block"; // make sure the error message is visible
-    setTimeout(() => {
-      errorMessage.style.display = "none"; // hide the error message after 3 seconds
-    }, 3000);
+    // const errorMessage = document.getElementById("errorMessage");
+    // errorMessage.style.display = "block"; // make sure the error message is visible
+    // setTimeout(() => {
+    //   errorMessage.style.display = "none"; // hide the error message after 3 seconds
+    // }, 3000);
 
 
 
@@ -529,7 +534,7 @@
 
   </script>
 
-  <script src="/js/storekeeper.js"></script>
+  <script src="../../publicfiles/js/storekeeper.js"></script>
   <!-- Add this code at the bottom of your HTML file, just before the closing body tag -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

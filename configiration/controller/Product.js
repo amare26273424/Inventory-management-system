@@ -11,8 +11,9 @@ const router = express.Router();
 
 router.post("/addproduct", async function (req, res) {
   const body = req.body;
+
   try {
-    await collection.insertMany(body);
+  const product =  await collection.insertMany(body);
     res.status(201).json({
       success: true,
       message: "Product added successfully",
@@ -80,8 +81,9 @@ router.get("/products", function (req, res) {
 router.get("/product/:id", async (req, res) => {
   try {
     const id = req.params.id;
+    
     const product = await collection.findOne({ _id: id });
-    if (!result) {
+    if (!product ) {
       res.status(401).json({
         success: false,
         message: "product is not exist",
