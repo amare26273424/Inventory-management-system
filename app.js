@@ -11,19 +11,18 @@ const {
   homepage,
   getlogin,
   getallrequests,
-  getOnetaskbyname,
-  deleteproduct,
-  updateproduct,
+ 
+
+ 
   updateProductNumber,
   getallrequest,
   deleteuser,
   updateuser,
   getoneuser,
-  getalltasks,
+
   updaterequest,
-  getOnetask,
-  posttask,
-  deletetask,
+
+  
   updatetask,
   adduser,
   login,
@@ -32,7 +31,8 @@ const {
 } = require("./configiration/Controller/tasks");
 const { connect } = require("http2");
 
-
+const product  = require('./configiration/Controller/Product.js');
+const user  = require('./configiration/Controller/User.js');
 
 // connect to database
 connectDatabase()
@@ -72,18 +72,11 @@ const isAuthstaff = (req, res, next) => {
   }
 };
 
-// // Set EJS as the view engine
-// // app.set("view engine", "ejs");
-// // app.get("/", homepage);
+
 
 app.use(express.static(path.join(__dirname, "views")));
 
-app.get("/logout", (req, res) => {
-  req.session.destroy((error) => {
-    if (error) throw error;
-    res.render("index");
-  });
-});
+
 
 // app.get("/manager", isAuth, (req, res) => {
 //   res.render("userpage/manager-page/manager", { roles: `` });
@@ -162,18 +155,17 @@ app.get("/logout", (req, res) => {
 
 // app.post('/sendReason',sendemail);
 
-app.post("/addproduct", AddNewProduct);
-// app.get("/products", isAuth, getalltasks);
-app.get("/products", getalltasks);
+app.use("/", product);
+app.use("/", user);
+
+
 app.get("/requests", getallrequests);
 
-app.get("/product/:id", getOnetask);
-app.get("/productname/:name", getOnetaskbyname);
+
 app.post("/adduser", adduser);
 app.patch("/productsapproveproduct/:productName", updateProductNumber);
 app.patch("/productsreturnedproduct/:productName", updateProductreturnedNumber);
-app.put("/product/:id", updateproduct);
-app.delete("/deleteproduct/:id", deleteproduct);
+
 
 app.post("/login", login);
 app.get("/users", getalluser);

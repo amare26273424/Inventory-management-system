@@ -44,9 +44,9 @@
               style="font-size: 15px"
               ><%= roles %></a
             >
-            <a  href='#' style="font-size: 15px" id="usershow">User help</a>
-            <a href="3" style="font-size: 15px">
-              <i class="fas fa-sign-out-alt" onclick="logoutfunction()"></i>
+            <a href="#" style="font-size: 15px" id="usershow">User help</a>
+            <a href="#" style="font-size: 15px" onclick="logoutfunction()">
+              <i class="fas fa-sign-out-alt"></i>
               Logout</a
             >
           </div>
@@ -191,7 +191,7 @@
     </section>
 
     <section id="UserHelp" class="userhelp">
-      <div >
+      <div>
         <i
           class="fas fa-times"
           id="userhelpremove"
@@ -446,6 +446,20 @@
 
           returnedDateInput.required = false;
         }
+      }
+
+      // for the logut
+      function logoutfunction() {
+        axios
+          .get("/logout")
+          .then((res) => {
+            alert(res.data.message);
+            window.location.href='/'
+          })
+          .catch(function (error) {
+            // Handle any errors that occur during the request
+            alert(error.message);
+          });
       }
 
       // checkin the value

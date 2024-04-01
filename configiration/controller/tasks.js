@@ -10,87 +10,13 @@ app.use(cookieParser());
 
 // const nodemailer = require('nodemailer');
 
-function getalltasks(req, res) {
-  collection
-    .find({})
-    .then((tasks) => {
-      console.log("geted");
-      res.send(tasks);
-    })
-    .catch((err) => res.send(err));
-}
 
-const getOnetask = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const result = await collection.findOne({ _id: id });
-    if (!result) {
-      res.status(404).send("Task not found");
-    } else {
-      res.send(result);
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Internal server error");
-  }
-};
 
-const getOnetaskbyname = async (req, res) => {
-  try {
-    const name = req.params.name;
-    const result = await collection.findOne({ pName: name });
-    if (!result) {
-      res.status(404).send("Task not found");
-    } else {
-      res.send(result);
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Internal server error");
-  }
-};
 
-async function posttask(req, res) {
-  const body = req.body;
 
-  try {
-    await collection.insertMany(body);
-    res.send({ success: true });
-    console.log("Successfully entered");
-  } catch (err) {
-    res.send({ success: false, message: err.message });
-    console.log(err.message);
-  }
-}
 
-function deleteproduct(req, res) {
-  const id = req.params.id;
-  collection
-    .findOneAndDelete({ _id: id })
-    .then(() => {
-      console.log("successfully deleted");
-      res.send("successfully deleted");
-    })
-    .catch((error) => {
-      res.send(error.msg);
-      console.log(error.msg);
-    });
-}
 
-async function updateproduct(req, res) {
-  const id = await req.params.id;
-  const body = await req.body;
-  collection
-    .findOneAndUpdate({ _id: id }, body)
-    .then(() => {
-      console.log("successfully deleted");
-      res.send("successfully deleted");
-    })
-    .catch((error) => {
-      res.send(error.msg);
-      console.log(error.msg);
-    });
-}
+
 
 function updatetask(req, res) {
   const id = req.params.id;
@@ -143,26 +69,7 @@ async function adduser(req, res) {
   }
 }
 
-// async function adduser(req, res) {
-//   const email = await req.body.email
-//   const body = await req.body;
 
-//  const find = await usercollection.findOne({email:email})
-
-//  if(!find)  {
-
-//   usercollection.create(body)
-//   .then(() => {
-//     res.render('userpage/adminpage/admin',{error:'new user is added',roles:''})
-//     console.log('new user entered');
-//   })
-
-//  }
-// else{
-
-//   res.render('userpage/adminpage/admin',{error:'the email is already registered',roles:""})
-
-// }
 
 function getalluser(req, res) {
   usercollection
@@ -325,23 +232,7 @@ async function getoneuser(req, res) {
   }
 }
 
-//   async function getoneuser (req, res) {
 
-//     try {
-//       const id = req.params.id;
-//       const task = await usercollection.findOne({ _id:id });
-//       if (task) {
-//         res.send(task);
-//         console.log(task);
-//       } else {
-//         console.log('Task not found');
-//         res.send('Task not found');
-//       }
-//     } catch (error) {
-//       res.send(error.msg);
-//     }
-
-// }
 
 async function updateuser(req, res) {
   const id = req.params.id;
@@ -448,40 +339,7 @@ async function updateProductreturnedNumber(req, res) {
   }
 }
 
-// async function sendemail (req, res){
 
-//   const { requestId, reason } = req.body;
-//   const  request =await requestcollection.findOne({_id:requestId})
-//   const useremail = request.email
-
-//   // Use Nodemailer to send an email to the requester
-//   let transporter = nodemailer.createTransport({
-//     host: 'smtp.gmail.com',
-//     port: 465,
-//     secure: true,
-//     auth: {
-//       user: 'amarehagos26273425@gmail.com',
-//       pass: '26273424a'
-//     }
-//   });
-
-//   let mailOptions = {
-//     from: 'amarehagos26273424@gmail.com',
-//     to: `amarehagos26273425@gmail.com`, // Replace with actual requester's email
-//     subject: 'Task Declined',
-//     text: `Your task has been declined. Reason: ${reason}`
-//   };
-
-//   transporter.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//       console.log(error);
-//       res.status(500).send('Failed to send email');
-//     } else {
-//       console.log('Email sent: ' + info.response);
-//       res.send('Email sent successfully');
-//     }
-//   });
-// }
 
 async function getlogin(req, res) {
   const { email } = req.session;
@@ -620,12 +478,7 @@ async function homepage(req, res) {
 }
 
 module.exports = {
-  getOnetaskbyname,
-  updateproduct,
-  getalltasks,
-  getOnetask,
-  posttask,
-  deleteproduct,
+  
   adduser,
   login,
   getalluser,

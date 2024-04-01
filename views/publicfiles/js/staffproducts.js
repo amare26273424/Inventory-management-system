@@ -12,7 +12,7 @@ let products = [];
 async function getProducts() {
   try {
     const response = await axios.get("/products");
-    products = response.data;
+    products = response.data.products;
     totalProducts = products.length;
 
     // Sort the products array in reverse order
