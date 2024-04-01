@@ -44,7 +44,7 @@
               ><%= roles %></a
             >
             <a href="#" style="font-size: 15px" id="usershow">User help</a>
-            <a href="/logout" style="font-size: 15px">
+            <a href="#" style="font-size: 15px" onclick="logoutfunction()">
               <i class="fas fa-sign-out-alt"></i> Logout</a
             >
           </div>
@@ -533,6 +533,21 @@
           .catch((error) => {
             console.error("Error:", error);
             alert("An error occurred. Please try again later.");
+          });
+      }
+
+      //  functions for logout
+
+      function logoutfunction() {
+        axios
+          .get("/logout")
+          .then((res) => {
+            window.location.href = "/";
+            history.replaceState(null, null, "/");
+          })
+          .catch(function (error) {
+            // Handle any errors that occur during the request
+            alert(error.message);
           });
       }
     </script>

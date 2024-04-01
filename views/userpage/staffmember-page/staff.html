@@ -396,7 +396,6 @@
         try {
           const response = await axios.get("/request");
           const products = response.data;
-
           products.forEach((item) => {
             if (item.typeofproduct === "returned" && item.status === "taken") {
               const returnedDate = new Date(item.returnedDate);
@@ -453,8 +452,8 @@
         axios
           .get("/logout")
           .then((res) => {
-            alert(res.data.message);
-            window.location.href='/'
+            window.location.href = "/";
+            history.replaceState(null, null, "/");
           })
           .catch(function (error) {
             // Handle any errors that occur during the request

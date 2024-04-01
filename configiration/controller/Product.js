@@ -64,7 +64,6 @@ router.get("/products", function (req, res) {
   collection
     .find({})
     .then((products) => {
-        console.log(products.length)
       res.status(201).json({
         success: true,
         products: products,
@@ -73,60 +72,53 @@ router.get("/products", function (req, res) {
     .catch((err) =>
       res.status(201).json({
         success: true,
-       message: err.message,
+        message: err.message,
       })
     );
 });
 
 router.get("/product/:id", async (req, res) => {
-    try {
-      const id = req.params.id;
-      const product = await collection.findOne({ _id: id });
-      if (!result) {
-
-        res.status(401).json({
-            success: false,
-            message: 'product is not exist',
-          });
-
-      } else {
-
-       res.status(401).json({
-            success: true,
-            product:product,
-          });
-      }
-    } catch (error) {
-      console.log(error);
-      res.status(500).send("Internal server error");
+  try {
+    const id = req.params.id;
+    const product = await collection.findOne({ _id: id });
+    if (!result) {
+      res.status(401).json({
+        success: false,
+        message: "product is not exist",
+      });
+    } else {
+      res.status(401).json({
+        success: true,
+        product: product,
+      });
     }
-  });
-
-
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal server error");
+  }
+});
 
 router.get("/productname/:name", async (req, res) => {
-    try {
-      const name = req.params.name;
-      const Product = await collection.findOne({ pName: name });
-      if (!result) {
-        res.status(404).json({
-            success: false,
-            message: 'product is not exist',
-          });
-      } else {
-        res.status(404).json({
-            success: true,
-            product: product,
-          });
-      }
-    } catch (error) {
-
-     res.status(500).json({
-            success: false,
-            message: error.message,
-          });
+  try {
+    const name = req.params.name;
+    const Product = await collection.findOne({ pName: name });
+    if (!result) {
+      res.status(404).json({
+        success: false,
+        message: "product is not exist",
+      });
+    } else {
+      res.status(404).json({
+        success: true,
+        product: product,
+      });
     }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
-  );
+});
 
 module.exports = router;

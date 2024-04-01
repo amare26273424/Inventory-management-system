@@ -14,7 +14,7 @@ async function getProducts() {
   try {
     productsContainer.innerHTML =' <h1>Loading.....</h1>';
     const response = await axios.get("/products");
-    products = response.data;
+    products = response.data.products;
     totalProducts = products?.length;
     console.log(totalProducts)
 
