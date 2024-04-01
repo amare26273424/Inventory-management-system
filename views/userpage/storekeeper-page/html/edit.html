@@ -82,8 +82,9 @@
      
     async function fetchUser() {
       try {
+        
         const response = await axios.get(`/product/${userId}`);
-        const user =await response.data;     
+        const user = response.data.product;     
         pname.value = user.pName;
         pnumber.value = user.pNumber;
         description.value = user.description;
@@ -108,7 +109,7 @@
   
   if (confirmed) {
     try {
-      await axios.put(`http://127.0.0.1:5000/product/${userId}`, data);
+      await axios.put(`/product/${userId}`, data);
        alert('product updated successfully')
        window.location.href='/getstorekepperpage'
       

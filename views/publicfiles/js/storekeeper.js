@@ -41,7 +41,7 @@ function displayProducts(products) {
           <td>${detail}</td>
           
           <td>
-          <a href="/productedit?id=${id}" style="margin-right:18px">
+          <a href="./html/edit.html?id=${id}"  style="margin-right:18px">
             <i class="fas fa-edit"></i>
           </a>
 
@@ -147,3 +147,6 @@ function confirmDelete(productId) {
     }
   }
   
+
+
+

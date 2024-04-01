@@ -82,18 +82,19 @@ router.get("/product/:id", async (req, res) => {
   try {
     const id = req.params.id;
     
-    const product = await collection.findOne({ _id: id });
+    const product = await collection.findById(id);
+
     if (!product ) {
-      res.status(401).json({
+       return  res.status(401).json({
         success: false,
         message: "product is not exist",
       });
-    } else {
-      res.status(401).json({
+    }
+
+      res.status(201).json({
         success: true,
         product: product,
       });
-    }
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal server error");
