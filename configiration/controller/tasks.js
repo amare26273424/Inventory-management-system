@@ -1,8 +1,7 @@
-const {
-  collection,
-  usercollection,
-  requestcollection,
-} = require("../model/db");
+const { usercollection } = require("../Model/User");
+const { requestcollection } = require("../Model/Request");
+const { collection } = require("../Model/Product");
+
 const bcrypt = require("bcrypt");
 const express = require("express");
 const app = express();
@@ -137,12 +136,10 @@ async function adduser(req, res) {
     console.log(newUser);
   } catch (error) {
     console.error("Error adding user:", error);
-    res
-      .status(500)
-      .send({
-        success: false,
-        message: "An error occurred while adding the user",
-      });
+    res.status(500).send({
+      success: false,
+      message: "An error occurred while adding the user",
+    });
   }
 }
 
@@ -185,31 +182,27 @@ async function login(req, res) {
       return res.status(201).json({
         success: false,
         message: "user not found",
-        
       });
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);  // Compare hashed password
-       if (!passwordMatch) {
-        return res.status(201).json({
-          success: false,
-          message: "incorrect information",
-        });
-       }
-
+    const passwordMatch = await bcrypt.compare(password, user.password); // Compare hashed password
+    if (!passwordMatch) {
       return res.status(201).json({
-        success: true,
-        message: "login sucess",
-        role:user.role[0],
-      }); 
+        success: false,
+        message: "incorrect information",
+      });
+    }
 
-
-  } catch(error) {
+    return res.status(201).json({
+      success: true,
+      message: "login sucess",
+      role: user.role[0],
+    });
+  } catch (error) {
     res.status(201).json({
       success: false,
       message: error.message,
-    }); 
-
+    });
   }
 }
 

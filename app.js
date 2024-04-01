@@ -4,7 +4,7 @@ const session = require("express-session");
 const mongodbsession = require("connect-mongodb-session")(session);
 const cors = require("cors");
 const path = require("path");
-
+const connectDatabase =require('./configiration/ConnectDb/connectDatabase');
 const bodyParser = require("body-parser");
 const {
   updateProductreturnedNumber,
@@ -29,7 +29,14 @@ const {
   login,
   getalluser,
   postrequest,
-} = require("./configiration/controller/tasks");
+} = require("./configiration/Controller/tasks");
+const { connect } = require("http2");
+
+
+
+// connect to database
+connectDatabase()
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -71,7 +78,6 @@ const isAuthstaff = (req, res, next) => {
 
 app.use(express.static(path.join(__dirname, "views")));
 
-
 app.get("/logout", (req, res) => {
   req.session.destroy((error) => {
     if (error) throw error;
@@ -79,11 +85,9 @@ app.get("/logout", (req, res) => {
   });
 });
 
-
 // app.get("/manager", isAuth, (req, res) => {
 //   res.render("userpage/manager-page/manager", { roles: `` });
 // });
-
 
 // app.get("/storekeeper", isAuth, (req, res) => {
 //   res.render("userpage/storekeeper-page/storekeeper", {
@@ -158,29 +162,28 @@ app.get("/logout", (req, res) => {
 
 // app.post('/sendReason',sendemail);
 
-app.post("/add", posttask);
+app.post("/addproduct", AddNewProduct);
 // app.get("/products", isAuth, getalltasks);
-app.get("/products",getalltasks);
-app.get("/requests",getallrequests);
+app.get("/products", getalltasks);
+app.get("/requests", getallrequests);
 
- app.get("/product/:id",  getOnetask);
- app.get("/productname/:name",  getOnetaskbyname);
- app.post("/adduser", adduser);
- app.patch("/productsapproveproduct/:productName", updateProductNumber);
- app.patch("/productsreturnedproduct/:productName", updateProductreturnedNumber);
- app.put("/product/:id",  updateproduct);
- app.delete("/deleteproduct/:id",  deleteproduct);
+app.get("/product/:id", getOnetask);
+app.get("/productname/:name", getOnetaskbyname);
+app.post("/adduser", adduser);
+app.patch("/productsapproveproduct/:productName", updateProductNumber);
+app.patch("/productsreturnedproduct/:productName", updateProductreturnedNumber);
+app.put("/product/:id", updateproduct);
+app.delete("/deleteproduct/:id", deleteproduct);
 
 app.post("/login", login);
- app.get("/users", getalluser);
- app.get("/user/:id",  getoneuser);
- app.put("/user/:id", updateuser);
- app.delete("/deleteuser/:id", deleteuser);
-app.get("/request",getallrequest);
- 
+app.get("/users", getalluser);
+app.get("/user/:id", getoneuser);
+app.put("/user/:id", updateuser);
+app.delete("/deleteuser/:id", deleteuser);
+app.get("/request", getallrequest);
 
- app.post("/request", postrequest);
- app.patch("/request/:id", updaterequest);
+app.post("/request", postrequest);
+app.patch("/request/:id", updaterequest);
 
 //  app.use(express.static('./public'));
 

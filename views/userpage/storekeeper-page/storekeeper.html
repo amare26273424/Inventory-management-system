@@ -116,18 +116,25 @@
 
         // Make an AJAX request to the backend
         // Replace the URL and data with your actual values
-        axios.post('/add', { pName, pNumber, description, Pgiver })
+        axios.post('/addproduct', { pName, pNumber, description, Pgiver })
           .then(response => {
             if (response.data.success) {
-              alert('new product added successfully!');
+              toastr.success('new product added successfully!', "", {
+                positionClass: "toast-top-center",
+              });
+              
               location.reload();
             } else {
-              alert(' submission declined. Please try again.');
+              toastr.error('submission declined. Please try again!', "", {
+                positionClass: "toast-top-center",
+              });
             }
           })
           .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again later.');
+            toastr.error(`${error.message}`, "", {
+                positionClass: "toast-top-center",
+              });
+           
           });
       }
     </script>
