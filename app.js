@@ -7,26 +7,17 @@ const path = require("path");
 const connectDatabase =require('./configiration/ConnectDb/connectDatabase');
 const bodyParser = require("body-parser");
 const {
-  updateProductreturnedNumber,
+ 
   homepage,
   getlogin,
   getallrequests,
- 
-
- 
-  updateProductNumber,
   getallrequest,
-  deleteuser,
-  updateuser,
-  getoneuser,
-
+  // getoneuser,
   updaterequest,
-
-  
   updatetask,
-  adduser,
+  // adduser,
   login,
-  getalluser,
+  // getalluser,
   postrequest,
 } = require("./configiration/Controller/tasks");
 const { connect } = require("http2");
@@ -78,104 +69,31 @@ app.use(express.static(path.join(__dirname, "views")));
 
 
 
-// app.get("/manager", isAuth, (req, res) => {
-//   res.render("userpage/manager-page/manager", { roles: `` });
-// });
-
-// app.get("/storekeeper", isAuth, (req, res) => {
-//   res.render("userpage/storekeeper-page/storekeeper", {
-//     roles: "",
-//     error: "successfully added",
-//   });
-// });
-// app.get("/admin", isAuth, (req, res) => {
-//   res.render("userpage/adminpage/admin", { roles: ``, error: "" });
-// });
-// // to get the login ejs
-// app.get("/login", getlogin);
-
-// app.get("/transaction", isAuth, isAuthstaff, (req, res) => {
-//   res.render("userpage/staffmember-page/html/transactions", { error: "" });
-// });
-
-// app.get("/alert", isAuth, (req, res) => {
-//   res.render("userpage/staffmember-page/html/alert", { error: "" });
-// });
-
-// app.get("/requestedtask", isAuth, (req, res) => {
-//   res.render("userpage/manager-page/html/requestedtask.ejs");
-// });
-
-// app.get("/transactionmanager", isAuth, (req, res) => {
-//   res.render("userpage/manager-page/html/transaction");
-// });
-
-// app.get("/daily", isAuth, (req, res) => {
-//   res.render("userpage/manager-page/html/dailytrasaction");
-// });
-
-// app.get("/weekly", isAuth, (req, res) => {
-//   res.render("userpage/manager-page/html/weeklytransaction");
-// });
-
-// app.get("/edit", isAuth, (req, res) => {
-//   res.render("userpage/adminpage/html/edit");
-// });
-
-// app.get("/productedit", isAuth, (req, res) => {
-//   res.render("userpage/storekeeper-page/html/edit");
-// });
-
-// app.get("/admin", isAuth, (req, res) => {
-//   res.render("userpage/adminpage/admin");
-// });
-
-// app.get("/details", isAuth, (req, res) => {
-//   res.render("userpage/details/details");
-// });
-
-// app.get("/getstorekepperpage", isAuth, (req, res) => {
-//   res.render("userpage/storekeeper-page/storekeeper", {
-//     roles: "",
-//     error: "product updated successfully",
-//   });
-// });
-
-// app.get("/recoredtransaction", isAuth, (req, res) => {
-//   res.render("userpage/storekeeper-page/html/recoredtransaction");
-// });
-
-// app.get("/recoredreturnedproduct", isAuth, (req, res) => {
-//   res.render("userpage/storekeeper-page/html/recoredreturnedproduct");
-// });
-
-// app.get("/alltransaction", isAuth, (req, res) => {
-//   res.render("userpage/adminpage/html/alltransaction");
-// });
-
 // app.post('/sendReason',sendemail);
 
 app.use("/", product);
 app.use("/", user);
 
 
-app.get("/requests", getallrequests);
 
 
-app.post("/adduser", adduser);
-app.patch("/productsapproveproduct/:productName", updateProductNumber);
-app.patch("/productsreturnedproduct/:productName", updateProductreturnedNumber);
+
+// app.post("/adduser", adduser);
+// app.patch("/productsapproveproduct/:productName", updateProductNumber);
+// app.patch("/productsreturnedproduct/:productName", updateProductreturnedNumber);
 
 
 app.post("/login", login);
-app.get("/users", getalluser);
-app.get("/user/:id", getoneuser);
-app.put("/user/:id", updateuser);
-app.delete("/deleteuser/:id", deleteuser);
-app.get("/request", getallrequest);
+// app.get("/users", getalluser);
+// app.get("/user/:id", getoneuser);
+// app.put("/user/:id", updateuser);
 
+
+app.get("/request", getallrequest);
 app.post("/request", postrequest);
 app.patch("/request/:id", updaterequest);
+app.get("/requests", getallrequests);
+
 
 //  app.use(express.static('./public'));
 

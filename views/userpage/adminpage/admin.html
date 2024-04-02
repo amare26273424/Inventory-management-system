@@ -17,6 +17,15 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
+
+    <!-- Toast link -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  
   </head>
   <body>
     <header class="staffheader">
@@ -30,7 +39,7 @@
 
       <div class="links">
         <!-- <li><a href="#request">request</a></li> -->
-        <a href="./html/alltransaction.html">all transactions</a>
+        <a href="./html/alltransaction.html">Transactions</a>
         <a href="#product" id="userlistbtn">USER LIST</a>
 
         <div class="dropdown">
@@ -62,7 +71,6 @@
 
     <div class="container mb-3" id="adduser" style="margin-top: 20px">
       <h2 class="loginh2">Add User</h2>
-      <h4 class="error" style="color: green"><%= error %></h4>
       <form
         action="/adduser"
         method="post"
@@ -161,7 +169,7 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary form-control">Submit</button>
       </form>
     </div>
 
@@ -487,7 +495,21 @@
             option.selected = false;
           });
 
-          alert("You can only select up to two roles.");
+          toastr.error("You can only select up to two roles.", "", {
+                  positionClass: "toast-top-center",
+                  closeButton: true, // Add a close button
+                  progressBar: true, // Show a progress bar
+                  timeOut: 2000, // Set the duration for the message to be displayed
+                  extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                  css: {
+                    width: "300px",
+                    // Set the width of the toastr
+                    "background-color": "red", // Set the background color
+  
+                    // Add any other CSS properties as needed
+                  }
+                });
+       
         }
       }
 
@@ -524,15 +546,55 @@
           .post("/adduser", { name, email, password, confirmPassword, role })
           .then((response) => {
             if (response.data.success) {
-              alert("New user added successfully!");
-              location.reload();
+              toastr.success(response.data.message, "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "300px",
+                  // Set the width of the toastr
+                  "background-color": "green", // Set the background color
+
+                  // Add any other CSS properties as needed
+                },
+              });
+              setTimeout(function () {
+                location.reload();
+              }, 2000);
             } else {
-              alert(`Submission declined. ${response.data.message}`);
+              toastr.error(response.data.message, "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "400px",
+                  // Set the width of the toastr
+                  "background-color": "red", // Set the background color
+
+                  // Add any other CSS properties as needed
+                },
+              });
             }
           })
           .catch((error) => {
-            console.error("Error:", error);
-            alert("An error occurred. Please try again later.");
+            toastr.error(error.message, "", {
+              positionClass: "toast-top-center",
+              closeButton: true, // Add a close button
+              progressBar: true, // Show a progress bar
+              timeOut: 2000, // Set the duration for the message to be displayed
+              extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+              css: {
+                width: "300px",
+                // Set the width of the toastr
+                "background-color": "red", // Set the background color
+
+                // Add any other CSS properties as needed
+              },
+            });
           });
       }
 

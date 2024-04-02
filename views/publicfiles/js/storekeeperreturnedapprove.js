@@ -28,8 +28,21 @@ function handleVerifyClick(requestId, productName,number) {
 async function updateStatus(requestId, status, message, productName,number) {
   try {
     const response = await axios.patch(`/request/${requestId}`, { status });
-    console.log(response.data);
-    alert(message);
+    toastr.success(message, "", {
+      positionClass: "toast-top-center",
+      closeButton: true, // Add a close button
+      progressBar: true, // Show a progress bar
+      timeOut: 2000, // Set the duration for the message to be displayed
+      extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+      css: {
+        width: "300px",
+         // Set the width of the toastr
+         // Set the background color
+     
+        // Add any other CSS properties as needed
+      }
+    });
+
     fetchProducts();
     // Decrease the amount of the product based on the product name
     await axios.patch(`/productsreturnedproduct/${productName}`, { decreaseAmount: number});
@@ -37,7 +50,21 @@ async function updateStatus(requestId, status, message, productName,number) {
     // Refresh the products after updating the status and decreasing the amount
     fetchProducts();
   } catch (error) {
-    console.error(error);
+    toastr.error(error.message, "", {
+      positionClass: "toast-top-center",
+      closeButton: true, // Add a close button
+      progressBar: true, // Show a progress bar
+      timeOut: 2000, // Set the duration for the message to be displayed
+      extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+      css: {
+        width: "300px",
+         // Set the width of the toastr
+        "background-color": "red", // Set the background color
+     
+        // Add any other CSS properties as needed
+      }
+    });
+
   }
 }
 

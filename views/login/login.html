@@ -110,14 +110,41 @@
                 window.location.href = "../userpage/adminpage/admin.html";
               }
             } else {
-              toastr.error(`${response.data.message}`, "", {
+              toastr.error(response.data.message, "", {
                 positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "300px",
+                   // Set the width of the toastr
+                  "background-color": "red", // Set the background color
+               
+                  // Add any other CSS properties as needed
+                }
               });
+
+
             }
           })
           .catch(function (error) {
-            // Handle any errors that occur during the request
-            console.log(error);
+            toastr.error(error.message, "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "300px",
+                   // Set the width of the toastr
+                  "background-color": "red", // Set the background color
+               
+                  // Add any other CSS properties as needed
+                }
+              });
+
+
           });
 
         // Return false to prevent the default form submission

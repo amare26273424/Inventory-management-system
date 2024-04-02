@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../../publicfiles/css/product.css">
+
+  <!-- Toast link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+</head>
+
+<body>
+
+  <button onclick="goBack()">Go Back</button>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+
+  <section class="product-section" id="product">
+    <h2>requestList</h2>
+    <hr>
+    <table>
+      <thead>
+        <tr>
+          <th>Name of Staff</th>
+          <th>Product Name</th>
+          <th>Product Number</th>
+          <th>Purpose</th>
+          <th>status</th>
+        </tr>
+      </thead>
+      <tbody id="products">
+        <!-- Product rows will be added dynamically with JavaScript -->
+      </tbody>
+    </table>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script src="../../../publicfiles/js/storekeeperreturnedapprove.js">
+  </script>
+
+</body>
+
+</html>

@@ -1,60 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit User</title>
   <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 
-<!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<!-- Bootstrap JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-<!-- Font Awesome JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <!-- Font Awesome JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+
+  <!-- Toast link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
 
 </head>
+
 <body>
 
-  <button onclick="goBack()">Go Back</button>
+  <button onclick="goBack()" style="padding: 10px 20px;
+  font-size: 14px;
+  background-color: #0082e6;
+  color: #fff;
+  border: none;
+  cursor: pointer;;">Go Back</button>
 
   <script>
-  function goBack() {
-    window.history.back();
-  }
+    function goBack() {
+      window.history.back();
+    }
   </script>
 
   <div class="container mt-5 w-50" id="adduser">
-    <h2 class="loginh2">edit user</h2>
+    <h2 class="loginh2">Edit User</h2>
     <form id="edit-form">
       <div class="mb-3 mt-3">
         <label for="name">Name of User:</label>
-        <input  class="form-control" type="text" id="name" name="name"  required>
+        <input class="form-control" type="text" id="name" name="name" required>
       </div>
       <div class="mb-3">
         <label for="email">Email of User:</label>
-        <input class="form-control"  type="email" id="email" name="email"  required>
+        <input class="form-control" type="email" id="email" name="email" required>
       </div>
       <div class="mb-3">
         <label for="password">Password:</label>
         <div class="input-group">
-          <input type="password" class="form-control" id="password" name="password" minlength="4" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$" required/>
-          <button class="btn btn-outline-secondary" type="button" id="showPassword" >
+          <input type="password" class="form-control" id="password" name="password" minlength="4"
+            pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$" required />
+          <button class="btn btn-outline-secondary" type="button" id="showPassword">
             <i class="fas fa-eye"></i>
-         </button>
+          </button>
         </div>
       </div>
-  
+
       <div class="mb-3">
         <label for="selectedRoles">Selected Roles:</label>
         <input class="form-control" type="text" id="selectedRoles" name="selectedRoles" readonly>
       </div>
-     
-      <div class="mb-3">       
+
+      <div class="mb-3">
         <label for="role">Role of User:</label>
         <select class="form-control" name="role" id="role" multiple size="2" onchange="limitOptions(this)" required>
           <option value="" disabled>Select Role</option>
@@ -66,13 +82,13 @@
         </select>
       </div>
 
-          
-      <button type="submit"  class="btn btn-primary">Save Changes</button>
-     
+
+      <button type="submit" class="btn btn-primary form-control">Save Changes</button>
+
     </form>
   </div>
- 
-  
+
+
   </form>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -89,24 +105,39 @@
 
 
     function limitOptions(selectElement) {
-  var selectedOptions = Array.from(selectElement.selectedOptions);
-  
-  if (selectedOptions.length > 2) {
-    selectedOptions.slice(2).forEach(function(option) {
-      option.selected = false;
-    });
-    
-    alert("You can only select up to two roles.");
-  }
-}
+      var selectedOptions = Array.from(selectElement.selectedOptions);
+
+      if (selectedOptions.length > 2) {
+        selectedOptions.slice(2).forEach(function (option) {
+          option.selected = false;
+        });
+
+        toastr.error("You can only select up to two roles.", "", {
+          positionClass: "toast-top-center",
+          closeButton: true, // Add a close button
+          progressBar: true, // Show a progress bar
+          timeOut: 2000, // Set the duration for the message to be displayed
+          extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+          css: {
+            width: "300px",
+            // Set the width of the toastr
+            "background-color": "red", // Set the background color
+
+            // Add any other CSS properties as needed
+          }
+        });
+
+      }
+    }
 
 
-       
-     
+
+
     async function fetchUser() {
       try {
-        const response = await axios.get(`user/${userId}`);
-        const user = response.data;
+        const response = await axios.get(`/user/${userId}`);
+        const user = response.data.user;
+        console.log(user)
         nameInput.value = user.name;
         emailInput.value = user.email;
         passwordInput.value = user.password;
@@ -116,31 +147,61 @@
       }
     }
 
-  async function updateUser(event) {
-  event.preventDefault();
-  
-  const data = {
-    name: nameInput.value,
-    email: emailInput.value,
-    password: passwordInput.value,
-    role: Array.from(roleInput.selectedOptions, option => option.value)
-  };
-  
-  // Display a confirmation prompt
-  const confirmed = confirm('Are you sure you want to update the user?');
-  
-  if (confirmed) {
-    try {
-      await axios.put(`/user/${userId}`, data);
-       alert('user updated successfully')
-      window.location.href = '/admin';
-      
-    } catch (error) {
-      console.error(error);
-      alert('Failed to update user');
+    async function updateUser(event) {
+      event.preventDefault();
+
+      const data = {
+        name: nameInput.value,
+        email: emailInput.value,
+        password: passwordInput.value,
+        role: Array.from(roleInput.selectedOptions, option => option.value)
+      };
+
+      // Display a confirmation prompt
+      const confirmed = confirm('Are you sure you want to update the user?');
+
+      if (confirmed) {
+        try {
+          await axios.put(`/user/${userId}`, data);
+          toastr.success('user updated successfully', "", {
+            positionClass: "toast-top-center",
+            closeButton: true, // Add a close button
+            progressBar: true, // Show a progress bar
+            timeOut: 2000, // Set the duration for the message to be displayed
+            extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+            css: {
+              width: "300px",
+              // Set the width of the toastr
+              "background-color": 'green', // Set the background color
+
+              // Add any other CSS properties as needed
+            }
+          });
+
+          setTimeout(function () {
+            window.location.href = '/userpage/adminpage/admin.html';
+          }, 2000);
+
+
+        } catch (error) {
+          toastr.error(error.message, "", {
+            positionClass: "toast-top-center",
+            closeButton: true, // Add a close button
+            progressBar: true, // Show a progress bar
+            timeOut: 2000, // Set the duration for the message to be displayed
+            extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+            css: {
+              width: "300px",
+              // Set the width of the toastr
+              "background-color": "red", // Set the background color
+
+              // Add any other CSS properties as needed
+            }
+          });
+
+        }
+      }
     }
-  }
-}
 
 
 
@@ -149,16 +210,17 @@
 
 
 
-    document.getElementById("showPassword").addEventListener("click", function() {
-            var passwordInput = document.getElementById("password");
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
-            } else {
-                passwordInput.type = "password";
-                this.innerHTML = '<i class="fas fa-eye"></i>';
-            }
-        });   
+    document.getElementById("showPassword").addEventListener("click", function () {
+      var passwordInput = document.getElementById("password");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+      } else {
+        passwordInput.type = "password";
+        this.innerHTML = '<i class="fas fa-eye"></i>';
+      }
+    });   
   </script>
 </body>
+
 </html>

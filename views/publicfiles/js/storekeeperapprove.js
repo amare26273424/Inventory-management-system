@@ -28,8 +28,9 @@ function handleVerifyClick(requestId, productName,number) {
 async function updateStatus(requestId, status, message, productName,number) {
   try {
     const response = await axios.patch(`/request/${requestId}`, { status });
-    console.log(response.data);
-    alert(message);
+    toastr.success(message, "", {
+      positionClass: "toast-bottom-center",
+    });
     fetchProducts();
     // Decrease the amount of the product based on the product name
     await axios.patch(`/productsapproveproduct/${productName}`, { decreaseAmount: number});
@@ -37,7 +38,10 @@ async function updateStatus(requestId, status, message, productName,number) {
     // Refresh the products after updating the status and decreasing the amount
     fetchProducts();
   } catch (error) {
-    console.error(error);
+    toastr.error(error.message, "", {
+      positionClass: "toast-bottom-center",
+    });
+  
   }
 }
 

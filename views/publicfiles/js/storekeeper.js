@@ -10,6 +10,7 @@ let products = [];
 
 async function getProducts() {
   try {
+    productsContainer.innerHTML = '<h2> Loading.....</h2>';
     const response = await axios.get("/products");
     products = response.data.products;
     totalProducts = products.length;
@@ -125,24 +126,75 @@ function confirmDelete(productId) {
           if (productName === item.pName) {
             axios.delete(`/deleteproduct/${productId}`)
               .then((response) => {
-                toastr.success('product deleted successfully!', "", {
-                  positionClass: "toast-bottom-center",
-                });
+
+                toastr.success('product is deleted successfully', "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "300px",
+                   // Set the width of the toastr
+                  // Set the background color
+               
+                  // Add any other CSS properties as needed
+                }
+              });
+
                 getProducts();
               })
               .catch((error) => {
                 toastr.error(error.message, "", {
-                  positionClass: "toast-bottom-center",
+                  positionClass: "toast-top-center",
+                  closeButton: true, // Add a close button
+                  progressBar: true, // Show a progress bar
+                  timeOut: 2000, // Set the duration for the message to be displayed
+                  extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                  css: {
+                    width: "300px",
+                     // Set the width of the toastr
+                    "background-color": "red", // Set the background color
+                 
+                    // Add any other CSS properties as needed
+                  }
                 });
+  
               });
           } else {
-            alert('Product name does not match. Deletion canceled.');
+            toastr.error('please make sure the product name is matched ', "", {
+              positionClass: "toast-top-center",
+              closeButton: true, // Add a close button
+              progressBar: true, // Show a progress bar
+              timeOut: 2000, // Set the duration for the message to be displayed
+              extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+              css: {
+                width: "300px",
+                 // Set the width of the toastr
+                "background-color": "red", // Set the background color
+             
+                // Add any other CSS properties as needed
+              }
+            });
+
           }
         })
         .catch((error) => {
           toastr.error(error.message, "", {
-            positionClass: "toast-bottom-center",
+            positionClass: "toast-top-center",
+            closeButton: true, // Add a close button
+            progressBar: true, // Show a progress bar
+            timeOut: 2000, // Set the duration for the message to be displayed
+            extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+            css: {
+              width: "300px",
+               // Set the width of the toastr
+              "background-color": "red", // Set the background color
+           
+              // Add any other CSS properties as needed
+            }
           });
+
         });
     }
   }

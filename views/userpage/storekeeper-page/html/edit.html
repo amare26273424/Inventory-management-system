@@ -1,65 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit User</title>
   <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 
-<!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<!-- Bootstrap JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-<!-- Font Awesome JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <!-- Font Awesome JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+
+
+  <!-- Toast link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+  <style>
+    #edit-form input {
+      background-color: #EEF9FC;
+    }
+  </style>
 
 </head>
+
 <body>
 
-  <button onclick="goBack()">Go Back</button>
+  <button onclick="goBack()" style="background-color:rgb(21, 0, 251);color: white;border: none;">Go Back</button>
 
   <script>
-  function goBack() {
-    window.history.back();
-  }
+    function goBack() {
+      window.history.back();
+    }
   </script>
 
 
-  <div class="container mt-5 w-50" id="adduser">
-    <h2 class="loginh2">edit product</h2>
+  <div class="container mt-5 w-50">
+    <h2 class="loginh2">Edit Product</h2>
     <form id="edit-form">
       <div class="mb-3 mt-3">
         <label for="name">Name of product:</label>
-        <input  class="form-control" type="text" id="name" name="pName"  required>
+        <input class="form-control" type="text" id="name" name="pName" required>
       </div>
       <div class="mb-3">
-        <label for="pNumber">quentity:</label>
-        <input class="form-control"  type='number' id="number" name="pNumber"  required>
+        <label for="pNumber">Quantity.</label>
+        <input class="form-control" type='number' id="number" name="pNumber" required>
       </div>
       <div class="mb-3">
-        <label for="description">description:</label>
+        <label for="description">Description:</label>
         <div class="input-group">
-          <input type="description" class="form-control" id="description" name="description"  required/>
+          <input type="description" class="form-control" id="description" name="description" required />
         </div>
       </div>
-  
+
       <div class="mb-3">
-        <label for="role">Pgiver:</label>
+        <label for="role">Produt Giver:</label>
         <input class="form-control" type="text" id="Pgiver" name="Pgiver" required>
       </div>
-     
-      
-          
-      <button type="submit" id="submitbtn"  class="btn btn-primary">Save</button>
-     
+
+
+
+      <button type="submit" id="submitbtn" class="btn btn-primary form-control ">Save</button>
+
     </form>
   </div>
- 
-  
+
+
   </form>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -70,64 +86,98 @@
     const pnumber = document.getElementById('number');
     const description = document.getElementById('description');
     const Pgiver = document.getElementById('Pgiver');
-    const addedDate= document.getElementById('addedDate');
-    
+    const addedDate = document.getElementById('addedDate');
 
 
 
-   
 
 
-       
-     
+
+
+
+
     async function fetchUser() {
       try {
-        
+
         const response = await axios.get(`/product/${userId}`);
-        const user = response.data.product;     
+        const user = response.data.product;
         pname.value = user.pName;
         pnumber.value = user.pNumber;
         description.value = user.description;
         Pgiver.value = user.Pgiver;
       } catch (error) {
-        console.error(error);
+        toastr.error(error.message, "", {
+          positionClass: "toast-top-center",
+        });
       }
     }
 
-  async function updateUser(event) {
-  event.preventDefault();
-  
-  const data = {
-    pName: pname.value,
-    pNumber: pnumber.value,
-    description: description.value ,
-    Pgiver:Pgiver.value
-  };
-  
-  // Display a confirmation prompt
-  const confirmed = confirm('Are you sure you want to update the product?');
-  
-  if (confirmed) {
-    try {
-      await axios.put(`/product/${userId}`, data);
-       alert('product updated successfully')
-       window.location.href='/getstorekepperpage'
-      
-    } catch (error) {
-      console.error(error);
-      alert('Failed to update user');
+    async function updateUser(event) {
+      event.preventDefault();
+
+      const data = {
+        pName: pname.value,
+        pNumber: pnumber.value,
+        description: description.value,
+        Pgiver: Pgiver.value
+      };
+
+      // Display a confirmation prompt
+      const confirmed = confirm('Are you sure you want to update the product?');
+
+      if (confirmed) {
+        try {
+          await axios.put(`/product/${userId}`, data);
+          toastr.success('product is updated successfully', "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "300px",
+                   // Set the width of the toastr
+                 // Set the background color
+               
+                  // Add any other CSS properties as needed
+                }
+              });
+
+
+          setTimeout(function () {
+            window.location.href = '/userpage/storekeeper-page/storekeeper.html';
+          }, 2000);
+
+        } catch (error) {
+
+           toastr.error(error.message, "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "300px",
+                   // Set the width of the toastr
+                  "background-color": "red", // Set the background color
+               
+                  // Add any other CSS properties as needed
+                }
+              });
+
+        }
+      }
     }
-  }
-}
 
 
 
     fetchUser();
-   document.getElementById('submitbtn').addEventListener('click', updateUser);
+    document.getElementById('submitbtn').addEventListener('click', updateUser);
 
 
 
-       
+
   </script>
 </body>
+
 </html>

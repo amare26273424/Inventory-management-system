@@ -36,11 +36,11 @@
 
     <div class="links">
 
-      <!-- <li><a href="#request">request</a></li> -->
 
-      <a href="/recoredtransaction">RECORED</a>
-      <a href="/recoredreturnedproduct">RETURNED</a>
-      <!-- <a href="#addproduct">addproduct</a>         -->
+
+      <a href="./html/recoredtransaction.html">RECORED</a>
+      <a href="./html/recoredreturnedproduct.html">RETURNED</a>
+
 
       <div class="dropdown">
         <i class="fas fa-user user-icon"></i>
@@ -125,23 +125,61 @@
         axios.post('/addproduct', { pName, pNumber, description, Pgiver })
           .then(response => {
             if (response.data.success) {
-              toastr.success('new product added successfully!', "", {
-                positionClass: "toast-bottom-center",
+              toastr.success('product added successfully', "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "300px",
+                   // Set the width of the toastr
+                  "background-color": "green", // Set the background color
+               
+                  // Add any other CSS properties as needed
+                }
               });
+
               setTimeout(function () {
                 location.reload();
-              }, 1500);
+              }, 2000);
 
             } else {
-              toastr.error('submission declined. Please try again!', "", {
+
+                        toastr.error('product is not added', "", {
                 positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "300px",
+                   // Set the width of the toastr
+                  "background-color": "red", // Set the background color
+               
+                  // Add any other CSS properties as needed
+                }
               });
+
             }
           })
           .catch(error => {
-            toastr.error(`${error.message}`, "", {
-              positionClass: "toast-top-center",
-            });
+            
+            toastr.error(error.message, "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+                css: {
+                  width: "300px",
+                   // Set the width of the toastr
+                  "background-color": "red", // Set the background color
+               
+                  // Add any other CSS properties as needed
+                }
+              });
+
 
           });
       }
@@ -448,49 +486,7 @@
   </section>
 
 
-  <section id="Editproduct" class="Editproduct"
-    style="display: none; justify-content: center; align-items: center; position: fixed; top: 0%; left: 0; right: 0%; width: 100%; height: 100%;overflow: hidden; background-color: rgb(255, 255, 255);z-index: 10000;">
-    <div>
-      <i class="fas fa-times" onclick="closeEditProduct()" style="
-  color: black;
-  position: absolute;
-  top: 30px;
-  right: 50px;
-  font-size: 30px;
-"></i>
 
-
-<div class="container mb-3" id="productEdit" style="width: 80vw; height: 60vh;">
-  <h2 class="loginh2">Edit Product</h2>
-  <form id="addProductFormEdit" action="/add" method="post"
-    onsubmit="submitFormEdit(event)">
-    <div class="mb-3 mt-3">
-      <label for="PnameEdit">Pname:</label>
-      <input type="text" class="form-control w-100" id="PnameEdit" placeholder="Enter Pname" name="pNameEdit" required>
-    </div>
-    <div class="mb-3">
-      <label for="pnumberEdit">Product Number:</label>
-      <input type="number" class="form-control w-100" id="pnumberEdit" placeholder="Enter product number" name="pNumberEdit"
-        required>
-    </div>
-    <div class="mb-3">
-      <label for="descriptionEdit">Description:</label>
-      <input type="text" class="form-control w-100" name="descriptionEdit" id="descriptionEdit" placeholder="description"
-        required>
-    </div>
-
-    <div class="mb-3">
-      <label for="pgiverEdit">Product provider:</label>
-      <input type="text" class="form-control w-100" name="PgiverEdit" id="pgiverEdit" placeholder="product provider"
-        required />
-    </div>
-
-    <button type="submit" class="btn btn-primary form-control w-100" id="submitBtnEdit">Submit</button>
-  </form>
-</div>
-
-    </div>
-  </section>
 
 
 

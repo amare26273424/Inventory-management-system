@@ -34,52 +34,17 @@ function updatetask(req, res) {
 }
 ///
 
-async function adduser(req, res) {
-  const { name, email, password, role } = req.body;
-
-  try {
-    const existingUser = await usercollection.findOne({ email });
-
-    if (existingUser) {
-      return res.send({
-        success: false,
-        message: `This email " ${email} " is registred`,
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
-
-    const newUser = new usercollection({
-      name,
-      email,
-      password: hashedPassword, // Store the hashed password
-      role,
-    });
-
-    await newUser.save();
-
-    res.send({ success: true });
-    console.log(newUser);
-  } catch (error) {
-    console.error("Error adding user:", error);
-    res.status(500).send({
-      success: false,
-      message: "An error occurred while adding the user",
-    });
-  }
-}
 
 
 
-function getalluser(req, res) {
-  usercollection
-    .find({})
-    .then((tasks) => {
-      console.log("geteduser");
-      res.send(tasks);
-    })
-    .catch((err) => res.send(err));
-}
+// function getalluser(req, res) {
+//   usercollection
+//     .find({})
+//     .then((tasks) => {
+//       res.send(tasks);
+//     })
+//     .catch((err) => res.send(err));
+// }
 
 async function login(req, res) {
   try {
@@ -209,62 +174,13 @@ async function postrequest(req, res) {
     });
 }
 
-async function getoneuser(req, res) {
-  try {
-    const id = req.params.id;
-    const user = await usercollection.findOne({ _id: id });
-
-    if (user) {
-      const decryptedPassword = await bcrypt.compare(
-        "plaintextPassword",
-        user.password
-      );
-      user.password = decryptedPassword ? "plaintextPassword" : "********"; // Replace with decrypted password or a placeholder
-
-      res.send(user);
-      console.log(user);
-    } else {
-      console.log("User not found");
-      res.send("User not found");
-    }
-  } catch (error) {
-    res.send(error.message);
-  }
-}
 
 
 
-async function updateuser(req, res) {
-  const id = req.params.id;
-  const { password, ...otherFields } = req.body;
 
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash the new password
 
-    const updatedUser = { ...otherFields, password: hashedPassword };
 
-    await usercollection.findOneAndUpdate({ _id: id }, updatedUser);
 
-    res.send("User updated successfully");
-  } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).send("An error occurred while updating the user");
-  }
-}
-
-function deleteuser(req, res) {
-  const id = req.params.id;
-  usercollection
-    .findOneAndDelete({ _id: id })
-    .then(() => {
-      console.log("successfully deleted");
-      res.send("successfully deleted");
-    })
-    .catch((error) => {
-      res.send(error.msg);
-      console.log(error.msg);
-    });
-}
 
 function updaterequest(req, res) {
   const id = req.params.id;
@@ -303,41 +219,7 @@ async function getallrequest(req, res) {
     .catch((err) => res.send(err));
 }
 
-async function updateProductNumber(req, res) {
-  try {
-    const name = await req.params.productName;
-    const decreseamount = await req.body.decreaseAmount;
-    const task = await collection.findOne({ pName: name });
-    const value = task.pNumber - decreseamount;
 
-    collection
-      .findOneAndUpdate({ pName: name }, { pNumber: value })
-      .then(() => {
-        console.log("successfully upddated");
-      });
-  } catch (err) {
-    res.send(err);
-    console.log(err);
-  }
-}
-
-async function updateProductreturnedNumber(req, res) {
-  try {
-    const name = await req.params.productName;
-    const decreseamount = await req.body.decreaseAmount;
-    const task = await collection.findOne({ pName: name });
-    const value = task.pNumber + decreseamount;
-
-    collection
-      .findOneAndUpdate({ pName: name }, { pNumber: value })
-      .then(() => {
-        console.log("successfully upddated");
-      });
-  } catch (err) {
-    res.send(err);
-    console.log(err);
-  }
-}
 
 
 
@@ -479,19 +361,15 @@ async function homepage(req, res) {
 
 module.exports = {
   
-  adduser,
+  // adduser,
   login,
-  getalluser,
+
   postrequest,
-  getoneuser,
-  updateuser,
-  deleteuser,
+  
   getallrequest,
   getallrequests,
   updaterequest,
-  updateProductNumber,
   getlogin,
   homepage,
-  updateProductreturnedNumber,
   //  sendemail
 };

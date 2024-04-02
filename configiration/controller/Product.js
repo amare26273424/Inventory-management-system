@@ -124,4 +124,39 @@ router.get("/productname/:name", async (req, res) => {
   }
 });
 
+
+router.patch("/productsapproveproduct/:productName", async function (req, res) {
+  try {
+    const name = req.params.productName;
+    const decreaseAmount = req.body.decreaseAmount;
+    const task = await collection.findOne({ pName: name });
+    const value = task.pNumber - decreaseAmount;
+
+    await collection.findOneAndUpdate({ pName: name }, { pNumber: value });
+    console.log("Successfully updated");
+    res.status(200).send("Successfully updated");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
+router.patch("/productsreturnedproduct/:productName", async function (req, res) {
+  try {
+    const name = req.params.productName;
+    const decreaseAmount = req.body.decreaseAmount;
+    const task = await collection.findOne({ pName: name });
+    const value = task.pNumber + decreaseAmount;
+
+    await collection.findOneAndUpdate({ pName: name }, { pNumber: value });
+    console.log("Successfully updated");
+    res.status(200).send("Successfully updated");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
+
+
 module.exports = router;
