@@ -178,39 +178,10 @@
 
       getProducts();
 
-      // deleting the product
+     
 
-      function confirmDelete(userId) {
-        const confirmation = confirm(
-          "Are you sure you want to delete this user?"
-        );
-        if (confirmation) {
-          const productName = prompt(
-            "Please enter the name of the product to confirm deletion:"
-          );
-          axios
-            .get(`/product/${userId}`)
-            .then((response) => {
-              const item = response.data;
-              if (productName === item.pName) {
-                axios
-                  .delete(`/deleteproduct/${userId}`)
-                  .then((response) => {
-                    alert("Product deleted successfully");
-                    getProducts();
-                  })
-                  .catch((error) => {
-                    console.error(error);
-                  });
-              } else {
-                alert("Product name does not match. Deletion canceled.");
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        }
-      }
+    
+       
     </script>
   </body>
 </html>
