@@ -1,5 +1,4 @@
 const { usercollection } = require("../Model/User");
-const { requestcollection } = require("../Model/Request");
 const { collection } = require("../Model/Product");
 
 const bcrypt = require("bcrypt");
@@ -9,42 +8,6 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 // const nodemailer = require('nodemailer');
-
-
-
-
-
-
-
-
-
-function updatetask(req, res) {
-  const id = req.params.id;
-  const body = req.body;
-  collection
-    .findOneAndUpdate({ _id: id }, body)
-    .then(() => {
-      console.log("successfully deleted");
-      res.send("successfully deleted");
-    })
-    .catch((error) => {
-      res.send(error.msg);
-      console.log(error.msg);
-    });
-}
-///
-
-
-
-
-// function getalluser(req, res) {
-//   usercollection
-//     .find({})
-//     .then((tasks) => {
-//       res.send(tasks);
-//     })
-//     .catch((err) => res.send(err));
-// }
 
 async function login(req, res) {
   try {
@@ -146,82 +109,6 @@ async function login(req, res) {
 //     res.send(error.message);
 //   }
 // }
-
-async function postrequest(req, res) {
-  const body = await req.body;
-  const email = await req.session.email;
-  const name = req.session.name;
-
-  const dataToSend = {
-    ...body,
-    email: email,
-    name: name,
-  };
-  console.log(dataToSend);
-
-  requestcollection
-    .insertMany(dataToSend)
-    .then(() => {
-      // res.render('userpage/staffmember-page/html/transactions',{error:'new request addded'});
-
-      res.redirect("/transaction");
-
-      // console.log('Successfully entered');
-    })
-    .catch((err) => {
-      res.send(err.message);
-      console.log(err.message);
-    });
-}
-
-
-
-
-
-
-
-
-
-function updaterequest(req, res) {
-  const id = req.params.id;
-  const body = {
-    status: req.body.status,
-  };
-  requestcollection
-    .findOneAndUpdate({ _id: id }, body)
-    .then(() => {
-      console.log("successfully deleted");
-      res.send("successfully deleted");
-    })
-    .catch((error) => {
-      res.send(error.msg);
-      console.log(error.msg);
-    });
-}
-
-async function getallrequests(req, res) {
-  requestcollection
-    .find()
-    .then((tasks) => {
-      res.send(tasks);
-    })
-    .catch((err) => res.send(err));
-}
-
-async function getallrequest(req, res) {
-  const email = await req.session.email;
-  requestcollection
-    .find()
-    .then((tasks) => {
-      const filteredRequests = tasks.filter((item) => item.email === email);
-      res.send(filteredRequests);
-    })
-    .catch((err) => res.send(err));
-}
-
-
-
-
 
 async function getlogin(req, res) {
   const { email } = req.session;
@@ -360,15 +247,7 @@ async function homepage(req, res) {
 }
 
 module.exports = {
-  
-  // adduser,
   login,
-
-  postrequest,
-  
-  getallrequest,
-  getallrequests,
-  updaterequest,
   getlogin,
   homepage,
   //  sendemail
