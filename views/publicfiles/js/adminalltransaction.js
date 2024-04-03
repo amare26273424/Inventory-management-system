@@ -4,6 +4,7 @@ const nextBtn = document.getElementById("nextBtn");
 const searchInput = document.getElementById("searchInput");
 const productsPerPage = 7;
 
+
 let currentPage = 1;
 let totalProducts = 0;
 let products = [];
@@ -14,7 +15,7 @@ async function getProducts() {
     const response = await axios.get("/requests");
     products = response.data;
     totalProducts = products.length;
-
+    console.log(totalProducts)
     // Sort the products array in reverse order
     products.reverse();
 
