@@ -18,13 +18,24 @@ router.get("/request", async (req, res) => {
     .catch((err) => res.send(err));
 });
 
+
+// get all requests 
+
 router.get("/requests", async (req, res) => {
   requestcollection
     .find()
-    .then((tasks) => {
-      res.send(tasks);
+    .then((requests) => {
+      res.status(201).json({
+        success: true,
+        requests: requests,
+      });
     })
-    .catch((err) => res.send(err));
+    .catch((err) => 
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    })
+    );
 });
 
 router.post("/request", async (req, res) => {

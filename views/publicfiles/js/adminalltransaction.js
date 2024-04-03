@@ -13,7 +13,7 @@ async function getProducts() {
   try {
     productsContainer.innerHTML = "<h2>Loading.....</h2>";
     const response = await axios.get("/requests");
-    products = response.data;
+    products = response.data.requests;
     totalProducts = products.length;
     console.log(totalProducts)
     // Sort the products array in reverse order
