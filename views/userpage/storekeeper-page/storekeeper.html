@@ -111,83 +111,7 @@
     </div>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-      function submitForm(event) {
-        event.preventDefault(); // Prevent the form from submitting normally
-        // Get the form data based on the input values
-        const pName = document.getElementById('Pname').value;
-        const pNumber = document.getElementById('pnumber').value;
-        const description = document.getElementById('description').value;
-        const Pgiver = document.getElementById('pgiver').value;
-
-        // Make an AJAX request to the backend
-        // Replace the URL and data with your actual values
-        axios.post('/addproduct', { pName, pNumber, description, Pgiver })
-          .then(response => {
-            if (response.data.success) {
-              toastr.success('product added successfully', "", {
-                positionClass: "toast-top-center",
-                closeButton: true, // Add a close button
-                progressBar: true, // Show a progress bar
-                timeOut: 2000, // Set the duration for the message to be displayed
-                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
-                css: {
-                  width: "300px",
-                   // Set the width of the toastr
-                  "background-color": "green", // Set the background color
-               
-                  // Add any other CSS properties as needed
-                }
-              });
-
-              setTimeout(function () {
-                location.reload();
-              }, 2000);
-
-            } else {
-
-                        toastr.error('product is not added', "", {
-                positionClass: "toast-top-center",
-                closeButton: true, // Add a close button
-                progressBar: true, // Show a progress bar
-                timeOut: 2000, // Set the duration for the message to be displayed
-                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
-                css: {
-                  width: "300px",
-                   // Set the width of the toastr
-                  "background-color": "red", // Set the background color
-               
-                  // Add any other CSS properties as needed
-                }
-              });
-
-            }
-          })
-          .catch(error => {
-            
-            toastr.error(error.message, "", {
-                positionClass: "toast-top-center",
-                closeButton: true, // Add a close button
-                progressBar: true, // Show a progress bar
-                timeOut: 2000, // Set the duration for the message to be displayed
-                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
-                css: {
-                  width: "300px",
-                   // Set the width of the toastr
-                  "background-color": "red", // Set the background color
-               
-                  // Add any other CSS properties as needed
-                }
-              });
-
-
-          });
-      }
-    </script>
-
-
-
-
+  
 
     <section class="product-section" id="product" style="margin-top: 100px;">
       <h2>Product List</h2>
@@ -504,75 +428,11 @@
   <!-- axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-  <script>
-
-
-    const userhelpshow = document.getElementById("usershow");
-    const CloseUserHelp = document.getElementById("userhelpremove");
-
-    userhelpshow.addEventListener("click", () => {
-      document.getElementById("UserHelp").style.display = "block";
-    });
-
-    CloseUserHelp.addEventListener("click", () => {
-      document.getElementById("UserHelp").style.display = "none";
-    });
-
-
-    // for the menubar
-    const menubar1 = document.getElementById('menubar')
-    const links1 = document.querySelector('.links')
-
-    const x = document.querySelectorAll('.links a')
-
-    menubar1.addEventListener('click', () => {
-
-      links1.classList.toggle('addedlink')
-      menubar1.classList.toggle('fa-times')
-
-    })
-
-    x.forEach((x) => {
-
-      x.addEventListener('click', () => {
-
-        links1.classList.toggle('addedlink')
-        menubar1.classList.remove('fa-times')
-
-      })
-
-
-    })
-
-
-
-
-
-
-
-
-    //  functions for logout
-
-    function logoutfunction() {
-      axios
-        .get("/logout")
-        .then((res) => {
-          window.location.href = '/';
-          history.replaceState(null, null, '/');
-        })
-        .catch(function (error) {
-          // Handle any errors that occur during the request
-          alert(error.message);
-        });
-    }
-
-
-
-
-  </script>
 
   <script src="../../publicfiles/js/storekeeper.js"></script>
-  <!-- Add this code at the bottom of your HTML file, just before the closing body tag -->
+  <script src="../../publicfiles/js/storekeeperAddproduct.js"></script>
+
+  
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>
