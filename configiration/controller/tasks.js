@@ -1,5 +1,5 @@
 const { usercollection } = require("../Model/User");
-const { collection } = require("../Model/Product");
+
 
 const bcrypt = require("bcrypt");
 const express = require("express");
@@ -250,5 +250,5 @@ module.exports = {
   login,
   getlogin,
   homepage,
-  //  sendemail
+  
 };

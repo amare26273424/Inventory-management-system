@@ -9,11 +9,9 @@ const bodyParser = require("body-parser");
 const {
   homepage,
   getlogin,
-
   login,
 } = require("./configiration/Controller/tasks");
 const { connect } = require("http2");
-
 const product = require("./configiration/Controller/Product.js");
 const user = require("./configiration/Controller/User.js");
 const request = require("./configiration/Controller/Request.js");
@@ -40,23 +38,22 @@ app.use(
   })
 );
 
-const isAuth = (req, res, next) => {
-  if (req.session.isAuth) {
-    next();
-  } else {
-    res.render("index");
-  }
-};
+// const isAuth = (req, res, next) => {
+//   if (req.session.isAuth) {
+//     next();
+//   } else {
+//     res.render("index");
+//   }
+// };
 
-const isAuthstaff = (req, res, next) => {
-  if (req.session.isAuthstaff) {
-    next();
-  } else {
-    res.send("you donot have right to access");
-  }
-};
+// const isAuthstaff = (req, res, next) => {
+//   if (req.session.isAuthstaff) {
+//     next();
+//   } else {
+//     res.send("you donot have right to access");
+//   }
+// };
 
-app.use(express.static(path.join(__dirname, "views")));
 
 // app.post('/sendReason',sendemail);
 

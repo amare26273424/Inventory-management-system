@@ -16,6 +16,18 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
+
+
+      <!-- Toast link -->
+      <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  
+
+
   </head>
 
   <body>
@@ -337,136 +349,13 @@
     <!-- axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script>
-      const menubar1 = document.getElementById("menubar");
-      const links1 = document.querySelector(".links");
-      const userhelpshow = document.getElementById("usershow");
-      const CloseUserHelp = document.getElementById("userhelpremove");
-
-      userhelpshow.addEventListener("click", () => {
-        document.getElementById("UserHelp").style.display = "block";
-      });
-
-      CloseUserHelp.addEventListener("click", () => {
-        document.getElementById("UserHelp").style.display = "none";
-      });
-
-      const x = document.querySelectorAll(".links a");
-
-      menubar1.addEventListener("click", () => {
-        links1.classList.toggle("addedlink");
-        menubar1.classList.toggle("fa-times");
-      });
-
-      x.forEach((x) => {
-        x.addEventListener("click", () => {
-          links1.classList.toggle("addedlink");
-          menubar1.classList.remove("fa-times");
-        });
-      });
-
-      const requestnumber = document.getElementById("pnumber");
-      const requestproductname = document.getElementById("pname");
-
-      function validation(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        axios
-          .get(`/productname/${requestproductname.value}`)
-          .then((response) => {
-            const availableproduct = response.data.pNumber;
-            if (requestnumber.value > availableproduct) {
-              alert(
-                `the requested value is greaterthan avaliable product the avaliable product of  ${requestproductname.value} is ${availableproduct} `
-              );
-            } else {
-              event.target.submit(); // Submit the form if validation passes
-            }
-          })
-          .catch((error) => {
-            // Handle any errors that occurred during the request
-            console.error("Error during validation request:", error);
-            alert(
-              "the name is not mached to any products please enter the correct name."
-            );
-          });
-      }
-
-      window.addEventListener("DOMContentLoaded", async () => {
-        try {
-          const response = await axios.get("/request");
-          const products = response.data;
-          products.forEach((item) => {
-            if (item.typeofproduct === "returned" && item.status === "taken") {
-              const returnedDate = new Date(item.returnedDate);
-              const currentDate = new Date();
-              const daysLeft = Math.floor(
-                (returnedDate - currentDate) / (1000 * 60 * 60 * 24)
-              );
-
-              if (daysLeft < 0) {
-                alert(
-                  `You have passes ${-daysLeft} days  to return ${
-                    item.pname
-                  } with ${item.pnumber} number and you take for ${
-                    item.description
-                  }`
-                );
-              }
-            }
-          });
-        } catch (error) {
-          console.error("Error retrieving products:", error);
-        }
-      });
-
-      /*toggle the products*/
-
-      document.getElementById("showproduct").addEventListener("click", () => {
-        document.getElementById("product").classList.toggle("addproductlist");
-      });
-
-      /* show returned date and loan date for returned */
-
-      function toggleDateInputs() {
-        var typeSelect = document.getElementById("type");
-        var dateInputsContainer = document.getElementById(
-          "dateInputsContainer"
-        );
-
-        var returnedDateInput = document.getElementById("returnedDate");
-
-        if (typeSelect.value === "returned") {
-          dateInputsContainer.style.display = "block";
-
-          returnedDateInput.required = true;
-        } else {
-          dateInputsContainer.style.display = "none";
-
-          returnedDateInput.required = false;
-        }
-      }
-
-      // for the logut
-      function logoutfunction() {
-        axios
-          .get("/logout")
-          .then((res) => {
-            window.location.href = "/";
-            history.replaceState(null, null, "/");
-          })
-          .catch(function (error) {
-            // Handle any errors that occur during the request
-            alert(error.message);
-          });
-      }
-
-      // checkin the value
-    </script>
+    
 
     <script src="../../publicfiles/js/staffproducts.js"></script>
+    <script src="../../publicfiles/js/staff.js"></script>
 
-    <!-- Add this code at the bottom of your HTML file, just before the closing body tag -->
+  
+  
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

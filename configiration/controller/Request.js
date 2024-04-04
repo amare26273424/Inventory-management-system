@@ -1,4 +1,5 @@
 const { requestcollection } = require("../Model/Request");
+const sendemail = require('../utils/sendmailer')
 
 const bcrypt = require("bcrypt");
 const express = require("express");
@@ -7,15 +8,27 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 const router = express.Router();
 
+
+
+// get all request of staff 
+
 router.get("/request", async (req, res) => {
   const email = await req.session.email;
   requestcollection
     .find()
     .then((request) => {
       const filteredRequests = request.filter((item) => item.email === email);
-      res.send(filteredRequests);
+      res.status(201).json({
+        success: true,
+        requests: request,
+      });
     })
-    .catch((err) => res.send(err));
+    .catch((err) =>
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    })
+     );
 });
 
 
@@ -52,10 +65,18 @@ router.post("/request", async (req, res) => {
   requestcollection
     .insertMany(dataToSend)
     .then(() => {
-      console.log("hi");
+      res.status(201).json({
+        success: true,
+        message: 'request sent successfully',
+      })
     })
     .catch((err) => {
-      res.send(err.message);
+
+      res.status(501).json({
+        success: false,
+        message: err.message,
+      })
+    
     });
 });
 
@@ -67,12 +88,16 @@ router.patch("/request/:id", (req, res) => {
   requestcollection
     .findOneAndUpdate({ _id: id }, body)
     .then(() => {
-      console.log("successfully deleted");
-      res.send("successfully deleted");
+      res.status(201).json({
+        success: true,
+        message: 'successfully updated',
+      })
     })
     .catch((error) => {
-      res.send(error.msg);
-      console.log(error.msg);
+      res.status(501).json({
+        success: false,
+        message: error.message,
+      })
     });
 });
 
