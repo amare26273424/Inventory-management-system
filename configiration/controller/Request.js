@@ -13,14 +13,16 @@ const router = express.Router();
 // get all request of staff 
 
 router.get("/request", async (req, res) => {
+  
   const email = await req.session.email;
+  // console.log(email)
   requestcollection
     .find()
     .then((request) => {
       const filteredRequests = request.filter((item) => item.email === email);
       res.status(201).json({
         success: true,
-        requests: request,
+        request: filteredRequests,
       });
     })
     .catch((err) =>

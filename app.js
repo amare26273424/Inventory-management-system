@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const {
   homepage,
   getlogin,
-  login,
+  // login,
 } = require("./configiration/Controller/tasks");
 const { connect } = require("http2");
 const product = require("./configiration/Controller/Product.js");
@@ -54,15 +54,16 @@ app.use(
 //   }
 // };
 
+app.use(express.static(path.join(__dirname, "views")));
 
-// app.post('/sendReason',sendemail);
+
 
 app.use("/", product);
 app.use("/", user);
 app.use("/", request);
 
-app.post("/login", login);
+// app.post("/login", login);
 
-//  app.use(express.static('./public'));
+
 
 app.listen(5000, () => console.log("server is running on 5000 port"));

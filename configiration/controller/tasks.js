@@ -9,37 +9,7 @@ app.use(cookieParser());
 
 // const nodemailer = require('nodemailer');
 
-async function login(req, res) {
-  try {
-    const { rememberMe, email, password } = await req.body;
-    const user = await usercollection.findOne({ email });
-    if (!user) {
-      return res.status(201).json({
-        success: false,
-        message: "user not found",
-      });
-    }
 
-    const passwordMatch = await bcrypt.compare(password, user.password); // Compare hashed password
-    if (!passwordMatch) {
-      return res.status(201).json({
-        success: false,
-        message: "incorrect information",
-      });
-    }
-
-    return res.status(201).json({
-      success: true,
-      message: "login sucess",
-      role: user.role[0],
-    });
-  } catch (error) {
-    res.status(201).json({
-      success: false,
-      message: error.message,
-    });
-  }
-}
 
 // async function login(req, res) {
 //   try {
@@ -247,7 +217,7 @@ async function homepage(req, res) {
 }
 
 module.exports = {
-  login,
+  // login,
   getlogin,
   homepage,
   

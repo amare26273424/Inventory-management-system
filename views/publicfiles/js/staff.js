@@ -55,8 +55,10 @@ function validation(event) {
 window.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await axios.get("/request");
-    const products = response.data.request;
-    products.forEach((item) => {
+    const request = response.data.request;
+    console.log(request.length)
+
+    request.forEach((item) => {
       if (item.typeofproduct === "returned" && item.status === "taken") {
         const returnedDate = new Date(item.returnedDate);
         const currentDate = new Date();
