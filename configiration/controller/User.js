@@ -40,7 +40,6 @@ router.post("/adduser", async function (req, res) {
   }
 });
 
-
 router.post("/login", async function login(req, res) {
   try {
     const { rememberMe, email, password } = await req.body;
@@ -60,6 +59,14 @@ router.post("/login", async function login(req, res) {
       });
     }
 
+    if (rememberMe) {
+      //  req.session.remember = true;
+      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Expires in 30 days
+    }
+
+    req.session.email = user.email;
+    req.session.name = user.name;
+  
     return res.status(201).json({
       success: true,
       message: "login sucess",

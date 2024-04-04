@@ -13,9 +13,7 @@ const router = express.Router();
 // get all request of staff 
 
 router.get("/request", async (req, res) => {
-  
   const email = await req.session.email;
-  // console.log(email)
   requestcollection
     .find()
     .then((request) => {
@@ -51,6 +49,49 @@ router.get("/requests", async (req, res) => {
       message: err.message,
     })
     );
+});
+
+//get all unreturned    returnedtype of products  
+
+router.get("/unreturnedproducts", async (req, res) => {
+  const email = await req.session.email;
+  requestcollection
+    .find()
+    .then((request) => {
+      const filteredRequests = request.filter((item) => item.typeofproduct === "returned" && item.status === "taken");
+      res.status(201).json({
+        success: true,
+        requests: filteredRequests,
+      });
+    })
+    .catch((err) =>
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    })
+     );
+});
+
+
+// get unreturned products  of   staff
+
+router.get("/unreturnedproduct", async (req, res) => {
+  const email = await req.session.email;
+  requestcollection
+    .find()
+    .then((request) => {
+      const filteredRequests = request.filter((item) => item.email === email && item.typeofproduct === "returned" && item.status === "taken");
+      res.status(201).json({
+        success: true,
+        request: filteredRequests,
+      });
+    })
+    .catch((err) =>
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    })
+     );
 });
 
 router.post("/request", async (req, res) => {
