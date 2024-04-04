@@ -95,33 +95,33 @@ router.get("/unreturnedproduct", async (req, res) => {
 });
 
 router.post("/request", async (req, res) => {
-  const body = await req.body;
-  const email = await req.session.email;
-  const name = req.session.name;
+  try {
+    const body = req.body;
+    const email = req.session.email;
+    const name = req.session.name;
+console.log(body)
+    const dataToSend = {
+      ...body,
+      email: email,
+      name: name,
+    };
 
-  const dataToSend = {
-    ...body,
-    email: email,
-    name: name,
-  };
-
-  requestcollection
-    .insertMany(dataToSend)
-    .then(() => {
-      res.status(201).json({
-        success: true,
-        message: 'request sent successfully',
-      })
-    })
-    .catch((err) => {
-
-      res.status(501).json({
-        success: false,
-        message: err.message,
-      })
+    await requestcollection.insertMany(dataToSend);
     
+    res.status(201).json({
+      success: true,
+      message: 'Request sent successfully',
     });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while processing the request',
+      error: error.message // Include the error message for debugging
+    });
+  }
 });
+
 
 router.patch("/request/:id", (req, res) => {
   const id = req.params.id;

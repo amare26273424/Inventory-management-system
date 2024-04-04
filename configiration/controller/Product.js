@@ -104,18 +104,19 @@ router.get("/product/:id", async (req, res) => {
 router.get("/productname/:name", async (req, res) => {
   try {
     const name = req.params.name;
-    const Product = await collection.findOne({ pName: name });
-    if (!result) {
-      res.status(404).json({
+    const product = await collection.findOne({ pName: name });
+    if (!product) {
+     return  res.status(404).json({
         success: false,
         message: "product is not exist",
       });
-    } else {
-      res.status(404).json({
+    } 
+     
+   return   res.status(201).json({
         success: true,
-        product: product,
-      });
-    }
+        product: product, 
+    })
+
   } catch (error) {
     res.status(500).json({
       success: false,

@@ -31,7 +31,7 @@ async function fetchProducts() {
 
   try {
     const response = await axios.get('/request');
-    products = response.data;
+    products = response.data.request;
     products.reverse()
     totalProducts = products.length;
 

@@ -1,3 +1,5 @@
+// const { default: axios } = require("axios");
+
 const menubar1 = document.getElementById("menubar");
 const links1 = document.querySelector(".links");
 const userhelpshow = document.getElementById("usershow");
@@ -25,32 +27,88 @@ x.forEach((x) => {
   });
 });
 
-const requestnumber = document.getElementById("pnumber");
-const requestproductname = document.getElementById("pname");
 
 function validation(event) {
-  event.preventDefault(); // Prevent the default form submission
+  event.preventDefault();
+  const pnameValue = document.getElementById("pname").value;
+  const pnumberValue = document.getElementById("pnumber").value;
+  const descriptionValue = document.getElementById("Description").value;
+  const typeofproductValue = document.getElementById("type").value;
+  const returnedDateValue = document.getElementById("returnedDate").value;
+  document.getElementById('submitBtn').disabled = true;
+  // Log the retrieved values (you can perform further actions here)
 
   axios
-    .get(`/productname/${requestproductname.value}`)
+    .get(`/productname/${pnameValue}`)
     .then((response) => {
-      const availableproduct = response.data.pNumber;
-      if (requestnumber.value > availableproduct) {
-        alert(
-          `the requested value is greaterthan avaliable product the avaliable product of  ${requestproductname.value} is ${availableproduct} `
+      const availableproduct = response.data.product.pNumber;
+      if (pnumberValue > availableproduct) {
+        toastr.warning(
+          `The requested "${pnameValue}"  product quentitity ${pnumberValue} is greater than the avaliable product quentity ${availableproduct} `,
+          "",
+          {
+            positionClass: "toast-top-center",
+            closeButton: true, // Add a close button
+            progressBar: true, // Show a progress bar
+            timeOut: 2000, // Set the duration for the message to be displayed
+            extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+          }
         );
       } else {
-        event.target.submit(); // Submit the form if validation passes
+        const data = {
+          pname: pnameValue,
+          pnumber: pnumberValue,
+          description: descriptionValue,
+          typeofproduct: typeofproductValue,
+        };
+        if (typeofproductValue === "returned") {
+          data.returnedDate = returnedDateValue;
+        }
+        axios
+          .post("/request", data)
+          .then((response) => {
+            toastr.success(response.data.message, "", {
+              positionClass: "toast-top-center",
+              closeButton: true, // Add a close button
+              progressBar: true, // Show a progress bar
+              timeOut: 2000, // Set the duration for the message to be displayed
+              extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+            });
+
+           
+           
+          })
+          .catch((error) => {
+            toastr.error(error.message, "", {
+              positionClass: "toast-top-center",
+              closeButton: true, // Add a close button
+              progressBar: true, // Show a progress bar
+              timeOut: 2000, // Set the duration for the message to be displayed
+              extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+            });
+          }).finally(() => {
+             // Set the values of the input fields to empty
+             document.getElementById("pname").value = "";
+             document.getElementById("pnumber").value = "";
+             document.getElementById("Description").value = "";
+             document.getElementById("returnedDate").value = "";
+             document.getElementById('submitBtn').disabled = false;
+          })
       }
     })
     .catch((error) => {
-      // Handle any errors that occurred during the request
-      console.error("Error during validation request:", error);
-      alert(
-        "the name is not mached to any products please enter the correct name."
-      );
+      toastr.error(error.message, "", {
+        positionClass: "toast-top-center",
+        closeButton: true, // Add a close button
+        progressBar: true, // Show a progress bar
+        timeOut: 2000, // Set the duration for the message to be displayed
+        extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+      });
+      document.getElementById('submitBtn').disabled = false;
     });
 }
+
+// checking the if there is unreturned products
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
@@ -66,9 +124,11 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       if (daysLeft < 0) {
         toastr.warning(
-          `You have passed "${-daysLeft} days"  to return  "${item.pname}" product with "${
-            item.pnumber
-          }" number and  you take for "${item.description}  reaosn"`,
+          `You have passed "${daysLeft} days"  to return  "${
+            item.pname
+          }" product with "${item.pnumber}" number and  you take for "${
+            item.description
+          }  reaosn"`,
           "",
           {
             positionClass: "toast-top-center",
@@ -76,7 +136,6 @@ window.addEventListener("DOMContentLoaded", async () => {
             progressBar: true, // Show a progress bar
             timeOut: 2000, // Set the duration for the message to be displayed
             extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
-            
           }
         );
       }
@@ -137,3 +196,7 @@ function logoutfunction() {
       alert(error.message);
     });
 }
+
+// Set the minimum date for the input field to today
+const returnedDateInput = document.getElementById("returnedDate");
+returnedDateInput.min = new Date().toISOString().split("T")[0];
