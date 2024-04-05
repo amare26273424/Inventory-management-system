@@ -33,7 +33,7 @@ function displayProducts(products) {
       const name = product.pName;
       const quantity = product.pNumber;
       const description = product.description;
-      const provider = product.pgiver;
+      const provider = product.Pgiver;
       const addedDate = product.addedDate;
       // const id = product._id;
 
@@ -41,8 +41,7 @@ function displayProducts(products) {
         <tr>
           <td>${name}</td>
           <td>${quantity}</td>
-          <td>${description}</td>
-          
+          <td>${description}</td>          
           <td>${provider}</td>
           <td>${addedDate}</td>
           <td></td> 
