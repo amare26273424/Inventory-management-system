@@ -54,7 +54,7 @@ app.use(
 //   }
 // };
 
-app.use(express.static(path.join(__dirname, "views")));
+app.use(express.static(path.join(__dirname, "public")));
 
 
 
