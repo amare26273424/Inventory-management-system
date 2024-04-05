@@ -124,7 +124,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       if (daysLeft < 0) {
         toastr.warning(
-          `You have passed "${daysLeft} days"  to return  "${
+          `You have passed "${-daysLeft} days"  to return  "${
             item.pname
           }" product with "${item.pnumber}" number and  you take for "${
             item.description

@@ -7,8 +7,8 @@ async function fetchProducts() {
   productsContainer.innerHTML = "<h1>Loading...</h1>";
 
   try {
-    const response = await axios.get('/requests');
-    const products = response.data;
+    const response = await axios.get('/approvedrequests');
+    const products = response.data.approvedrequests;
     decreaseAmount= products.pnumber
 
     renderProducts(products);
@@ -31,7 +31,7 @@ async function updateStatus(requestId, status, message, productName,number) {
     toastr.success(message, "", {
       positionClass: "toast-bottom-center",
     });
-    fetchProducts();
+   
     // Decrease the amount of the product based on the product name
     await axios.patch(`/productsapproveproduct/${productName}`, { decreaseAmount: number});
 
@@ -47,14 +47,13 @@ async function updateStatus(requestId, status, message, productName,number) {
 
 // Function to render products
 function renderProducts(products) {
-  const unverifiedProducts = products.filter((item) => item.status == 'pending');
-
-  if (unverifiedProducts.length === 0) {
+ 
+  if (products.length === 0) {
     productsContainer.innerHTML = "<h1>No unverified tasks</h1>";
     return;
   }
 
-  const productsHTML = unverifiedProducts.map((item) => {
+  const productsHTML = products.map((item) => {
     const name = item.name;
     const pname = item.pname;
     const number = item.pnumber;

@@ -54,7 +54,7 @@ const detailcontainer = document.querySelector('#products');
  const showTask = async () => {
    try {
      const response = await axios.get(`/product/${id}`);
-     const task = response.data;
+     const task = response.data.product;
 
      if (task) {
       const name = task.pName;

@@ -52,6 +52,32 @@ router.get("/requests", async (req, res) => {
 });
 
 
+// get daily transactions
+
+router.get("/dailyrequests", async (req, res) => {
+  requestcollection
+    .find()
+    .then((requests) => {
+      filteredProducts = requests.filter((item) => {
+        const now = new Date();
+        const loanDate = new Date(item.loanDate);
+        const diffInMs = now.getTime() - loanDate.getTime();
+        const diffInHours = diffInMs / (1000 * 60 * 60);
+        return diffInHours < 24 && item.status === 'taken';
+      });      
+      res.status(201).json({
+        success: true,
+        dailyrequest: filteredProducts,
+      });
+    })
+    .catch((err) => 
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    })
+    );
+});
+
 router.get("/requestedtasks", async (req, res) => {
   requestcollection
     .find()
@@ -82,6 +108,28 @@ router.get("/unreturnedproducts", async (req, res) => {
       res.status(201).json({
         success: true,
         requests: filteredRequests,
+      });
+    })
+    .catch((err) =>
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    })
+     );
+});
+
+
+// get all approved requests
+
+router.get("/approvedrequests", async (req, res) => {
+  // const email = await req.session.email;
+  requestcollection
+    .find()
+    .then((request) => {
+      const filteredRequests = request.filter((item) => item.status === "approved");
+      res.status(201).json({
+        success: true,
+        approvedrequests: filteredRequests,
       });
     })
     .catch((err) =>
@@ -143,20 +191,25 @@ console.log(body)
 });
 
 
+
+
 router.patch("/request/:id", (req, res) => {
   const id = req.params.id;
   const body = {
     status: req.body.status,
   };
   requestcollection
-    .findOneAndUpdate({ _id: id }, body)
-    .then(() => {
-      res.status(201).json({
+    .findOneAndUpdate({ _id: id }, body,{ new: true })
+    .then((request) => {
+      //  sendemail({email:request.email,subject:'the requesting of product from AMU',message:`hello, ${request.name} the request of product ${request.pname} from Amuict center with quentity of ${request.pnumber} for ${request.description} is ${request.status}  `})
+      
+       res.status(201).json({
         success: true,
         message: 'successfully updated',
       })
     })
     .catch((error) => {
+       console.log(error)
       res.status(501).json({
         success: false,
         message: error.message,

@@ -1,6 +1,5 @@
-
 // Define the necessary variables and elements
-const productsContainer = document.getElementById('products');
+const productsContainer = document.getElementById("products");
 const previousBtn = document.getElementById("previousBtn");
 const nextBtn = document.getElementById("nextBtn");
 let currentPage = 1;
@@ -14,28 +13,21 @@ async function fetchAndDisplayProducts() {
   productsContainer.innerHTML = "<h1>Loading...</h1>";
 
   try {
-    const response = await axios.get('/requests');
-    products = response.data.reverse();
+    const response = await axios.get("/dailyrequests");
+    products = response.data.dailyrequest.reverse();
     totalProducts = products.length;
 
     // Filter out products based on loan date and status
-    filteredProducts = products.filter((item) => {
-      const now = new Date();
-      const loanDate = new Date(item.loanDate);
-      const diffInMs = now.getTime() - loanDate.getTime();
-      const diffInHours = diffInMs / (1000 * 60 * 60);
-      return diffInHours < 24 && item.status === 'taken';
-    });
 
-    if (filteredProducts.length === 0) {
+    if (products.length === 0) {
       productsContainer.innerHTML = "<h1>No daily transactions</h1>";
       return;
     }
-
-    renderProducts(filteredProducts, currentPage); // Pass currentPage to renderProducts
+    renderProducts(products, currentPage); // Pass currentPage to renderProducts
     setupPagination(); // Call the setupPagination function
-  } catch (error) {
-    console.error(error);
+  } catch (error) {toastr.error(error.message, "", {
+    positionClass: "toast-bottom-center",
+  });
   }
 }
 
@@ -45,18 +37,18 @@ function renderProducts(products, page) {
   const end = start + productsPerPage;
   const paginatedProducts = products.slice(start, end);
 
-  const productsHTML = paginatedProducts.map((item) => {
-    const name = item.name;
-    const pname = item.pname;
-    const number = item.pnumber;
-    const purpose = item.description;
-    const typeofproduct = item.typeofproduct;
-     
-    const loanDate = new Date(item.loanDate);
-    const formattedLoanDate = loanDate.toISOString().split('T')[0];
+  const productsHTML = paginatedProducts
+    .map((item) => {
+      const name = item.name;
+      const pname = item.pname;
+      const number = item.pnumber;
+      const purpose = item.description;
+      const typeofproduct = item.typeofproduct;
 
+      const loanDate = new Date(item.loanDate);
+      const formattedLoanDate = loanDate.toISOString().split("T")[0];
 
-    return `
+      return `
       <tr>
         <td>${name}</td>
         <td>${pname}</td>
@@ -66,7 +58,8 @@ function renderProducts(products, page) {
         <td>${formattedLoanDate}</td>
       </tr>
     `;
-  }).join('');
+    })
+    .join("");
 
   productsContainer.innerHTML = productsHTML;
 }
@@ -104,9 +97,3 @@ function setupPagination() {
 
 // Fetch and display products with pagination when the page loads
 fetchAndDisplayProducts();
-
-
-
-
-
-

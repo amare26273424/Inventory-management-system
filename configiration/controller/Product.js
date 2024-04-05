@@ -134,7 +134,7 @@ router.patch("/productsapproveproduct/:productName", async function (req, res) {
     const value = task.pNumber - decreaseAmount;
 
     await collection.findOneAndUpdate({ pName: name }, { pNumber: value });
-    console.log("Successfully updated");
+   
     res.status(200).send("Successfully updated");
   } catch (err) {
     console.log(err);
@@ -150,7 +150,7 @@ router.patch("/productsreturnedproduct/:productName", async function (req, res) 
     const value = task.pNumber + decreaseAmount;
 
     await collection.findOneAndUpdate({ pName: name }, { pNumber: value });
-    console.log("Successfully updated");
+  
     res.status(200).send("Successfully updated");
   } catch (err) {
     console.log(err);
