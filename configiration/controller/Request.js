@@ -51,10 +51,30 @@ router.get("/requests", async (req, res) => {
     );
 });
 
+
+router.get("/requestedtasks", async (req, res) => {
+  requestcollection
+    .find()
+    .then((requests) => {
+      const filteredrequests = requests.filter((request)=> request.status === 'requested');
+          
+      res.status(201).json({
+        success: true,
+        requestedtasks: filteredrequests,
+      });
+    })
+    .catch((err) => 
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    })
+    );
+});
+
 //get all unreturned    returnedtype of products  
 
 router.get("/unreturnedproducts", async (req, res) => {
-  const email = await req.session.email;
+  // const email = await req.session.email;
   requestcollection
     .find()
     .then((request) => {

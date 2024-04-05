@@ -2,21 +2,19 @@ const productsContainer = document.getElementById("productsContainer");
 const previousBtn = document.getElementById("previousBtn");
 const nextBtn = document.getElementById("nextBtn");
 const searchInput = document.getElementById("searchInput");
-const productsPerPage = 5;
 const sortIcon = document.getElementById("sorticon");
 
+const productsPerPage = 5;
 let currentPage = 1;
 let totalProducts = 0;
 let products = [];
 
 async function getProducts() {
- 
   try {
-    productsContainer.innerHTML =' <h1>Loading.....</h1>';
+    productsContainer.innerHTML = " <h1>Loading.....</h1>";
     const response = await axios.get("/products");
     products = response.data.products;
-    totalProducts = products?.length;
-    console.log(totalProducts)
+    totalProducts = products.length;
 
     // Sort the products array in reverse order
     products.reverse();
@@ -25,8 +23,7 @@ async function getProducts() {
     setupPagination();
     setupSearch();
   } catch (error) {
-    
-    productsContainer.innerHTML =`<h1>${error.message}</h1>` ;
+    productsContainer.innerHTML = `<h1>${error.message}</h1>`;
   }
 }
 
@@ -43,7 +40,9 @@ function displayProducts(products) {
           <td>${name}</td>
           <td>${quantity}</td>
           <td>${detail}</td>
-          <td><a href="../details/details.html?id=${encodeURIComponent(id)}">See details</a></td> 
+          <td><a href="../details/details.html?id=${encodeURIComponent(
+            id
+          )}">See details</a></td> 
         </tr>
       `;
     })
