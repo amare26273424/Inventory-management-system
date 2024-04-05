@@ -32,17 +32,20 @@ function displayProducts(products) {
     .map((product) => {
       const name = product.pName;
       const quantity = product.pNumber;
-      const detail = product.description;
-      const id = product._id;
+      const description = product.description;
+      const provider = product.pgiver;
+      const addedDate = product.addedDate;
+      // const id = product._id;
 
       return `
         <tr>
           <td>${name}</td>
           <td>${quantity}</td>
-          <td>${detail}</td>
-          <td><a href="../details/details.html?id=${encodeURIComponent(
-            id
-          )}">See details</a></td> 
+          <td>${description}</td>
+          
+          <td>${provider}</td>
+          <td>${addedDate}</td>
+          <td></td> 
         </tr>
       `;
     })
