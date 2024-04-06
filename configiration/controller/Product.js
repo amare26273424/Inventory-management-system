@@ -142,14 +142,30 @@ router.patch("/productsapproveproduct/:productName", async function (req, res) {
   }
 });
 
+// router.patch("/productsreturnedproduct/:productName", async function (req, res) {
+//   try {
+//     const name = req.params.productName;
+//     const increaseAmount = req.body.decreaseAmount;
+//     const task = await collection.findOne({ pName: name });
+//     const value = task.pNumber + increaseAmount;
+
+//     await collection.findOneAndUpdate({ pName: name }, { pNumber: value });
+  
+//     res.status(200).send("Successfully updated");
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).send(err);
+//   }
+// });
+
 router.patch("/productsreturnedproduct/:productName", async function (req, res) {
   try {
     const name = req.params.productName;
-    const decreaseAmount = req.body.decreaseAmount;
-    const task = await collection.findOne({ pName: name });
-    const value = task.pNumber + decreaseAmount;
-
-    await collection.findOneAndUpdate({ pName: name }, { pNumber: value });
+    const increaseAmount = req.body.decreaseAmount; // Assuming it's increaseAmount, not decreaseAmount
+    await collection.findOneAndUpdate(
+      { pName: name },
+      { $inc: { pNumber: increaseAmount } }
+    );
   
     res.status(200).send("Successfully updated");
   } catch (err) {

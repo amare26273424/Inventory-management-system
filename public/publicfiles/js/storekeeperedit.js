@@ -24,12 +24,36 @@ async function fetchUser() {
 async function updateUser(event) {
   event.preventDefault();
 
+  if (!pname.value || !pnumber.value || !description.value || !Pgiver.value) {
+    return toastr.error('please fill all values', "", {
+      positionClass: "toast-top-center",
+      closeButton: true, // Add a close button
+      progressBar: true, // Show a progress bar
+      timeOut: 2000, // Set the duration for the message to be displayed
+      extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+      
+    });
+  }
+
+  if( pnumber.value < 0){
+      return toastr.error('the product number is invalid', "", {
+        positionClass: "toast-top-center",
+        closeButton: true, // Add a close button
+        progressBar: true, // Show a progress bar
+        timeOut: 2000, // Set the duration for the message to be displayed
+        extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+        
+      });
+  }
+
   const data = {
     pName: pname.value,
     pNumber: pnumber.value,
     description: description.value,
     Pgiver: Pgiver.value
   };
+
+  
 
   // Display a confirmation prompt
   const confirmed = confirm('Are you sure you want to update the product?');

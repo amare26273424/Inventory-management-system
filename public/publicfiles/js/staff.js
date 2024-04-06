@@ -27,7 +27,6 @@ x.forEach((x) => {
   });
 });
 
-
 function validation(event) {
   event.preventDefault();
   const pnameValue = document.getElementById("pname").value;
@@ -35,77 +34,90 @@ function validation(event) {
   const descriptionValue = document.getElementById("Description").value;
   const typeofproductValue = document.getElementById("type").value;
   const returnedDateValue = document.getElementById("returnedDate").value;
-  document.getElementById('submitBtn').disabled = true;
+  document.getElementById("submitBtn").disabled = true;
   // Log the retrieved values (you can perform further actions here)
-
-  axios
-    .get(`/productname/${pnameValue}`)
-    .then((response) => {
-      const availableproduct = response.data.product.pNumber;
-      if (pnumberValue > availableproduct) {
-        toastr.warning(
-          `The requested "${pnameValue}"  product quentitity ${pnumberValue} is greater than the avaliable product quentity ${availableproduct} `,
-          "",
-          {
-            positionClass: "toast-top-center",
-            closeButton: true, // Add a close button
-            progressBar: true, // Show a progress bar
-            timeOut: 2000, // Set the duration for the message to be displayed
-            extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+  if (pnameValue) {
+    axios
+      .get(`/productname/${pnameValue}`)
+      .then((response) => {
+        const availableproduct = response.data.product.pNumber;
+        if (pnumberValue > availableproduct) {
+          toastr.warning(
+            `The requested "${pnameValue}"  product quentitity ${pnumberValue} is greater than the avaliable product quentity ${availableproduct} `,
+            "",
+            {
+              positionClass: "toast-top-center",
+              closeButton: true, // Add a close button
+              progressBar: true, // Show a progress bar
+              timeOut: 2000, // Set the duration for the message to be displayed
+              extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+            }
+          );
+        } else {
+          const data = {
+            pname: pnameValue,
+            pnumber: pnumberValue,
+            description: descriptionValue,
+            typeofproduct: typeofproductValue,
+          };
+          if (typeofproductValue === "returned") {
+            data.returnedDate = returnedDateValue;
           }
-        );
-      } else {
-        const data = {
-          pname: pnameValue,
-          pnumber: pnumberValue,
-          description: descriptionValue,
-          typeofproduct: typeofproductValue,
-        };
-        if (typeofproductValue === "returned") {
-          data.returnedDate = returnedDateValue;
+          axios
+            .post("/request", data)
+            .then((response) => {
+              toastr.success(response.data.message, "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+              });
+            })
+            .catch((error) => {
+              toastr.error(error.message, "", {
+                positionClass: "toast-top-center",
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                timeOut: 2000, // Set the duration for the message to be displayed
+                extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+              });
+            })
+            .finally(() => {
+              // Set the values of the input fields to empty
+              document.getElementById("pname").value = "";
+              document.getElementById("pnumber").value = "";
+              document.getElementById("Description").value = "";
+              document.getElementById("returnedDate").value = "";
+              document.getElementById("submitBtn").disabled = false;
+            });
         }
-        axios
-          .post("/request", data)
-          .then((response) => {
-            toastr.success(response.data.message, "", {
-              positionClass: "toast-top-center",
-              closeButton: true, // Add a close button
-              progressBar: true, // Show a progress bar
-              timeOut: 2000, // Set the duration for the message to be displayed
-              extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
-            });
-
-           
-           
-          })
-          .catch((error) => {
-            toastr.error(error.message, "", {
-              positionClass: "toast-top-center",
-              closeButton: true, // Add a close button
-              progressBar: true, // Show a progress bar
-              timeOut: 2000, // Set the duration for the message to be displayed
-              extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
-            });
-          }).finally(() => {
-             // Set the values of the input fields to empty
-             document.getElementById("pname").value = "";
-             document.getElementById("pnumber").value = "";
-             document.getElementById("Description").value = "";
-             document.getElementById("returnedDate").value = "";
-             document.getElementById('submitBtn').disabled = false;
-          })
-      }
-    })
-    .catch((error) => {
-      toastr.error(error.message, "", {
+      })
+      .catch((error) => {
+        toastr.error(error.message, "", {
+          positionClass: "toast-top-center",
+          closeButton: true, // Add a close button
+          progressBar: true, // Show a progress bar
+          timeOut: 2000, // Set the duration for the message to be displayed
+          extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+        });
+        document.getElementById("submitBtn").disabled = false;
+      });
+  } else {
+    toastr.error(
+      "please fill product name by double clicking the product list",
+      "",
+      {
         positionClass: "toast-top-center",
         closeButton: true, // Add a close button
         progressBar: true, // Show a progress bar
         timeOut: 2000, // Set the duration for the message to be displayed
         extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
-      });
-      document.getElementById('submitBtn').disabled = false;
-    });
+      }
+    );
+
+    document.getElementById("submitBtn").disabled = false;
+  }
 }
 
 // checking the if there is unreturned products

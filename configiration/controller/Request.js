@@ -18,6 +18,7 @@ router.get("/request", async (req, res) => {
     .find()
     .then((request) => {
       const filteredRequests = request.filter((item) => item.email === email);
+     
       res.status(201).json({
         success: true,
         request: filteredRequests,
@@ -167,7 +168,7 @@ router.post("/request", async (req, res) => {
     const body = req.body;
     const email = req.session.email;
     const name = req.session.name;
-console.log(body)
+
     const dataToSend = {
       ...body,
       email: email,
@@ -191,6 +192,26 @@ console.log(body)
 });
 
 
+// get all taken requests  for admin
+
+router.get("/takenrequests", async (req, res) => {
+  requestcollection
+    .find()
+    .then((request) => {
+      const filteredRequests = request.filter((item) => item.status === 'taken' || item.status ==='returned');
+     
+      res.status(201).json({
+        success: true,
+        request: filteredRequests,
+      });
+    })
+    .catch((err) =>
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    })
+     );
+});
 
 
 router.patch("/request/:id", (req, res) => {

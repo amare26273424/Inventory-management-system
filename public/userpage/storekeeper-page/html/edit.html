@@ -47,14 +47,14 @@
 
   <div class="container mt-5 w-50">
     <h2 class="loginh2">Edit Product</h2>
-    <form id="edit-form">
+    <form id="edit-form" >
       <div class="mb-3 mt-3">
         <label for="name">Name of product:</label>
         <input class="form-control" type="text" id="name" name="pName" required>
       </div>
       <div class="mb-3">
         <label for="pNumber">Quantity.</label>
-        <input class="form-control" type='number' id="number" name="pNumber" required>
+        <input class="form-control" type='number' id="number" name="pNumber" min="1" required>
       </div>
       <div class="mb-3">
         <label for="description">Description:</label>

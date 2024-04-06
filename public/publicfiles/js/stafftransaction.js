@@ -34,6 +34,10 @@ async function fetchProducts() {
     products = response.data.request;
     products.reverse()
     totalProducts = products.length;
+   
+    if(!totalProducts){
+    return  productsContainer.innerHTML = "<h1>no transactions</h1>";
+    }
 
     renderProducts();
     setupPagination();
@@ -47,7 +51,7 @@ function renderProducts() {
   const start = (currentPage - 1) * productsPerPage;
   const end = start + productsPerPage;
   const displayedProducts = products.slice(start, end);
-
+  
   const productsHTML = displayedProducts.map((item) => {
     const typeofproduct = item.typeofproduct;
     const pname = item.pname;
