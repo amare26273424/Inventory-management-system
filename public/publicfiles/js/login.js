@@ -1,3 +1,38 @@
+  // Assuming this code is part of an asynchronous function or a promise chain
+  document.addEventListener("DOMContentLoaded", function() {
+    axios
+      .get("/rememberlogin")
+      .then(function (response) {
+        console.log(response)
+        // Handle the response from the server
+        if (response.data.success) {
+          if (response.data.role === "manager") {
+            window.location.href = "../userpage/manager-page/manager.html";
+          } else if (response.data.role === "storekeeper") {
+            window.location.href =
+              "../userpage/storekeeper-page/storekeeper.html";
+          } else if (response.data.role === "staff") {
+         
+            window.location.href = "../userpage/staffmember-page/staff.html";
+          } else {
+            window.location.href = "../userpage/adminpage/admin.html";
+          }
+        } else {
+          
+          // window.location.href = "./login/login.html";
+        }
+      })
+      .catch(function (error) {
+        // Handle errors from the request
+        console.error("Error fetching remember login status:", error);
+        // Redirect to the login page in case of an error
+        
+      });
+    })
+ 
+
+
+
 function sendData(event) {
   event.preventDefault(); // Prevent the default form submission
 

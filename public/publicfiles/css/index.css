@@ -114,7 +114,7 @@ header a:hover{
 
     .home-section{
        
-        background-image: url(/photo/Asset\ 4.png);
+        background-image: url(../photo/Asset\ 4.png);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;

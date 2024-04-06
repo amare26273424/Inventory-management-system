@@ -40,7 +40,7 @@ router.post("/adduser", async function (req, res) {
   }
 });
 
-router.post("/login", async function login(req, res) {
+router.post("/login", async function (req, res) {
   try {
     const { rememberMe, email, password } = await req.body;
     const user = await usercollection.findOne({ email });
@@ -60,7 +60,7 @@ router.post("/login", async function login(req, res) {
     }
 
     if (rememberMe) {
-      //  req.session.remember = true;
+       req.session.remember = true;
       req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Expires in 30 days
     }
 
@@ -72,6 +72,31 @@ router.post("/login", async function login(req, res) {
       message: "login sucess",
       role: user.role[0],
     });
+  } catch (error) {
+    res.status(501).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.get("/rememberlogin", async function (req, res) {
+  try {
+   
+    if (req.session.remember) {
+    const  email =  req.session.email
+    const user = await usercollection.findOne({ email });
+
+    return res.status(201).json({
+      success: true,
+      message: "login sucess",
+      role: user.role[0],
+    });
+
+  }
+
+
+
   } catch (error) {
     res.status(501).json({
       success: false,
