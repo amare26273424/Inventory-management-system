@@ -6,10 +6,10 @@ const cors = require("cors");
 const path = require("path");
 const connectDatabase = require("./configiration/ConnectDb/connectDatabase");
 const bodyParser = require("body-parser");
-const {
-  homepage,
-  getlogin,
-} = require("./configiration/Controller/tasks");
+// const {
+//   homepage,
+//   getlogin,
+// } = require("./configiration/Controller/tasks");
 
 const { connect } = require("http2");
 const product = require("./configiration/Controller/Product.js");
