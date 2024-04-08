@@ -484,6 +484,9 @@ footer p {
   display: inline-block;
 }
 
+.dropdown .managertransactionanchor{
+  color: white;
+}
 .user-icon {
   font-size: 34px; /* Adjust the size as needed */
  
