@@ -53,6 +53,7 @@ function validation(event) {
               extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
             }
           );
+          document.getElementById("submitBtn").disabled = false;
         } else {
           const data = {
             pname: pnameValue,
