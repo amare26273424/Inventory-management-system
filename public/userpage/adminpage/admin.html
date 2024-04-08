@@ -25,7 +25,6 @@
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-  
   </head>
   <body>
     <header class="staffheader">
@@ -46,12 +45,7 @@
           <i class="fas fa-user user-icon"></i>
           <div class="dropdown-content">
             <a href="#" style="font-size: 15px">loged as admin</a>
-            <a
-              href="/<%= roles %>"
-              id="roleselectoption"
-              style="font-size: 15px"
-              ><%= roles %></a
-            >
+            <a href="/" id="roleselectoption" style="font-size: 15px"></a>
             <a href="#" style="font-size: 15px" id="usershow">User help</a>
             <a href="#" style="font-size: 15px" onclick="logoutfunction()">
               <i class="fas fa-sign-out-alt"></i> Logout</a
@@ -59,13 +53,7 @@
           </div>
         </div>
 
-        <script>
-          const roleselectoption = document.getElementById("roleselectoption");
-
-          if (roleselectoption.innerText === "") {
-            roleselectoption.remove();
-          }
-        </script>
+        
       </div>
     </header>
 
@@ -169,7 +157,9 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary form-control">Submit</button>
+        <button type="submit" class="btn btn-primary form-control">
+          Submit
+        </button>
       </form>
     </div>
 
@@ -457,7 +447,6 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script src="../../publicfiles/js/admin.js"></script>
-
-   
+    <script src="../../publicfiles/js/rolehandler.js"></script>
   </body>
 </html>

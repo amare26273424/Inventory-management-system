@@ -54,14 +54,26 @@ function sendData(event) {
     .then(function (response) {
       // Handle the response from the server
       if (response.data.success) {
-        if (response.data.role == "manager") {
+        if (Array.isArray(response.data.role) && response.data.role.length > 1){
+           if (response.data.role[0] == "manager") {
+            window.location.href = `../userpage/manager-page/manager.html?secondRole=${response.data.role[1]}`;
+          } else if (response.data.role[0] == "storekeeper") {
+            window.location.href =
+              `../userpage/storekeeper-page/storekeeper.html?secondRole=${response.data.role[1]}`;
+          } else if (response.data.role[0] == "staff") {
+            window.location.href = `../userpage/staffmember-page/staff.html?secondRole=${response.data.role[1]}`;
+          } else  {
+            window.location.href = `../userpage/adminpage/admin.html?secondRole=${response.data.role[1]}`;
+          }
+        }
+       else if (response.data.role == "manager") {
           window.location.href = "../userpage/manager-page/manager.html";
         } else if (response.data.role == "storekeeper") {
           window.location.href =
             "../userpage/storekeeper-page/storekeeper.html";
         } else if (response.data.role == "staff") {
           window.location.href = "../userpage/staffmember-page/staff.html";
-        } else {
+        } else  {
           window.location.href = "../userpage/adminpage/admin.html";
         }
       } else {
@@ -101,6 +113,11 @@ function sendData(event) {
   // Return false to prevent the default form submission
   return false;
 }
+
+
+
+
+
 
 document.getElementById("showPassword").addEventListener("click", function () {
   var passwordInput = document.getElementById("pwd");

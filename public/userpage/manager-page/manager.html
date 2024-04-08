@@ -63,9 +63,7 @@
           <i class="fas fa-user user-icon"></i>
           <div class="dropdown-content">
             <a href="#" style="font-size: 15px">loged as manager</a>
-            <a href="/<%= roles %>" id="roleselectoption" style="font-size: 15px;">
-              <%= roles %>
-            </a>
+            <a href="/" id="roleselectoption" style="font-size: 15px"></a>
             <a href="#" style="font-size: 15px" id="usershow">User help</a>
             <a href="#" style="font-size: 15px"  onclick="logoutfunction()">
               <i class="fas fa-sign-out-alt"></i> Logout</a
@@ -73,13 +71,7 @@
           </div>
         </div>
 
-        <script>
-          const roleselectoption = document.getElementById("roleselectoption");
-
-          if (roleselectoption.innerText === "") {
-            roleselectoption.remove();
-          }
-        </script>
+       
       </div>
     </header>
 
@@ -373,6 +365,7 @@
     </script>
     <script src="../../publicfiles/js/managerproductjs.js"></script>
     <script src="../../publicfiles/js/requesttaskmanager.js"></script>
+    <script src="../../publicfiles/js/rolehandler.js"></script>
 
     <!-- Add this code at the bottom of your HTML file, just before the closing body tag -->
     <script
