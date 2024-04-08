@@ -48,7 +48,7 @@
         <a href="#product">PRODUCTS</a>
         <!-- <a href="/transactionmanager">report</a>  -->
         <div class="dropdown"  style="color:white">
-          <a>REPORT</a>
+          <a>TRANSACTIONS</a>
           <div class="dropdown-content" >
             <a href="./html/dailytrasaction.html" style="font-size: 15px"
               >daily</a
@@ -323,10 +323,14 @@
 
       userhelpshow.addEventListener("click", () => {
         document.getElementById("UserHelp").style.display = "block";
+        // Add a class to the body when userhelp is open
+      document.body.classList.add('userhelp-open');
+
       });
 
       CloseUserHelp.addEventListener("click", () => {
         document.getElementById("UserHelp").style.display = "none";
+        document.body.classList.remove('userhelp-open');
       });
 
       const x = document.querySelectorAll(".links a");
