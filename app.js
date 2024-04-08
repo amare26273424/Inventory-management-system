@@ -4,7 +4,7 @@ const session = require("express-session");
 const mongodbsession = require("connect-mongodb-session")(session);
 const cors = require("cors");
 const path = require("path");
-const connectDatabase = require("./configiration/ConnectDb/connectDatabase");
+const connectDatabase = require("./configuration/ConnectDb/connectDatabase");
 const bodyParser = require("body-parser");
 // const {
 //   homepage,
@@ -12,9 +12,11 @@ const bodyParser = require("body-parser");
 // } = require("./configiration/Controller/tasks");
 
 const { connect } = require("http2");
-const product = require("./configiration/Controller/Product.js");
-const user = require("./configiration/Controller/User.js");
-const request = require("./configiration/Controller/Request.js");
+
+
+const product = require("./configuration/Controller/Product.js");
+const user = require("./configuration/Controller/User.js");
+const request = require("./configuration/Controller/Request.js");
 
 // connect to database
 connectDatabase();
