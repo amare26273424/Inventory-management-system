@@ -47,13 +47,15 @@
             <a href="#" style="font-size: 15px">loged as admin</a>
             <a href="/" id="roleselectoption" style="font-size: 15px"></a>
             <a href="#" style="font-size: 15px" id="usershow">User help</a>
+            <a href="#" style="font-size: 15px" id="changepasswordlink"
+              >change password</a
+            >
+
             <a href="#" style="font-size: 15px" onclick="logoutfunction()">
               <i class="fas fa-sign-out-alt"></i> Logout</a
             >
           </div>
         </div>
-
-        
       </div>
     </header>
 
@@ -109,8 +111,8 @@
             </button>
           </div>
           <span
-            >The password must be a minimum of 6 characters in length and
-            contain at least 1 letter and 1 Number</span
+            >The password must be at least 4 characters long and contain at
+            least 1 letter and 1 number.</span
           >
         </div>
 
@@ -434,6 +436,64 @@
           have any further questions or need assistance, don't hesitate to seek
           support from your system administrator or relevant personnel.
         </p>
+      </div>
+    </section>
+
+    <!--  editing password -->
+    <section class="full-screen-edit-section" id="Edit-Password-section">
+      <i
+        class="fas fa-times"
+        id="editcontainerremove"
+        style="
+          color: black;
+          position: absolute;
+          top: 30px;
+          right: 50px;
+          font-size: 30px;
+        "
+      ></i>
+      <div class="container mb-3">
+        <h2>Change Password</h2>
+        <form class="centered-form" onsubmit="HandleChangePassword(event)">
+          <div class="mb-3">
+            <label for="oldPassword">Old Password:</label>
+            <input
+              type="password"
+              id="oldPassword"
+              name="oldPassword"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="newPassword"
+              >New Password:The password must be at least 4 characters long and
+              contain at least 1 letter and 1 number.</label
+            >
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              min="4"
+              pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="confirmEditPassword">Confirm Password:</label>
+            <input
+              type="password"
+              id="confirmEditPassword"
+              name="confirmEditPassword"
+              class="form-control"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary form-control">
+            Submit
+          </button>
+        </form>
       </div>
     </section>
 

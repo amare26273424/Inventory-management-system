@@ -13,7 +13,8 @@ const userschema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "must provide pnumber"],
+    minlength: 4,
+    required: [true, "Password must be at least 4 characters long"],
   },
   role: [
     {

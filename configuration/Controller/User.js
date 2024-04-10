@@ -1,5 +1,5 @@
 const { usercollection } = require("../Model/User");
-
+const sendemail = require("../utils/sendmailer");
 const bcrypt = require("bcrypt");
 const express = require("express");
 const app = express();
@@ -14,11 +14,12 @@ router.post("/adduser", async function (req, res) {
     const existingUser = await usercollection.findOne({ email });
 
     if (existingUser) {
-      return res.status(201).json({
+      return res.status(400).json({
         success: false,
         message: `This email "${email}" is already registered`,
       });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
     const newUser = new usercollection({
       name,
@@ -28,17 +29,27 @@ router.post("/adduser", async function (req, res) {
     });
 
     await newUser.save();
-    res.status(201).json({
+
+    // Send email notification
+    sendemail({
+      email: email,
+      subject: "AMU-ICT CENTER",
+      message: `Hello, ${name}, you have successfully registered toAMU-ICT CENTER `,
+    });
+
+    return res.status(200).json({
       success: true,
-      message: `new user with  this email "${email}" is added successfully`,
+      message: `New user with email "${email}" has been added successfully`,
     });
   } catch (error) {
-    res.status(501).json({
+    console.error("Error adding user:", error);
+    return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "An error occurred while adding the user",
     });
   }
 });
+
 
 router.post("/login", async function (req, res) {
   try {
@@ -60,13 +71,13 @@ router.post("/login", async function (req, res) {
     }
 
     if (rememberMe) {
-       req.session.remember = true;
+      req.session.remember = true;
       req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Expires in 30 days
     }
 
     req.session.email = user.email;
     req.session.name = user.name;
-  
+
     return res.status(201).json({
       success: true,
       message: "login sucess",
@@ -82,21 +93,16 @@ router.post("/login", async function (req, res) {
 
 router.get("/rememberlogin", async function (req, res) {
   try {
-   
     if (req.session.remember) {
-    const  email =  req.session.email
-    const user = await usercollection.findOne({ email });
+      const email = req.session.email;
+      const user = await usercollection.findOne({ email });
 
-    return res.status(201).json({
-      success: true,
-      message: "login sucess",
-      role: user.role[0],
-    });
-
-  }
-
-
-
+      return res.status(201).json({
+        success: true,
+        message: "login sucess",
+        role: user.role[0],
+      });
+    }
   } catch (error) {
     res.status(501).json({
       success: false,
@@ -154,19 +160,33 @@ router.delete("/deleteuser/:id", function (req, res) {
   const id = req.params.id;
   usercollection
     .findOneAndDelete({ _id: id })
-    .then(() => {
-      res.status(201).json({
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+      // Send email notification
+      sendemail({
+        email: user.email,
+        subject: "AMU-ICT CENTER",
+        message: `Hello, ${user.name}, your account in AMU-ict-center is deleted`,
+      });
+      return res.status(200).json({
         success: true,
-        message: "user deleted successfully",
+        message: "User deleted successfully",
       });
     })
     .catch((error) => {
-      res.status(501).json({
+      console.error("Error deleting user:", error);
+      return res.status(500).json({
         success: false,
-        message: error.message,
+        message: "An error occurred while deleting the user",
       });
     });
 });
+
 
 router.put("/user/:id", async function (req, res) {
   const id = req.params.id;
@@ -187,6 +207,55 @@ router.put("/user/:id", async function (req, res) {
     });
   }
 });
+
+router.put("/update-user-password", async function (req, res) {
+  try {
+    const email = req.session.email;
+    const { oldPassword, newPassword } = req.body;
+    const user = await usercollection.findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "The old password is incorrect",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await usercollection.updateOne(
+      { email: email },
+      { password: hashedPassword } 
+    );
+
+    sendemail({
+      email: email,
+      subject: "AMU-ICT CENTER: Change-Password",
+      message: `Hello, ${user.name}, you have successfully chnaged your password `,
+    });
+
+
+
+    return res.status(200).json({
+      success: true,
+      message: "User password updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating user password:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the password",
+    });
+  }
+});
+
 
 router.get("/logout", (req, res) => {
   req.session.destroy((error) => {

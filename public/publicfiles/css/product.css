@@ -7,7 +7,7 @@
 }
 
 ::-webkit-scrollbar {
-  width: 12px; /* Set the width of the scrollbar */
+  width: 8px; /* Set the width of the scrollbar */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -557,4 +557,26 @@ footer p {
 
 .userhelp p, ol{
   color: black;
+}
+
+
+/* edit-password-section */
+
+.full-screen-edit-section {
+  display: none; 
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f2f2f2; /* Optional background color */
+  position: fixed;
+  z-index: 100000;
+  top: 0%;
+  left: 0%;
+  right: 0%;
+}
+.full-screen-edit-section  .container{
+    width: 80%;
+    height: 80%;
+   
 }
