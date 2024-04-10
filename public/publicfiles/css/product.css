@@ -296,12 +296,7 @@ padding-top: 50px;
 
 
     /* staff member for product list*/
-    .productlist{
-      display: none;
-    }
-    .addproductlist{
-      display: block;
-    }
+    
 
 
 /* for staff member transaction errorMessage*/
