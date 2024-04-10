@@ -18,7 +18,7 @@ html{
   scroll-behavior: smooth;
 }
 /* header strt*/
-nav {
+/* nav {
   background: #0082e6b9;
   height: 70px;
   width: 100%;
@@ -53,7 +53,7 @@ nav ul li a {
   padding: 7px 13px;
   border-radius: 3px;
   text-decoration: none;
-}
+} */
 
 a.active, a:hover {
   background: #1b9bff;
@@ -61,7 +61,7 @@ a.active, a:hover {
 }
 
 
-.checkbtn {
+/* .checkbtn {
   font-size: 30px;
   color: white;
   float: right;
@@ -73,10 +73,10 @@ a.active, a:hover {
 
 #check {
   display: none;
-}
+} */
 
 
-@media screen and (max-width: 952px) {
+/* @media screen and (max-width: 952px) {
   label.logo {
       font-size: 30px;
       padding-left: 50px;
@@ -121,7 +121,7 @@ a.active, a:hover {
   #check:checked ~ ul {
       left: 0;
   }
-}
+} */
 /*header end*/
 
 /* home page start */
@@ -143,11 +143,11 @@ a.active, a:hover {
      color: #0082e6;
 }
 
-@keyframes anima1{
+/* @keyframes anima1{
   51%{
     background-image: url('/photo/harddisk.jpg');
   }
-}
+} */
 
 
 /* homepage end */
@@ -238,11 +238,6 @@ footer {
 }
 
 
-/* .mb-3{
-  row-gap: 0px;
-  margin-bottom: 0px;
-} */
-
 
 td button{
 
@@ -268,10 +263,7 @@ td button:hover{
 
 
 
-/*for the admin */
-/* .userlist{
-  display: none;
-} */
+
 #adduser{
 margin-bottom: 50px;
 padding-top: 50px;
@@ -281,21 +273,6 @@ padding-top: 50px;
 
 
 
-
-
-/*       for admin userlistcss           */
-
-
-   /* .userlist{
-            display: block;
-          }
-    .addeduserlist{
-      display: none;
-    } */
-
-
-
-    /* staff member for product list*/
     
 
 
@@ -383,7 +360,7 @@ padding-top: 50px;
  }
 
  .staffheader .links a:hover{ 
-  background-color: #a7c6cb;
+ scale: 1.05;
 
 }
 
