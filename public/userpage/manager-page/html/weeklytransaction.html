@@ -11,14 +11,14 @@
 </head>
 <body>
 
-  <div  class="reporthead"  style="width:100%;display:flex;justify-content:space-around;position: fixed;top: 0;">
+  <!-- <div  class="reporthead"  style="width:100%;display:flex;justify-content:space-around;position: fixed;top: 0;"> -->
       <button onclick="goBack()">Go Back</button>
-      <button   onclick="displayingsuccess()">taken</button> 
+      <!-- <button   onclick="displayingsuccess()">taken</button> 
       <button   onclick="displayingrequested()">requested </button>
       <button   onclick="displayingdecline()">declined </button>
       <button   onclick="displayingapproved()">approved not taken</button>
-      <button   onclick="displayingreturned()">returned</button>
-  </div>
+      <button   onclick="displayingreturned()">returned</button> -->
+  <!-- </div> -->
   
 
 
@@ -28,17 +28,17 @@
   }
   </script> 
 
-<div style="width: 100%;height:450px;display:flex ;justify-content: center;align-items: center;">
+<!-- <div style="width: 100%;height:450px;display:flex ;justify-content: center;align-items: center;">
 <div  style="width:80%;height:300px;">
      <canvas id="myChart"  ></canvas>
   </div>
-</div>
+</div> -->
 
 
 
     
-<section class="product-section" id="weeklyrequested" style="display:none">
-  <h2> Weekly requested Transcation</h2>
+<section class="product-section" id="weeklyrequested" >
+  <h2> Weekly request Transcation</h2>
   <hr>
   <table>
     <thead>
@@ -64,7 +64,7 @@
           </div>
         </section>
 
-
+<!-- 
 <section class="product-section" id="weekly" style="display:none">
 <h2> Weekly taken Transcation</h2>
 <hr>
@@ -80,7 +80,7 @@
     </tr>
   </thead>
   <tbody id="weeklyproducts">
-    <!-- Product rows will be added dynamically with JavaScript -->
+   
   </tbody>
 </table>
 
@@ -112,7 +112,7 @@
       </tr>
     </thead>
     <tbody id="weeklydeclinedproducts">
-      <!-- Product rows will be added dynamically with JavaScript -->
+     
     </tbody>
   </table>
   
@@ -121,14 +121,14 @@
             <button id="previousBtn4" disabled>Previous</button>
             <button id="nextBtn4">Next</button>
           </div>
-        </section>
+        </section> -->
 
 
 
 
 
        
-<section class="product-section" id="weeklyapproved" style="display:none">
+<!-- <section class="product-section" id="weeklyapproved" style="display:none">
   <h2> Weekly approved Transcation</h2>
   <hr>
   <table>
@@ -144,7 +144,7 @@
       </tr>
     </thead>
     <tbody id="weeklyapprovedproducts">
-      <!-- Product rows will be added dynamically with JavaScript -->
+     
     </tbody>
   </table>
   
@@ -153,12 +153,12 @@
             <button id="previousBtn5" disabled>Previous</button>
             <button id="nextBtn5">Next</button>
           </div>
-        </section>
+        </section> -->
 
 
 
             
-<section class="product-section" id="weeklyreturned" style="display:none">
+<!-- <section class="product-section" id="weeklyreturned" style="display:none">
   <h2> Weekly returned Transcation</h2>
   <hr>
   <table>
@@ -174,7 +174,7 @@
       </tr>
     </thead>
     <tbody id="weeklyreturnedproducts">
-      <!-- Product rows will be added dynamically with JavaScript -->
+     
     </tbody>
   </table>
   
@@ -183,7 +183,7 @@
             <button id="previousBtn6" disabled>Previous</button>
             <button id="nextBtn6">Next</button>
           </div>
-        </section>
+        </section> -->
 
 
       <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

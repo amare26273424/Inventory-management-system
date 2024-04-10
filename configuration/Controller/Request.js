@@ -56,11 +56,35 @@ router.get("/dailyrequests", async (req, res) => {
         const loanDate = new Date(item.loanDate);
         const diffInMs = now.getTime() - loanDate.getTime();
         const diffInHours = diffInMs / (1000 * 60 * 60);
-        return diffInHours < 24 && item.status === "taken";
+        return diffInHours < 24;
       });
       res.status(201).json({
         success: true,
         dailyrequest: filteredProducts,
+      });
+    })
+    .catch((err) =>
+      res.status(501).json({
+        success: false,
+        message: err.message,
+      })
+    );
+});
+
+router.get("/weeklyrequests", async (req, res) => {
+  requestcollection
+    .find()
+    .then((requests) => {
+      filteredProducts = requests.filter((item) => {
+        const now = new Date();
+        const loanDate = new Date(item.loanDate);
+        const diffInMs = now.getTime() - loanDate.getTime();
+        const diffInHours = diffInMs / (1000 * 60 * 60);
+        return diffInHours < 168;
+      });
+      res.status(201).json({
+        success: true,
+        weeklyrequests: filteredProducts,
       });
     })
     .catch((err) =>
