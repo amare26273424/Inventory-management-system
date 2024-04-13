@@ -1,4 +1,5 @@
 const { usercollection } = require("../Model/User");
+const  {logfilecollection} = require('../Model/logfile')
 const sendemail = require("../utils/sendmailer");
 const bcrypt = require("bcrypt");
 const express = require("express");
@@ -9,12 +10,12 @@ const router = express.Router();
 
 router.post("/adduser", async function (req, res) {
   const { name, email, password, role } = req.body;
-
+  
   try {
     const existingUser = await usercollection.findOne({ email });
-
+  
     if (existingUser) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         message: `This email "${email}" is already registered`,
       });
@@ -27,9 +28,22 @@ router.post("/adduser", async function (req, res) {
       password: hashedPassword, // Store the hashed password
       role,
     });
+    
 
     await newUser.save();
-
+    // const newLog = new logfilecollection({
+    //   status: `adding new user with ${email}`,
+    //   doneby: [
+    //     {
+    //       name: `${req.session.name}`,
+    //       email: `${req.session.email}`,
+    //       role: "admin"
+    //     }
+    //   ]
+    //   // You can set other fields as needed
+    // });
+    // await newLog.save()
+     
     // Send email notification
     sendemail({
       email: email,
@@ -172,7 +186,7 @@ router.delete("/deleteuser/:id", function (req, res) {
         email: user.email,
         subject: "AMU-ICT CENTER",
         message: `Hello, ${user.name}, your account in AMU-ict-center is deleted`,
-      });
+      })
       return res.status(200).json({
         success: true,
         message: "User deleted successfully",

@@ -1,7 +1,7 @@
 const userContainer = document.getElementById("usercontainer");
 const searchInput = document.getElementById("search");
 const productsContainer = document.getElementById("products");
-const userlistbtn = document.getElementById("userlistbtn");
+
 
 let currentPage = 1;
 const productsPerPage = 5;
@@ -185,9 +185,7 @@ document
     }
   });
 
- userlistbtn.addEventListener("click", () => {
-   document.getElementById("product").classList.toggle("addeduserlist");
- });
+ 
 
 
 
@@ -334,7 +332,7 @@ function submitForm(event) {
       }
     })
     .catch((error) => {
-      toastr.error(error.message, "", {
+      toastr.error(error.response.data.message, "", {
         positionClass: "toast-top-center",
         closeButton: true, // Add a close button
         progressBar: true, // Show a progress bar
@@ -351,17 +349,4 @@ function submitForm(event) {
     });
 }
 
-//  functions for logout
 
-// function logoutfunction() {
-//   axios
-//     .get("/logout")
-//     .then((res) => {
-//       window.location.href = "/";
-//       history.replaceState(null, null, "/");
-//     })
-//     .catch(function (error) {
-//       // Handle any errors that occur during the request
-//       alert(error.message);
-//     });
-// }
