@@ -103,7 +103,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     request.forEach((item) => {
       const returnedDate = new Date(item.returnedDate);
       const currentDate = new Date();
-      const daysLeft = Math.floor(
+      const daysLeft = Math.ceil(
         (returnedDate - currentDate) / (1000 * 60 * 60 * 24)
       );
 
@@ -119,7 +119,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             positionClass: "toast-top-center",
             closeButton: true, // Add a close button
             progressBar: true, // Show a progress bar
-            timeOut: 2000, // Set the duration for the message to be displayed
+            timeOut: 10000, // Set the duration for the message to be displayed
             extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
           }
         );

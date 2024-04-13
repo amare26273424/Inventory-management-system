@@ -4,14 +4,7 @@ window.onload = function(event){
 }
 
  // Get the error message element
- const errorMessage = document.getElementById("errorMessage");
 
-// If the error message exists, hide it after 3 seconds
-if (errorMessage) {
-  setTimeout(() => {
-    errorMessage.style.display = "none";
-  }, 3000);
-}
 
 const productsContainer = document.getElementById('products');
 const previousBtn = document.getElementById("previousBtn");
@@ -58,7 +51,7 @@ function renderProducts() {
     const number = item.pnumber;
     const purpose = item.description;
     const status = item.status;
-    const loanDate = item.loanDate;
+    const loanDate = item.loanDate.slice(0,10);
 
     return `
       <tr>

@@ -39,13 +39,11 @@
       <div class="links">
         <!-- <li><a href="#request">request</a></li> -->
         <a href="./html/alltransaction.html">TRANSACTIONS</a>
-        <a href="#product" id="userlistbtn">USER LIST</a>
+        <a href="#adduser">ADD USER</a>
 
         <div class="dropdown">
           <i class="fas fa-user-circle"></i>
           <div class="dropdown-content">
-            
-            
             <a href="#" style="font-size: 15px" id="usershow">
               <i class="fas fa-question-circle"></i> User Help</a
             >
@@ -63,8 +61,34 @@
         </div>
       </div>
     </header>
+    <section
+      class="product-section userlist"
+      id="product"
+      style="margin-top: 20px; margin-bottom: 50px; padding-top: 80px"
+    >
+      <h2>User List</h2>
+      <hr />
+      <input type="text" id="search" placeholder="Search users" />
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>email</th>
 
-    <div class="container mb-3" id="adduser" style="margin-top: 20px">
+            <th>role</th>
+            <th>update</th>
+          </tr>
+        </thead>
+        <tbody id="products">
+          <!-- Product rows will be added dynamically with JavaScript -->
+        </tbody>
+      </table>
+      <div class="pagination-controls">
+        <button id="previousBtn" disabled>Previous</button>
+        <button id="nextBtn">Next</button>
+      </div>
+    </section>
+    <div class="container mb-3" id="adduser" style="padding-top: 60px">
       <h2 class="loginh2">Add User</h2>
       <form
         action="/adduser"
@@ -169,34 +193,6 @@
         </button>
       </form>
     </div>
-
-    <section
-      class="product-section userlist"
-      id="product"
-      style="margin-top: 100px; margin-bottom: 100px; padding-top: 80px"
-    >
-      <h2>User List</h2>
-      <hr />
-      <input type="text" id="search" placeholder="Search users" />
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>email</th>
-
-            <th>role</th>
-            <th>update</th>
-          </tr>
-        </thead>
-        <tbody id="products">
-          <!-- Product rows will be added dynamically with JavaScript -->
-        </tbody>
-      </table>
-      <div class="pagination-controls">
-        <button id="previousBtn" disabled>Previous</button>
-        <button id="nextBtn">Next</button>
-      </div>
-    </section>
 
     <section id="UserHelp" class="userhelp">
       <div>

@@ -1,71 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AMU-ICT-STORE</title>
-    <link rel="stylesheet" href="../../../publicfiles/css/product.css">
+    <link rel="stylesheet" href="../../../publicfiles/css/product.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <button onclick="goBack()">Go Back</button>
+    <button id="downloadweeklyTransactionBtn" style="border-radius: 10px">
+      <style>
+        /* Hover styles */
+        #downloadweeklyTransactionBtn:hover {
+          font-size: 105%;
+          cursor: pointer;
+        }
+      </style>
+      <i class="fas fa-file-download" style="margin-right: 5px"></i>Download
+    </button>
 
-</head>
-<body>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
 
-     <button onclick="goBack()">Go Back</button>
-     
-  
+    <div
+      style="
+        width: 100%;
+        height: 450px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div style="width: 80%; height: 300px">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
 
+    <section class="product-section" id="weeklyrequested">
+      <h2>Weekly request Transcation</h2>
+      <hr />
+      <table>
+        <thead>
+          <tr>
+            <th>Name of Staff</th>
+            <th>Product Name</th>
+            <th>Product Number</th>
+            <th>type of product</th>
+            <th>status</th>
+            <th>Purpose</th>
+            <th>request date</th>
+          </tr>
+        </thead>
+        <tbody id="weeklyrequestedproducts">
+          <!-- Product rows will be added dynamically with JavaScript -->
+        </tbody>
+      </table>
 
-  <script>
-  function goBack() {
-    window.history.back();
-  }
-  </script> 
+      <div class="pagination-controls">
+        <button id="previousBtn3" disabled>Previous</button>
+        <button id="nextBtn3">Next</button>
+      </div>
+    </section>
 
- <div style="width: 100%;height:450px;display:flex ;justify-content: center;align-items: center;">
-<div  style="width:80%;height:300px;">
-     <canvas id="myChart"  ></canvas>
-  </div>
-</div> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-
-    
-<section class="product-section" id="weeklyrequested" >
-  <h2> Weekly request Transcation</h2>
-  <hr>
-  <table>
-    <thead>
-      <tr>
-         <th>Name of Staff</th>
-         <th>Product Name</th>             
-         <th>Product Number</th>
-         <th>type of product</th>
-         <th>status</th>
-         <th>Purpose</th>
-         <th>date</th>
-      </tr>
-    </thead>
-    <tbody id="weeklyrequestedproducts">
-      <!-- Product rows will be added dynamically with JavaScript -->
-    </tbody>
-  </table>
-  
-          
-          <div class="pagination-controls">
-            <button id="previousBtn3" disabled>Previous</button>
-            <button id="nextBtn3">Next</button>
-          </div>
-        </section>
-
-
-
-            
-
-
-      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-      
-      <script  src="../../../publicfiles/js/weeklytransaction.js"></script>
-
-</body>
+    <script src="../../../publicfiles/js/weeklytransaction.js"></script>
+  </body>
 </html>

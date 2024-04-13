@@ -139,6 +139,8 @@ router.get("/unreturnedproducts", async (req, res) => {
     );
 });
 
+
+
 // get all approved requests
 
 router.get("/approvedrequests", async (req, res) => {
@@ -162,8 +164,7 @@ router.get("/approvedrequests", async (req, res) => {
     );
 });
 
-// get unreturned products  of   staff
-
+// get unreturned products  of speciffic  staff
 router.get("/unreturnedproduct", async (req, res) => {
   const email = await req.session.email;
   requestcollection
@@ -188,6 +189,61 @@ router.get("/unreturnedproduct", async (req, res) => {
     );
 });
 
+
+// get unreturned products  of  All staff
+router.get("/unreturnedreturnedproduct", async (req, res) => {
+  try {
+    const requests = await requestcollection.find();
+
+    const filteredRequests = requests.filter((item) => {
+      const returnedDate = new Date(item.returnedDate);
+      const currentDate = new Date();
+      const daysLeft = Math.ceil((returnedDate - currentDate) / (1000 * 60 * 60 * 24));
+
+      return (
+        item.typeofproduct === "returned" &&
+        item.status === "taken" &&
+        daysLeft < 0
+      );
+    });
+
+    res.status(201).json({
+      success: true,
+      request: filteredRequests,
+    });
+  } catch (err) {
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+// send alert to user to returned product
+router.post("/sendalert/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const request = await requestcollection.findOne({ _id: id });
+
+    await sendemail({
+      email: request.email,
+      subject: "AMU-ICT CENTER: Alert",
+      message: `Hello, ${request.name} please return "${request.pname}" product with a quantity of "${request.pnumber}" for "${request.description}" as the return date has passed`,
+    });
+ 
+    res.status(201).json({
+      success: true,
+      message: "alert sent successfully",
+    });
+  } catch (error) {
+    res.status(501).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// sending request
 router.post("/request", async (req, res) => {
   try {
     const body = req.body;

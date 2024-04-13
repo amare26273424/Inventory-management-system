@@ -180,7 +180,9 @@ footer {
 
 
 td button{
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 80px;
   height: 30px;
   border-radius: 10px;
@@ -189,16 +191,22 @@ td button{
 }
 
 td  .verfiybtn{
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
   background-color: green;
 
 }
 
 td .declinebtn{
   background-color: red;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 }
 
 td button:hover{
-  scale: 1.1;
+  font-size: 12px;
 }
 
 
@@ -559,3 +567,7 @@ footer p {
   
   
   }
+
+
+
+  

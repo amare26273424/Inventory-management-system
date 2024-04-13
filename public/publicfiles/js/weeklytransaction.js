@@ -10,15 +10,7 @@ let products3= [];
 async function fetchAndDisplayProducts3() {
   try {
     const response = await axios.get('/weeklyrequests');
-    products3 = response.data.weeklyrequests;
-
-    const filteredProducts3 = products3.filter((item) => {
-      const now = new Date();
-      const loanDate = new Date(item.loanDate);
-      const diffInMs = now.getTime() - loanDate.getTime();
-      const diffInHours = diffInMs / (1000 * 60 * 60);
-      return diffInHours < 168;
-    });
+    products3 = response.data.weeklyrequests.reverse();
 
     const numberofconsumbale = products3.filter((item) => {     
       return item.typeofproduct === 'consumable';
@@ -26,22 +18,26 @@ async function fetchAndDisplayProducts3() {
     const numberofdeclined = products3.filter((item) => {     
       return item.status.includes("declined");
     });
+    const numberofrequested = products3.filter((item) => {     
+      return item.status.includes("requested");
+    });
 
     const lengthofconsumble = numberofconsumbale.length;
-    totalProducts3 = filteredProducts3.length;
+    totalProducts3 = products3.length;
+    const lengthofunapproved = numberofrequested.length
     const lengthofreturnedtype = (totalProducts3) -(lengthofconsumble);
     const lengthofdeclined = numberofdeclined.length;
-    const numberofapprovedrequest = (totalProducts3) -(lengthofdeclined);
+    const numberofapprovedrequest = (totalProducts3) -(lengthofdeclined)-(lengthofunapproved);
 
-    await updateChart(totalProducts3,lengthofconsumble,lengthofreturnedtype,numberofapprovedrequest,lengthofdeclined);
+    await updateChart(totalProducts3,lengthofconsumble,lengthofreturnedtype,numberofapprovedrequest,lengthofunapproved,lengthofdeclined);
 
     if (totalProducts3 === 0) {
       weeklyproductsrequestedcontainer.innerHTML = "<h1>No weekly requested transactions</h1>";
       return;
     }
 
-    renderProductsPage3(currentPage3, filteredProducts3);
-    setupPagination3(filteredProducts3);
+    renderProductsPage3(currentPage3, products3);
+    setupPagination3(products3);
   } catch (error) {
     console.error(error);
   }
@@ -89,6 +85,10 @@ function setupPagination3(products) {
     if (currentPage3 > 1) {
       currentPage3--;
       renderProductsPage3(currentPage3, products);
+      if (currentPage3 === 1) {
+        previousBtn3.disabled = true; // Disable previous button on the first page
+      }
+      nextBtn3.disabled = false; // Enable next button when navigating away from the last page
     }
   });
 
@@ -96,27 +96,32 @@ function setupPagination3(products) {
     if (currentPage3 < totalPages) {
       currentPage3++;
       renderProductsPage3(currentPage3, products);
-      previousBtn3.disabled = false;
+      if (currentPage3 === totalPages) {
+        nextBtn3.disabled = true; // Disable next button on the last page
+      }
+      previousBtn3.disabled = false; // Enable previous button when navigating away from the first page
     }
   });
 }
 
+
 fetchAndDisplayProducts3();
 
-function updateChart(xx1, xx2,xx3,xx4,xx5) {
+function updateChart(xx1, xx2,xx3,xx4,xx5,xx6) {
   const ctx = document.getElementById('myChart').getContext('2d');
   const myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Requested', 'consumble', 'returnedtype','approved','declined'],
+      labels: ['Requested', 'consumble', 'returnedtype','approved','Un approved','declined'],
       datasets: [{
         label: 'Transaction Status',
-        data: [xx1, xx2, xx3,xx4,xx5],
+        data: [xx1, xx2, xx3,xx4,xx5,xx6],
         backgroundColor: [
           'blue',
           ' light green',
           'cyan',
           'green',
+          'light green',
           'red'
         ],
        
@@ -131,4 +136,72 @@ function updateChart(xx1, xx2,xx3,xx4,xx5) {
       }
     }
   });
+}
+
+
+const downloadweeklyTransactionBtn = document.getElementById("downloadweeklyTransactionBtn");
+downloadweeklyTransactionBtn.addEventListener("click", downloadPDF);
+
+
+async function downloadPDF() {
+  try {
+    const response = await axios.get("/weeklyrequests?limit=0");
+    const allProducts = response.data.weeklyrequests;
+
+    // Generate the HTML string for all products, including column names
+    const productsHTML = `  <h2>ALL Weekly Transaction UP to ${new Date()
+      .toISOString()
+      .slice(0, 10)} </h2>
+      <thead>
+        <tr>
+          <th>Name of Staff</th>
+          <th>Product Name</th>
+          <th>Product Number</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${allProducts
+          .map((item) => {
+            const name = item.name;
+            const pname = item.pname;
+            const number = item.pnumber;
+            const purpose = item.description;
+            const typeofproduct = item.typeofproduct;
+            const status = item.status;
+            const requestId = item._id;
+            const loanDate = new Date(item.loanDate);
+            const formattedLoanDate = loanDate.toISOString().split("T")[0];
+
+            return `
+              <tr>
+                <td>${name}</td>
+                <td>${pname}</td>
+                <td>${number}</td>
+                <td>${purpose}</td>
+                <td>${formattedLoanDate}</td>
+                <td>${typeofproduct}</td>
+                <td>${status}</td>
+              </tr>
+            `;
+          })
+          .join("")}
+      </tbody>
+    `;
+
+    // Create a temporary container to hold all products
+    const tempContainer = document.createElement("div");
+    tempContainer.innerHTML = `<table>${productsHTML}</table>`;
+
+    // Generate and save the PDF file
+    html2pdf()
+      .from(tempContainer)
+      .set({ filename: 'Weekly Transaction_list.pdf' })
+      .save();
+  } catch (error) {
+    console.error(error);
+  }
 }

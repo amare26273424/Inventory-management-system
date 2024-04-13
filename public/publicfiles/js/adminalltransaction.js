@@ -109,3 +109,68 @@ function setupSearch() {
 }
 
 getProducts();
+
+const downloadBtn = document.getElementById("downloadBtn");
+downloadBtn.addEventListener("click", downloadPDF);
+async function downloadPDF() {
+  try {
+    const response = await axios.get("/takenrequests?limit=0");
+    const allProducts = response.data.request;
+
+    // Generate the HTML string for all products, including column names
+    const productsHTML = ` <h2>ALL TRANSACTIONS on ${new Date()
+      .toISOString()
+      .slice(0, 10)} </h2>
+      <thead>
+        <tr>
+          <th>Name of Staff</th>
+          <th>Product Name</th>
+          <th>Product Number</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${allProducts
+          .map((item) => {
+            const name = item.name;
+            const pname = item.pname;
+            const number = item.pnumber;
+            const purpose = item.description;
+            const typeofproduct = item.typeofproduct;
+            const status = item.status;
+            const requestId = item._id;
+            const loanDate = new Date(item.loanDate);
+            const formattedLoanDate = loanDate.toISOString().split("T")[0];
+
+            return `
+              <tr>
+                <td>${name}</td>
+                <td>${pname}</td>
+                <td>${number}</td>
+                <td>${purpose}</td>
+                <td>${formattedLoanDate}</td>
+                <td>${typeofproduct}</td>
+                <td>${status}</td>
+              </tr>
+            `;
+          })
+          .join("")}
+      </tbody>
+    `;
+
+    // Create a temporary container to hold all products
+    const tempContainer = document.createElement("div");
+    tempContainer.innerHTML = `<table>${productsHTML}</table>`;
+
+    // Generate and save the PDF file
+    html2pdf()
+      .from(tempContainer)
+      .set({ filename: "Transaction_list.pdf" })
+      .save();
+  } catch (error) {
+    console.error(error);
+  }
+}

@@ -39,14 +39,12 @@
       <div class="links">
         <!-- <li><a href="#request">request</a></li> -->
 
-        <a href="#product">PRODUCTS</a>
+        <a href="#request">REQUEST</a>
         <a href="./html/transactions.html">TRANSACTION</a>
 
         <div class="dropdown">
           <i class="fas fa-user-circle"></i>
           <div class="dropdown-content">
-            
-            
             <a href="#" style="font-size: 15px" id="usershow">
               <i class="fas fa-question-circle"></i> User Help</a
             >
@@ -64,6 +62,37 @@
         </div>
       </div>
     </header>
+    <section
+      class="product-section productlist"
+      id="product"
+      style="
+        margin-top: 50px;
+        padding-top: 50px;
+        min-height: 90vh;
+        margin-bottom: 40px;
+      "
+    >
+      <h2 style="margin-bottom: 50px">Product List</h2>
+      <label for="searchInput">Search by name:</label>
+      <input type="text" id="searchInput" style="margin-bottom: 20px" />
+
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th>addeddate</th>
+          </tr>
+        </thead>
+        <tbody id="productsContainer"></tbody>
+      </table>
+
+      <div class="pagination-controls">
+        <button id="previousBtn" disabled>Previous</button>
+        <button id="nextBtn">Next</button>
+      </div>
+    </section>
 
     <section
       id="request"
@@ -151,38 +180,6 @@
             Submit
           </button>
         </form>
-      </div>
-    </section>
-
-    <section
-      class="product-section productlist"
-      id="product"
-      style="
-        margin-top: 50px;
-        padding-top: 50px;
-        min-height: 90vh;
-        margin-bottom: 40px;
-      "
-    >
-      <h2 style="margin-bottom: 50px">Product List</h2>
-      <label for="searchInput">Search by name:</label>
-      <input type="text" id="searchInput" style="margin-bottom: 20px" />
-
-      <table>
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Description</th>
-            <th>addeddate</th>
-          </tr>
-        </thead>
-        <tbody id="productsContainer"></tbody>
-      </table>
-
-      <div class="pagination-controls">
-        <button id="previousBtn" disabled>Previous</button>
-        <button id="nextBtn">Next</button>
       </div>
     </section>
 
@@ -384,7 +381,7 @@
 
     <footer>
       <p>
-        &copy; Copyright © 2023 AMU-ICT-STORE-MANAGEMENT - All rights reserved ®
+        &copy;  2023 AMU-ICT-STORE-MANAGEMENT - All rights reserved 
       </p>
     </footer>
 

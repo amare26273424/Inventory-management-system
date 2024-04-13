@@ -27,6 +27,17 @@
     color: #fff;
     border: none;
     cursor: pointer;;">Go Back</button>
+
+<button id="downloadBtn" style="border-radius: 10px;">
+  <style>
+    /* Hover styles */
+    #downloadBtn:hover {
+      font-size: 105%;
+      cursor: pointer;
+    }
+  </style>
+  <i class="fas fa-file-download" style="margin-right: 5px;"></i>Download
+</button> 
   
     <script>
       function goBack() {
@@ -35,8 +46,8 @@
     </script>
 
 
-    <section class="product-section" id="product" style="margin-top: 100px">
-      <h2>Product List</h2>
+    <section class="product-section" id="product" >
+      <h2>Transaction List</h2>
       <label for="searchInput">Search by name:</label>
       <input type="text" id="searchInput" />
 
@@ -59,8 +70,10 @@
         <button id="previousBtn" disabled>Previous</button>
         <button id="nextBtn">Next</button>
       </div>
-    </section>
+      
+        </section>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
      <script src="../../../publicfiles/js/adminalltransaction.js"></script>
     
