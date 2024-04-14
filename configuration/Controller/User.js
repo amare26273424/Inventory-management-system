@@ -10,10 +10,10 @@ const router = express.Router();
 
 router.post("/adduser", async function (req, res) {
   const { name, email, password, role } = req.body;
-  
+
   try {
     const existingUser = await usercollection.findOne({ email });
-  
+
     if (existingUser) {
       return res.status(404).json({
         success: false,
@@ -28,27 +28,26 @@ router.post("/adduser", async function (req, res) {
       password: hashedPassword, // Store the hashed password
       role,
     });
-    
 
-    await newUser.save();
-    // const newLog = new logfilecollection({
-    //   status: `adding new user with ${email}`,
-    //   doneby: [
-    //     {
-    //       name: `${req.session.name}`,
-    //       email: `${req.session.email}`,
-    //       role: "admin"
-    //     }
-    //   ]
-    //   // You can set other fields as needed
-    // });
-    // await newLog.save()
-     
+    const logEntry = new logfilecollection({
+      action: 'Adding user',
+      user: {
+        name: name, // Replace with the actual username
+        email: email // Replace with the actual email
+      },
+      performedBy: {
+        name: req.session.name, // Assuming you have user session information
+        email: req.session.email // Replace with the actual email of the performer
+      }
+    });
+
+    const [savedUser, savedLog] = await Promise.all([newUser.save(), logEntry.save()]);
+
     // Send email notification
     sendemail({
       email: email,
       subject: "AMU-ICT CENTER",
-      message: `Hello, ${name}, you have successfully registered toAMU-ICT CENTER `,
+      message: `Hello, ${name}, you have successfully registered to AMU-ICT CENTER`,
     });
 
     return res.status(200).json({
@@ -63,6 +62,7 @@ router.post("/adduser", async function (req, res) {
     });
   }
 });
+
 
 
 router.post("/login", async function (req, res) {
@@ -170,36 +170,51 @@ router.get("/user/:id", async function (req, res) {
   }
 });
 
-router.delete("/deleteuser/:id", function (req, res) {
+router.delete("/deleteuser/:id", async function (req, res) {
   const id = req.params.id;
-  usercollection
-    .findOneAndDelete({ _id: id })
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
-      }
-      // Send email notification
-      sendemail({
-        email: user.email,
-        subject: "AMU-ICT CENTER",
-        message: `Hello, ${user.name}, your account in AMU-ict-center is deleted`,
-      })
-      return res.status(200).json({
-        success: true,
-        message: "User deleted successfully",
-      });
-    })
-    .catch((error) => {
-      console.error("Error deleting user:", error);
-      return res.status(500).json({
+  try {
+    const user = await usercollection.findOneAndDelete({ _id: id });
+    if (!user) {
+      return res.status(404).json({
         success: false,
-        message: "An error occurred while deleting the user",
+        message: "User not found",
       });
+    }
+
+    const logEntry = new logfilecollection({
+      action: 'delete user',
+      user: {
+        name: user.name,
+        email: user.email
+      },
+      performedBy: {
+        name: req.session.name,
+        email: req.session.email
+      }
     });
+
+    await logEntry.save(); // Save log entry
+
+    // Send email notification
+    sendemail({
+      email: user.email,
+      subject: "Account Deletion Notification",
+      message: `Hello, ${user.name}, your account has been deleted from our platform.`,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while deleting the user",
+    });
+  }
 });
+
 
 
 router.put("/user/:id", async function (req, res) {
@@ -209,7 +224,21 @@ router.put("/user/:id", async function (req, res) {
   try {
     const hashedPassword = await bcrypt.hash(password, 10); // Hash the new password
     const updatedUser = { ...otherFields, password: hashedPassword };
-    await usercollection.findOneAndUpdate({ _id: id }, updatedUser);
+    const user = await usercollection.findOneAndUpdate({ _id: id }, updatedUser);
+
+    const logEntry = new logfilecollection({
+      action: 'update user',
+      user: {
+        name: user.name, // Replace with the actual username
+        email: user.email // Replace with the actual email
+      },
+      performedBy: {
+        name: req.session.name, // Assuming you have user session information
+        email: req.session.email // Replace with the actual email of the performer
+      }
+    });
+
+    const [updatedUserData, savedLog] = await Promise.all([user.save(), logEntry.save()]);
 
     res.status(201).json({
       success: true,
@@ -221,6 +250,7 @@ router.put("/user/:id", async function (req, res) {
     });
   }
 });
+
 
 router.put("/update-user-password", async function (req, res) {
   try {

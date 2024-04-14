@@ -1,35 +1,38 @@
 const mongoose = require("mongoose");
 
 const logfileSchema = new mongoose.Schema({
-    status: {
+  action: {
+    type: String,
+    required: true,
+  },
+  user: {
+    name: {
       type: String,
-      trim: true,
+      required: true,
     },
-    doneby: [
-      {
-        name: {
-          type: String,
-          trim: true,
-         
-        },
-        email: {
-          type: String,
-          trim: true,
-       
-        },
-        role: {
-          type: String,
-        }
-      }
-    ],
-    createdat: {
-      type: Date,
-      default: () => new Date().toISOString().split("T")[0],
-    }
-  });
+    email: {
+      type: String,
+      required: true,
+    },
+  },
+  performedBy: {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+  },
+  createdat: {
+    type: Date,
+    default: () => new Date().toISOString().split("T")[0],
+  },
+});
 
 const logfilecollection = mongoose.model("logfilecollection", logfileSchema);
 
 module.exports = {
-    logfilecollection,
+  logfilecollection,
 };
