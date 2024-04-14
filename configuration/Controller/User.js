@@ -1,5 +1,5 @@
 const { usercollection } = require("../Model/User");
-const  {logfilecollection} = require('../Model/logfile')
+const  {logfilecollection} = require('../Model/Userlogfile')
 const sendemail = require("../utils/sendmailer");
 const bcrypt = require("bcrypt");
 const express = require("express");
@@ -33,7 +33,8 @@ router.post("/adduser", async function (req, res) {
       action: 'Adding user',
       user: {
         name: name, // Replace with the actual username
-        email: email // Replace with the actual email
+        email: email, // Replace with the actual email
+        role:role
       },
       performedBy: {
         name: req.session.name, // Assuming you have user session information
@@ -185,7 +186,8 @@ router.delete("/deleteuser/:id", async function (req, res) {
       action: 'delete user',
       user: {
         name: user.name,
-        email: user.email
+        email: user.email,
+        role:user.role
       },
       performedBy: {
         name: req.session.name,
@@ -228,9 +230,15 @@ router.put("/user/:id", async function (req, res) {
 
     const logEntry = new logfilecollection({
       action: 'update user',
-      user: {
+      fromuser: {
         name: user.name, // Replace with the actual username
-        email: user.email // Replace with the actual email
+        email: user.email ,// Replace with the actual email
+        role:user.role
+      },
+      user: {
+        name: updatedUser .name, 
+        email: updatedUser .email ,
+        role:updatedUser.role
       },
       performedBy: {
         name: req.session.name, // Assuming you have user session information

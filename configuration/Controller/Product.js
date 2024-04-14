@@ -1,27 +1,48 @@
-const { usercollection } = require("../Model/User");
-const { requestcollection } = require("../Model/Request");
+// const { usercollection } = require("../Model/User");
+// const { requestcollection } = require("../Model/Request");
 const { collection } = require("../Model/Product");
 
 const bcrypt = require("bcrypt");
 const express = require("express");
 const app = express();
+const { ProductLogFile } = require("../Model/productlogfile");
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 const router = express.Router();
 
 router.post("/addproduct", async function (req, res) {
-  const body = req.body;
+  const bodydata = req.body;
 
   try {
-  const product =  await collection.insertMany(body);
+    const product = new collection(bodydata);
+    const logEntry = new ProductLogFile({
+      action: "Adding Product",
+      product: {
+        name: bodydata.pName,
+        quantity: bodydata.pNumber,
+        description: bodydata.description,
+        Pgiver: bodydata.Pgiver,
+      },
+      performedBy: {
+        name: req.session.name,
+        email: req.session.email,
+      },
+    });
+
+    const [savedProduct, savedLog] = await Promise.all([
+      product.save(),
+      logEntry.save(),
+    ]);
+
     res.status(201).json({
       success: true,
       message: "Product added successfully",
     });
   } catch (err) {
-    res.status(401).json({
+    console.error("Error adding product:", err);
+    res.status(500).json({
       success: false,
-      message: err.message,
+      message: "An error occurred while adding the product",
     });
   }
 });
@@ -29,36 +50,104 @@ router.post("/addproduct", async function (req, res) {
 router.delete("/deleteproduct/:id", async function (req, res) {
   try {
     const id = req.params.id;
-    await collection.findOneAndDelete({ _id: id });
-    res.status(201).json({
+    const deletedProduct = await collection.findOne({ _id: id });
+
+    if (!deletedProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    const logEntry = new ProductLogFile({
+      action: "Deleting Product",
+      product: {
+        name: deletedProduct.pName,
+        quantity: deletedProduct.pNumber,
+        description: deletedProduct.description,
+        Pgiver: deletedProduct.Pgiver, // Include other relevant product details here
+      },
+      performedBy: {
+        name: req.session.name, // Assuming you have user session information
+        email: req.session.email, // Replace with the actual email of the performer
+      },
+    });
+
+    await Promise.all([
+      collection.deleteOne({ _id: id }),
+      logEntry.save(),
+    ]);
+
+    res.status(200).json({
       success: true,
       message: "Product deleted successfully",
     });
   } catch (error) {
-    res.status(401).json({
+    console.error("Error deleting product:", error);
+    res.status(400).json({
       success: false,
-      message: error.message,
+      message: "An error occurred while deleting the product",
+      error: error.message,
     });
   }
 });
 
 router.put("/product/:id", async function (req, res) {
-  const id = await req.params.id;
-  const body = await req.body;
-  collection
-    .findOneAndUpdate({ _id: id }, body)
-    .then(() => {
-      res.status(201).json({
-        success: true,
-        message: "Product updated successfully",
-      });
-    })
-    .catch((error) => {
-      res.status(401).json({
+  const id = req.params.id;
+  const updatedData = req.body;
+
+  try {
+    const product = await collection.findOne({ _id: id });
+
+    if (!product) {
+      return res.status(404).json({
         success: false,
-        message: error.message,
+        message: "Product not found",
       });
+    }
+
+    const logEntry = new ProductLogFile({
+      action: "Updating Product",
+      fromProduct: {
+        name: product.pName,
+        quantity: product.pNumber,
+        description: product.description,
+        Pgiver: product.Pgiver,
+      },
+      product: {
+        name: updatedData.pName,
+        quantity: updatedData.pNumber,
+        description: updatedData.description,
+        Pgiver: updatedData.Pgiver,
+      },
+      performedBy: {
+        name: req.session.name, // Assuming you have user session information
+        email: req.session.email, // Replace with the actual email of the performer
+      },
+      timestamp: new Date(),
+      changedFields: Object.keys(updatedData),
     });
+
+    product.pName = updatedData.pName;
+    product.pNumber = updatedData.pNumber;
+    product.description = updatedData.description;
+    product.Pgiver = updatedData.Pgiver;
+
+    await Promise.all([product.save(), logEntry.save()]);
+
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      data: product,
+    });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the product",
+      error: error.message,
+    });
+  }
 });
 
 router.get("/products", function (req, res) {
@@ -81,20 +170,20 @@ router.get("/products", function (req, res) {
 router.get("/product/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    
+
     const product = await collection.findById(id);
 
-    if (!product ) {
-       return  res.status(401).json({
+    if (!product) {
+      return res.status(401).json({
         success: false,
         message: "product is not exist",
       });
     }
 
-      res.status(201).json({
-        success: true,
-        product: product,
-      });
+    res.status(201).json({
+      success: true,
+      product: product,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal server error");
@@ -106,17 +195,16 @@ router.get("/productname/:name", async (req, res) => {
     const name = req.params.name;
     const product = await collection.findOne({ pName: name });
     if (!product) {
-     return  res.status(404).json({
+      return res.status(404).json({
         success: false,
         message: "product is not exist",
       });
-    } 
-     
-   return   res.status(201).json({
-        success: true,
-        product: product, 
-    })
+    }
 
+    return res.status(201).json({
+      success: true,
+      product: product,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -124,7 +212,6 @@ router.get("/productname/:name", async (req, res) => {
     });
   }
 });
-
 
 router.patch("/productsapproveproduct/:productName", async function (req, res) {
   try {
@@ -134,7 +221,7 @@ router.patch("/productsapproveproduct/:productName", async function (req, res) {
     const value = task.pNumber - decreaseAmount;
 
     await collection.findOneAndUpdate({ pName: name }, { pNumber: value });
-   
+
     res.status(200).send("Successfully updated");
   } catch (err) {
     console.log(err);
@@ -142,38 +229,23 @@ router.patch("/productsapproveproduct/:productName", async function (req, res) {
   }
 });
 
-// router.patch("/productsreturnedproduct/:productName", async function (req, res) {
-//   try {
-//     const name = req.params.productName;
-//     const increaseAmount = req.body.decreaseAmount;
-//     const task = await collection.findOne({ pName: name });
-//     const value = task.pNumber + increaseAmount;
+router.patch(
+  "/productsreturnedproduct/:productName",
+  async function (req, res) {
+    try {
+      const name = req.params.productName;
+      const increaseAmount = req.body.decreaseAmount; // Assuming it's increaseAmount, not decreaseAmount
+      await collection.findOneAndUpdate(
+        { pName: name },
+        { $inc: { pNumber: increaseAmount } }
+      );
 
-//     await collection.findOneAndUpdate({ pName: name }, { pNumber: value });
-  
-//     res.status(200).send("Successfully updated");
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).send(err);
-//   }
-// });
-
-router.patch("/productsreturnedproduct/:productName", async function (req, res) {
-  try {
-    const name = req.params.productName;
-    const increaseAmount = req.body.decreaseAmount; // Assuming it's increaseAmount, not decreaseAmount
-    await collection.findOneAndUpdate(
-      { pName: name },
-      { $inc: { pNumber: increaseAmount } }
-    );
-  
-    res.status(200).send("Successfully updated");
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
+      res.status(200).send("Successfully updated");
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
   }
-});
-
-
+);
 
 module.exports = router;

@@ -42,10 +42,8 @@ async function fetchUser() {
   try {
     const response = await axios.get(`/user/${userId}`);
     const user = response.data.user;
-    console.log(user)
     nameInput.value = user.name;
     emailInput.value = user.email;
-    passwordInput.value = user.password;
     selectedRoles.value = user.role;
   } catch (error) {
     console.error(error);

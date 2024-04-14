@@ -5,15 +5,36 @@ const logfileSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  user: {
+  fromuser: {
     name: {
       type: String,
-      required: true,
+      required: false,
     },
     email: {
       type: String,
-      required: true,
+      required: false,
     },
+    role: [
+      {
+        type: String,
+        required: false,
+      },
+    ],
+  },
+  user: {
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    role: [
+      {
+        type: String,
+        trim: true,
+        required: [true, "must provide role"],
+      },
+    ],
   },
   performedBy: {
     name: {
