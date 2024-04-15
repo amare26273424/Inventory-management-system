@@ -17,6 +17,7 @@ const { connect } = require("http2");
 const product = require("./configuration/Controller/Product.js");
 const user = require("./configuration/Controller/User.js");
 const request = require("./configuration/Controller/Request.js");
+const logfile = require('./configuration/Controller/logfile')
 
 // connect to database
 connectDatabase();
@@ -63,7 +64,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", product);
 app.use("/", user);
 app.use("/", request);
-
+app.use("/", logfile);
 
 
 

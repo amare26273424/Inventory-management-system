@@ -221,11 +221,11 @@ router.delete("/deleteuser/:id", async function (req, res) {
 
 router.put("/user/:id", async function (req, res) {
   const id = req.params.id;
-  const { password, ...otherFields } = req.body;
+  const { ...otherFields } = req.body;
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash the new password
-    const updatedUser = { ...otherFields, password: hashedPassword };
+   
+    const updatedUser = { ...otherFields};
     const user = await usercollection.findOneAndUpdate({ _id: id }, updatedUser);
 
     const logEntry = new logfilecollection({
@@ -318,4 +318,47 @@ router.get("/logout", (req, res) => {
   });
 });
 
+// reset password
+
+
+router.post('/reset-password/:id', async (req, res) => {
+  const userId = req.params.id;
+  const newPassword = req.body.password;
+
+  try {
+    const user = await usercollection.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const logEntry = new logfilecollection({
+      action: 'reset userpassword',
+      user: {
+        name: user.name,
+        email: user.email,
+        role: user.role
+      },
+      performedBy: {
+        name: req.session.name, // Assuming you have user session information
+        email: req.session.email // Replace with the actual email of the performer
+      }
+    });
+
+    await Promise.all([
+      usercollection.updateOne(
+        { _id: userId },
+        { password: hashedPassword }
+      ),
+     logEntry.save()
+    ]);
+
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error updating password' });
+  }
+});
 module.exports = router;

@@ -56,7 +56,7 @@ async function updateUser(event) {
   const data = {
     name: nameInput.value,
     email: emailInput.value,
-    password: passwordInput.value,
+    // password: passwordInput.value,
     role: Array.from(roleInput.selectedOptions, option => option.value)
   };
 
@@ -107,6 +107,23 @@ async function updateUser(event) {
 }
 
 
+  // Place your existing JavaScript code here
+  const resetPasswordBtn = document.getElementById("resetPasswordBtn");
+  const restPasswordDiv = document.querySelector(".rest-password");
+
+  resetPasswordBtn.addEventListener("click", function() {
+    restPasswordDiv.style.display = "block";
+  });
+
+
+  // to close rest password
+
+  function  closerestpassword() { 
+    restPasswordDiv.style.display = "none";
+  }
+
+
+
 
 fetchUser();
 form.addEventListener('submit', updateUser);
@@ -123,3 +140,58 @@ document.getElementById("showPassword").addEventListener("click", function () {
     this.innerHTML = '<i class="fas fa-eye"></i>';
   }
 });   
+
+
+
+function resetPasswordSubmit(event) {
+  event.preventDefault(); // Prevent the default form submission
+
+  // Get the password and confirm password values
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmpwd").value;
+
+  // Validate that the passwords match
+  if (password === confirmPassword) {
+
+    // Send the password to the server using Axios (example)
+    axios.post(`/reset-password/${userId}`, { password: password })
+      .then(response => {
+        // Handle the server response if needed
+        toastr.success('password reset successfully', "", {
+          positionClass: "toast-top-center",
+          closeButton: true, // Add a close button
+          progressBar: true, // Show a progress bar
+          timeOut: 2000, // Set the duration for the message to be displayed
+          extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover          
+        });
+
+ // Reset the password and confirm password fields
+ document.getElementById("password").value = "";
+ document.getElementById("confirmpwd").value = "";
+ restPasswordDiv.style.display = "none";
+
+        
+      })
+      .catch(error => {
+        // Handle any errors from the server
+        toastr.error(error.message, "", {
+          positionClass: "toast-top-center",
+          closeButton: true, // Add a close button
+          progressBar: true, // Show a progress bar
+          timeOut: 2000, // Set the duration for the message to be displayed
+          extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+          
+        });
+      });
+  } else {
+    // Handle password mismatch error
+    toastr.error('password doesnot match', "", {
+      positionClass: "toast-top-center",
+      closeButton: true, // Add a close button
+      progressBar: true, // Show a progress bar
+      timeOut: 2000, // Set the duration for the message to be displayed
+      extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
+      
+    });
+  }
+}
