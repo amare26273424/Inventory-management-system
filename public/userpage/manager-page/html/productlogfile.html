@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMU-ICT-STORE</title>
+    <link rel="stylesheet" href="../../../publicfiles/css/product.css">
+
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+       <!-- Toast link -->
+       <link
+       rel="stylesheet"
+       href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+     />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+   
+</head>
+<body>
+
+
+  <button onclick="goBack()">Go Back</button>
+  <button id="downloaduserlogfileBtn" style="border-radius: 10px">
+    <style>
+      /* Hover styles */
+      #ddownloaduserlogfileBtn:hover {
+        font-size: 105%;
+        cursor: pointer;
+      }
+    </style>
+    <i class="fas fa-file-download" style="margin-right: 5px"></i>Download
+  </button>
+  <script>
+  function goBack() {
+    window.history.back();
+  }
+  </script>
+
+<section class="product-section" id="product" >
+    <h2>Product Logfile</h2>
+    <hr />
+
+    <label for="searchInput"  >Search by action:</label>
+    <input type="text" id="searchInput" />
+    <table>
+      <thead>     
+            <tr>
+                <th>Action</th>
+                <th>Product</th>              
+                <th>Performed By</th>
+                <th>At</th>
+              </tr>
+        
+      </thead>
+      <tbody id="productsContainer"></tbody>
+    </table>
+
+    <div class="pagination-controls">
+      <button id="previousBtn" disabled>Previous</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      
+     <script src="../../../publicfiles/js/productlogfile.js"></script>
+
+</body>
+</html>

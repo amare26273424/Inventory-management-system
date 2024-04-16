@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="../../../publicfiles/css/product.css">
 
 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
        <!-- Toast link -->
        <link
        rel="stylesheet"
@@ -21,7 +26,16 @@
 
 
   <button onclick="goBack()">Go Back</button>
-
+  <button id="downloaduserlogfileBtn" style="border-radius: 10px">
+    <style>
+      /* Hover styles */
+      #ddownloaduserlogfileBtn:hover {
+        font-size: 105%;
+        cursor: pointer;
+      }
+    </style>
+    <i class="fas fa-file-download" style="margin-right: 5px"></i>Download
+  </button>
   <script>
   function goBack() {
     window.history.back();
@@ -53,10 +67,11 @@
     </div>
   </section>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
       <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
       
-     <script src="../../../publicfiles/js/logfile.js"></script>
+     <script src="../../../publicfiles/js/userlogfile.js"></script>
 
 </body>
 </html>

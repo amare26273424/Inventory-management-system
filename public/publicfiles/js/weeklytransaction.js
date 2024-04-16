@@ -149,11 +149,11 @@ async function downloadPDF() {
     const allProducts = response.data.weeklyrequests;
 
     // Generate the HTML string for all products, including column names
-    const productsHTML = `  <h2>ALL Weekly Transaction UP to ${new Date()
+    const productsHTML = `  <h2 style="margin:20px">ALL Weekly Transaction UP to ${new Date()
       .toISOString()
       .slice(0, 10)} </h2>
       <thead>
-        <tr>
+        <tr style="border-bottom: 1px solid #000;">
           <th>Name of Staff</th>
           <th>Product Name</th>
           <th>Product Number</th>
@@ -177,7 +177,7 @@ async function downloadPDF() {
             const formattedLoanDate = loanDate.toISOString().split("T")[0];
 
             return `
-              <tr>
+              <tr  style="border-bottom: 1px solid #000;">
                 <td>${name}</td>
                 <td>${pname}</td>
                 <td>${number}</td>
@@ -194,7 +194,7 @@ async function downloadPDF() {
 
     // Create a temporary container to hold all products
     const tempContainer = document.createElement("div");
-    tempContainer.innerHTML = `<table>${productsHTML}</table>`;
+    tempContainer.innerHTML = `<table style="border-collapse: collapse">${productsHTML}</table>`;
 
     // Generate and save the PDF file
     html2pdf()
