@@ -27,15 +27,63 @@
  <style>
 
 
-    .rest-password {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 20px;
-      background-color: #f2f2f2;
-    }
+.rest-password {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.rest-password div{
+   background-color: #fff;
+   border-radius: 10px;
+}
+.rest-password form {
+  width: 50vw;
+  padding: 20px;
+ 
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.rest-password h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.rest-password label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.rest-password input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.rest-password button {
+  width: 100%;
+  padding: 10px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rest-password button:hover {
+  background-color: #0056b3;
+}
+
  
  </style>
 
@@ -48,7 +96,27 @@
   background-color: #0082e6;
   color: #fff;
   border: none;
-  cursor: pointer;;">Go Back</button>
+  cursor: pointer;">Go Back</button>
+
+
+<button id="resetPasswordBtn" style="border-radius: 10px;padding: 10px 20px;
+font-size: 14px;
+background-color: #e60026;
+color: #fff;
+border: none;
+cursor: pointer;">
+  <style>
+    /* Hover styles */
+    #resetPasswordBtn:hover {
+      font-size: 16px;
+     
+    }
+  </style>
+  <i class="fa-solid fa-key"style="margin-right: 5px"></i>
+  Reset Password
+</button>
+
+
 
   <script>
     function goBack() {
@@ -96,13 +164,17 @@
       <button type="submit" class="btn btn-primary form-control">Save Changes</button>
 
     </form>
-    <button id="resetPasswordBtn">Reset Password</button>
+    
   </div>
 
 
   </form>
 
-  <div class="rest-password">
+  <div class="rest-password" >
+    <div>
+
+
+ <h2>Reset Password</h2>
     <i
       class="fas fa-times"
       onclick="closerestpassword()"
@@ -115,18 +187,23 @@
       "
     ></i>
     <form onsubmit="resetPasswordSubmit(event)">
-      <div>
-        <label for="password">Password</label>
-        <input type="password"  id="password" name="password" minlength="4"
+      <div class="mb-3 mt-3">
+        <label for="password">Password:
+            The password must be at least 4 characters long and contain at
+            least 1 letter and 1 number.</label>
+        <input type="password"   id="password" name="password" minlength="4"
             pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$" required />
        
       </div>
-      <div>
+      <div class="mb-3 mt-3">
         <label for="confirmpwd">Confirm Password:</label>
-        <input type="password" id="confirmpwd" name="confirmpwd">
+        <input type="password"  id="confirmpwd" name="confirmpwd">
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit"  >Reset</button>
     </form>
+
+    </div>
+   
   </div>
 
   <!-- ... (other HTML content) ... -->
@@ -138,7 +215,7 @@
     const closeBtn = document.getElementById("editpasswordremove");
 
     resetPasswordBtn.addEventListener("click", function() {
-      restPasswordDiv.style.display = "block";
+      restPasswordDiv.style.display = "flex";
     });
 
     closeBtn.addEventListener("click", function() {
