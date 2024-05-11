@@ -9,7 +9,6 @@ async function fetchProducts() {
   try {
     const response = await axios.get('/unreturnedproducts');
     const products = response.data.requests;
-    console.log(products)
     decreaseAmount= products.pnumber
 
     renderProducts(products);
@@ -78,7 +77,7 @@ function renderProducts(products) {
   }
 
   const productsHTML = products.map((item) => {
-    const name = item.name;
+    const name = item.userId.name;
     const pname = item.pname;
     const number = item.pnumber;
     const purpose = item.description;

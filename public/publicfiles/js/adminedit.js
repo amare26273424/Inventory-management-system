@@ -54,8 +54,8 @@ async function updateUser(event) {
   event.preventDefault();
 
   const data = {
-    name: nameInput.value,
-    email: emailInput.value,
+    // name: nameInput.value,
+    // email: emailInput.value,
     // password: passwordInput.value,
     role: Array.from(roleInput.selectedOptions, option => option.value)
   };

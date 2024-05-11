@@ -1,16 +1,21 @@
 const mongoose = require("mongoose");
 
 const requestschema = new mongoose.Schema({
-  name: {
-    type: String,
-    trim: true,
-    required: [true, "must provide name"],
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user-collection',
+    required: true
   },
-  email: {
-    type: String,
-    trim: true,
-    required: [true, "must provide email"],
-  },
+  // name: {
+  //   type: String,
+  //   trim: true,
+  //   required: [true, "must provide name"],
+  // },
+  // email: {
+  //   type: String,
+  //   trim: true,
+  //   required: [true, "must provide email"],
+  // },
   pname: {
     type: String,
     trim: true,

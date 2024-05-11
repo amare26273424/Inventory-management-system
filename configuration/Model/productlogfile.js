@@ -45,21 +45,14 @@ const productlogfileSchema = new mongoose.Schema({
       required: true,
     },
   },
-  performedBy: {
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-  },
-  createdat: {
-    type: Date,
-    default: () => new Date().toISOString().split("T")[0],
-  },
-});
+  performedBy: { 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user-collection',
+    required: true
+  },  
+},
+{ timestamps: true }
+);
 
 const ProductLogFile = mongoose.model("product-log-file", productlogfileSchema);
 

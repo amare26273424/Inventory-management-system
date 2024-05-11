@@ -1,4 +1,5 @@
 const { requestcollection } = require("../Model/Request");
+const { usercollection } = require("../Model/User");
 const sendemail = require("../utils/sendmailer");
 const bcrypt = require("bcrypt");
 const express = require("express");
@@ -8,24 +9,20 @@ app.use(cookieParser());
 const router = express.Router();
 
 // get all request of staff
-router.get("/request", async (req, res) => {
-  const email = await req.session.email;
-  requestcollection
-    .find()
-    .then((request) => {
-      const filteredRequests = request.filter((item) => item.email === email);
-
-      res.status(201).json({
-        success: true,
-        request: filteredRequests,
-      });
-    })
-    .catch((err) =>
-      res.status(501).json({
-        success: false,
-        message: err.message,
-      })
-    );
+router.get('/request', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const filteredRequests = await requestcollection.find({ userId });
+    res.status(201).json({
+      success: true,
+      request: filteredRequests,
+    });
+  } catch (err) {
+    res.status(501).json({
+      success: false,
+      message: err.message,
+    });
+  }
 });
 
 // get all requests
@@ -50,6 +47,7 @@ router.get("/requests", async (req, res) => {
 router.get("/dailyrequests", async (req, res) => {
   requestcollection
     .find()
+    .populate('userId')
     .then((requests) => {
       filteredProducts = requests.filter((item) => {
         const now = new Date();
@@ -74,6 +72,7 @@ router.get("/dailyrequests", async (req, res) => {
 router.get("/weeklyrequests", async (req, res) => {
   requestcollection
     .find()
+    .populate('userId')
     .then((requests) => {
       filteredProducts = requests.filter((item) => {
         const now = new Date();
@@ -98,6 +97,7 @@ router.get("/weeklyrequests", async (req, res) => {
 router.get("/requestedtasks", async (req, res) => {
   requestcollection
     .find()
+    .populate('userId')
     .then((requests) => {
       const filteredrequests = requests.filter(
         (request) => request.status === "requested"
@@ -122,6 +122,7 @@ router.get("/unreturnedproducts", async (req, res) => {
   // const email = await req.session.email;
   requestcollection
     .find()
+    .populate('userId')
     .then((request) => {
       const filteredRequests = request.filter(
         (item) => item.typeofproduct === "returned" && item.status === "taken"
@@ -147,6 +148,7 @@ router.get("/approvedrequests", async (req, res) => {
   // const email = await req.session.email;
   requestcollection
     .find()
+    .populate('userId')
     .then((request) => {
       const filteredRequests = request.filter(
         (item) => item.status === "approved"
@@ -166,13 +168,14 @@ router.get("/approvedrequests", async (req, res) => {
 
 // get unreturned products  of speciffic  staff
 router.get("/unreturnedproduct", async (req, res) => {
-  const email = await req.session.email;
+  const userId = await req.session.userId;
   requestcollection
     .find()
+    .populate('userId')
     .then((request) => {
       const filteredRequests = request.filter(
         (item) =>
-          item.email === email &&
+          item.userId === userId &&
           item.typeofproduct === "returned" &&
           item.status === "taken"
       );
@@ -193,7 +196,7 @@ router.get("/unreturnedproduct", async (req, res) => {
 // get unreturned products  of  All staff
 router.get("/unreturnedreturnedproduct", async (req, res) => {
   try {
-    const requests = await requestcollection.find();
+    const requests = await requestcollection.find().populate('userId');
 
     const filteredRequests = requests.filter((item) => {
       const returnedDate = new Date(item.returnedDate);
@@ -219,11 +222,45 @@ router.get("/unreturnedreturnedproduct", async (req, res) => {
   }
 });
 
+
+
+// sending request
+router.post("/request", async (req, res) => {
+  try {
+      const body = req.body;
+      const userId =  req.session.userId
+      // const user = await userCollection.findById(userId);
+      //  const email = req.session.email;
+      //  const name = req.session.name;
+    const dataToSend = {
+      ...body,
+      userId:userId 
+    };
+
+    await requestcollection.insertMany(dataToSend);
+
+    res.status(201).json({
+      success: true,
+      message: "Request sent successfully",
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while processing the request",
+      error: error.message, // Include the error message for debugging
+    });
+  }
+});
+
+
+
+
 // send alert to user to returned product
 router.post("/sendalert/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const request = await requestcollection.findOne({ _id: id });
+    const request = await requestcollection.findOne({ _id: id }).populate('userId');
 
     await sendemail({
       email: request.email,
@@ -239,35 +276,6 @@ router.post("/sendalert/:id", async (req, res) => {
     res.status(501).json({
       success: false,
       message: error.message,
-    });
-  }
-});
-
-// sending request
-router.post("/request", async (req, res) => {
-  try {
-    const body = req.body;
-    const email = req.session.email;
-    const name = req.session.name;
-
-    const dataToSend = {
-      ...body,
-      email: email,
-      name: name,
-    };
-
-    await requestcollection.insertMany(dataToSend);
-
-    res.status(201).json({
-      success: true,
-      message: "Request sent successfully",
-    });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({
-      success: false,
-      message: "An error occurred while processing the request",
-      error: error.message, // Include the error message for debugging
     });
   }
 });

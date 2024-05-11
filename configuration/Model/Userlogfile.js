@@ -36,21 +36,14 @@ const logfileSchema = new mongoose.Schema({
       },
     ],
   },
-  performedBy: {
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-  },
-  createdat: {
-    type: Date,
-    default: () => new Date().toISOString().split("T")[0],
-  },
-});
+  performedBy: { 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user-collection',
+    required: true
+  }
+},
+{ timestamps: true }
+);
 
 const logfilecollection = mongoose.model("logfilecollection", logfileSchema);
 

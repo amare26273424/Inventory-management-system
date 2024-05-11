@@ -34,14 +34,14 @@ function displayProducts(products) {
         const performedByemail = product.performedBy.email;
         const productname = product.product.name;
         const productquantity = product.product.quantity;
-        const createdat = product.createdat.slice(0, 10);
+        const createdat = product.createdAt.slice(0, 10);
   
         if (action === 'Updating Product') { // Use === for comparison
           return `
             <tr>
               <td>${action}</td>
-              <td> ${product.fromProduct.name},${product.fromProduct.quantity}---${productname},${productquantity}</td>
-              <td>${performedByname} -- ${performedByemail}</td>
+              <td> ${product.fromProduct.name},${' '} ${product.fromProduct.quantity}-To-${productname},${' '} ${productquantity}</td>
+              <td>${performedByname},${' '} ${performedByemail}</td>
               <td>${createdat}</td>
             </tr>
           `;
@@ -49,8 +49,8 @@ function displayProducts(products) {
           return `
             <tr>
               <td>${action}</td>
-              <td>${productname} -- ${productquantity}</td>
-              <td>${performedByname} -- ${performedByemail}</td>
+              <td>${productname}, ${' '} ${productquantity}</td>
+              <td>${performedByname},${' '}  ${performedByemail}</td>
               <td>${createdat}</td>
             </tr>
           `;
@@ -154,14 +154,14 @@ async function downloadPDF() {
         const performedByemail = product.performedBy.email;
         const productname = product.product.name;
         const productquantity = product.product.quantity;
-        const createdat = product.createdat.slice(0, 10);
+        const createdat = product.createdAt.slice(0, 10);
   
         if (action === 'Updating Product') { // Use === for comparison
           return `
             <tr style="border-bottom: 1px solid #000;">
               <td>${action}</td>
-              <td> ${product.fromProduct.name},${product.fromProduct.quantity}---${productname},${productquantity}</td>
-              <td>${performedByname} -- ${performedByemail}</td>
+              <td> ${product.fromProduct.name},${' '} ${product.fromProduct.quantity}-To-${productname},${productquantity}</td>
+              <td>${performedByname},${' '} ${performedByemail}</td>
               <td>${createdat}</td>
             </tr>
           `;
@@ -169,8 +169,8 @@ async function downloadPDF() {
           return `
             <tr  style="border-bottom: 1px solid #000;">
               <td>${action}</td>
-              <td>${productname} -- ${productquantity}</td>
-              <td>${performedByname} -- ${performedByemail}</td>
+              <td>${productname},${' '}  ${productquantity}</td>
+              <td>${performedByname},${' '}  ${performedByemail}</td>
               <td>${createdat}</td>
             </tr>
           `;

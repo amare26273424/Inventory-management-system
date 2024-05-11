@@ -52,7 +52,7 @@ function renderProductsPage3(page, products) {
 
 function renderProducts3(products) {
   const productsHTML3 = products.map((item) => {
-    const name = item.name;
+    const name = item.userId.name;
     const pname = item.pname;
     const number = item.pnumber;
     const purpose = item.description;
@@ -166,7 +166,7 @@ async function downloadPDF() {
       <tbody>
         ${allProducts
           .map((item) => {
-            const name = item.name;
+            const name = item.userId.name;
             const pname = item.pname;
             const number = item.pnumber;
             const purpose = item.description;

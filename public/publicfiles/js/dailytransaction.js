@@ -39,7 +39,7 @@ function renderProducts(products, page) {
 
   const productsHTML = paginatedProducts
     .map((item) => {
-      const name = item.name;
+      const name = item.userId.name;
       const pname = item.pname;
       const number = item.pnumber;
       const purpose = item.description;

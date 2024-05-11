@@ -1,7 +1,6 @@
 // const { usercollection } = require("../Model/User");
 // const { requestcollection } = require("../Model/Request");
 const { collection } = require("../Model/Product");
-
 const bcrypt = require("bcrypt");
 const express = require("express");
 const app = express();
@@ -12,8 +11,15 @@ const router = express.Router();
 
 router.post("/addproduct", async function (req, res) {
   const bodydata = req.body;
-
   try {
+    const existingProduct = await collection.findOne({ pName: bodydata.pName });
+    if (existingProduct) {
+      return res.status(409).json({
+        success: false,
+        message: "Product already exists",
+      });
+    }
+
     const product = new collection(bodydata);
     const logEntry = new ProductLogFile({
       action: "Adding Product",
@@ -23,10 +29,7 @@ router.post("/addproduct", async function (req, res) {
         description: bodydata.description,
         Pgiver: bodydata.Pgiver,
       },
-      performedBy: {
-        name: req.session.name,
-        email: req.session.email,
-      },
+      performedBy: req.session.userId,
     });
 
     const [savedProduct, savedLog] = await Promise.all([
@@ -39,13 +42,14 @@ router.post("/addproduct", async function (req, res) {
       message: "Product added successfully",
     });
   } catch (err) {
-    console.error("Error adding product:", err);
+  
     res.status(500).json({
       success: false,
       message: "An error occurred while adding the product",
     });
   }
 });
+
 
 router.delete("/deleteproduct/:id", async function (req, res) {
   try {
@@ -67,16 +71,11 @@ router.delete("/deleteproduct/:id", async function (req, res) {
         description: deletedProduct.description,
         Pgiver: deletedProduct.Pgiver, // Include other relevant product details here
       },
-      performedBy: {
-        name: req.session.name, // Assuming you have user session information
-        email: req.session.email, // Replace with the actual email of the performer
-      },
+      performedBy: req.session.userId  // Assuming you have user session information
+       
     });
 
-    await Promise.all([
-      collection.deleteOne({ _id: id }),
-      logEntry.save(),
-    ]);
+    await Promise.all([collection.deleteOne({ _id: id }), logEntry.save()]);
 
     res.status(200).json({
       success: true,
@@ -120,12 +119,8 @@ router.put("/product/:id", async function (req, res) {
         description: updatedData.description,
         Pgiver: updatedData.Pgiver,
       },
-      performedBy: {
-        name: req.session.name, // Assuming you have user session information
-        email: req.session.email, // Replace with the actual email of the performer
-      },
-      timestamp: new Date(),
-      changedFields: Object.keys(updatedData),
+      performedBy: req.session.userId,
+      
     });
 
     product.pName = updatedData.pName;

@@ -51,7 +51,7 @@ function submitForm(event) {
       })
       .catch(error => {
         
-        toastr.error(error.message, "", {
+        toastr.error(error.response.data.message, "", {
             positionClass: "toast-top-center",
             closeButton: true, // Add a close button
             progressBar: true, // Show a progress bar

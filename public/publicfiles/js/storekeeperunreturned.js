@@ -14,7 +14,7 @@ async function fetchProducts() {
       }
     
       const productsHTML = products.map((item) => {
-        const name = item.name;
+        const name = item.userId.name;
         const pname = item.pname;
         const number = item.pnumber;
         const purpose = item.description;

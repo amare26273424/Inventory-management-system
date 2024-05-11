@@ -1,5 +1,5 @@
 const { usercollection } = require("../Model/User");
-const  {logfilecollection} = require('../Model/Userlogfile')
+const { logfilecollection } = require("../Model/Userlogfile");
 const sendemail = require("../utils/sendmailer");
 const bcrypt = require("bcrypt");
 const express = require("express");
@@ -30,19 +30,19 @@ router.post("/adduser", async function (req, res) {
     });
 
     const logEntry = new logfilecollection({
-      action: 'Adding user',
+      action: "Adding user",
       user: {
         name: name, // Replace with the actual username
         email: email, // Replace with the actual email
-        role:role
+        role: role,
       },
-      performedBy: {
-        name: req.session.name, // Assuming you have user session information
-        email: req.session.email // Replace with the actual email of the performer
-      }
+      performedBy: req.session.userId,
     });
 
-    const [savedUser, savedLog] = await Promise.all([newUser.save(), logEntry.save()]);
+    const [savedUser, savedLog] = await Promise.all([
+      newUser.save(),
+      logEntry.save(),
+    ]);
 
     // Send email notification
     sendemail({
@@ -63,8 +63,6 @@ router.post("/adduser", async function (req, res) {
     });
   }
 });
-
-
 
 router.post("/login", async function (req, res) {
   try {
@@ -90,8 +88,9 @@ router.post("/login", async function (req, res) {
       req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Expires in 30 days
     }
 
-    req.session.email = user.email;
-    req.session.name = user.name;
+    req.session.userId = user._id;
+    // console.log(req.session.userId)
+    // req.session.name = user.name;
 
     return res.status(201).json({
       success: true,
@@ -183,16 +182,13 @@ router.delete("/deleteuser/:id", async function (req, res) {
     }
 
     const logEntry = new logfilecollection({
-      action: 'delete user',
+      action: "delete user",
       user: {
         name: user.name,
         email: user.email,
-        role:user.role
+        role: user.role,
       },
-      performedBy: {
-        name: req.session.name,
-        email: req.session.email
-      }
+      performedBy: req.session.userId,
     });
 
     await logEntry.save(); // Save log entry
@@ -217,36 +213,34 @@ router.delete("/deleteuser/:id", async function (req, res) {
   }
 });
 
-
-
 router.put("/user/:id", async function (req, res) {
   const id = req.params.id;
-  const { ...otherFields } = req.body;
+  const { role } = req.body;
 
   try {
-   
-    const updatedUser = { ...otherFields};
-    const user = await usercollection.findOneAndUpdate({ _id: id }, updatedUser);
+    const updatedUser = { role };
+    const user = await usercollection.findOneAndUpdate(
+      { _id: id },
+      updatedUser
+    );
 
     const logEntry = new logfilecollection({
-      action: 'update user',
+      action: "update user role",
       fromuser: {
         name: user.name, // Replace with the actual username
-        email: user.email ,// Replace with the actual email
-        role:user.role
+        email: user.email, // Replace with the actual email
+        role: user.role,
       },
       user: {
-        name: updatedUser .name, 
-        email: updatedUser .email ,
-        role:updatedUser.role
+           role: updatedUser.role,
       },
-      performedBy: {
-        name: req.session.name, // Assuming you have user session information
-        email: req.session.email // Replace with the actual email of the performer
-      }
+      performedBy: req.session.userId,
     });
 
-    const [updatedUserData, savedLog] = await Promise.all([user.save(), logEntry.save()]);
+    const [updatedUserData, savedLog] = await Promise.all([
+      user.save(),
+      logEntry.save(),
+    ]);
 
     res.status(201).json({
       success: true,
@@ -258,7 +252,6 @@ router.put("/user/:id", async function (req, res) {
     });
   }
 });
-
 
 router.put("/update-user-password", async function (req, res) {
   try {
@@ -284,7 +277,7 @@ router.put("/update-user-password", async function (req, res) {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await usercollection.updateOne(
       { email: email },
-      { password: hashedPassword } 
+      { password: hashedPassword }
     );
 
     sendemail({
@@ -292,8 +285,6 @@ router.put("/update-user-password", async function (req, res) {
       subject: "AMU-ICT CENTER: Change-Password",
       message: `Hello, ${user.name}, you have successfully chnaged your password `,
     });
-
-
 
     return res.status(200).json({
       success: true,
@@ -308,7 +299,6 @@ router.put("/update-user-password", async function (req, res) {
   }
 });
 
-
 router.get("/logout", (req, res) => {
   req.session.destroy((error) => {
     res.status(201).json({
@@ -320,45 +310,38 @@ router.get("/logout", (req, res) => {
 
 // reset password
 
-
-router.post('/reset-password/:id', async (req, res) => {
-  const userId = req.params.id;
+router.post("/reset-password/:id", async (req, res) => {
+  const paramId = req.params.id;
   const newPassword = req.body.password;
 
   try {
-    const user = await usercollection.findOne({ _id: userId });
+    const user = await usercollection.findOne({ _id: paramId });
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User not found" });
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     const logEntry = new logfilecollection({
-      action: 'reset userpassword',
+      action: "reset userpassword",
       user: {
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
       },
-      performedBy: {
-        name: req.session.name, // Assuming you have user session information
-        email: req.session.email // Replace with the actual email of the performer
-      }
+      performedBy: req.session.userId,
     });
 
     await Promise.all([
-      usercollection.updateOne(
-        { _id: userId },
-        { password: hashedPassword }
-      ),
-     logEntry.save()
+      usercollection.updateOne({ _id: paramId }, { password: hashedPassword }),
+      logEntry.save(),
     ]);
 
-    res.status(200).json({ message: 'Password updated successfully' });
+    res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error updating password' });
+    res.status(500).json({ error: "Error updating password" });
   }
 });
 module.exports = router;

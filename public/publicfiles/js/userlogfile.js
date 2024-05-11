@@ -12,55 +12,57 @@ async function getProducts() {
   try {
     productsContainer.innerHTML = " <h1>Loading.....</h1>";
     const response = await axios.get("/userlogfiles");
+
     products = response.data;
+
     totalProducts = products.length;
 
     // Sort the products array in reverse order
     products.reverse();
 
-    displayProducts(products.slice(0, productsPerPage));
+    displayProducts(products?.slice(0, productsPerPage));
     setupPagination();
     setupSearch();
   } catch (error) {
+    console.log(error);
     productsContainer.innerHTML = `<h1>${error.message}</h1>`;
   }
 }
 
 function displayProducts(products) {
-    const productsHTML = products
-      .map((user) => {
-        const action = user.action;
-        const performedByname = user.performedBy.name;
-        const performedByemail = user.performedBy.email;
-        const useremail = user.user.email;
-        const userrole = user.user.role;
-        const createdat = user.createdat.slice(0, 10);
-  
-        if (action === 'update user') { // Use === for comparison
-          return `
+  const productsHTML = products
+    .map((user) => {
+      const action = user.action;
+      const performedByname = user.performedBy.name;
+      const performedByemail = user.performedBy.email;
+      const userrole = user.user.role;
+      const createdat = user.createdAt.slice(0, 10);
+
+      if (action === "update user role") {
+        // Use === for comparison
+        return `
             <tr>
               <td>${action}</td>
-              <td> ${user.fromuser.name},${user.fromuser.email},${user.fromuser.role}---${user.user.name},${useremail},${userrole}</td>
-              <td>${performedByname} -- ${performedByemail}</td>
+              <td> ${user.fromuser.name},${' '} ${user.fromuser.email},${' '} ${user.fromuser.role}-To-${userrole}</td>
+              <td>${performedByname},${' '} ${performedByemail}</td>
               <td>${createdat}</td>
             </tr>
           `;
-        } else {
-          return `
+      } else {
+        return `
             <tr>
               <td>${action}</td>
-              <td>${useremail} -- ${userrole}</td>
-              <td>${performedByname} -- ${performedByemail}</td>
+              <td>${user.user.email},${' '} ${userrole}</td>
+              <td>${performedByname},${' '} ${performedByemail}</td>
               <td>${createdat}</td>
             </tr>
           `;
-        }
-      })
-      .join("");
-  
-    productsContainer.innerHTML = productsHTML;
-  }
-  
+      }
+    })
+    .join("");
+
+  productsContainer.innerHTML = productsHTML;
+}
 
 function setupPagination() {
   const totalPages = Math.ceil(totalProducts / productsPerPage);
@@ -115,19 +117,12 @@ function setupSearch() {
   });
 }
 
-
-
 getProducts();
 
-
-
-
-
-
-
-const downloaduserlogfileBtn = document.getElementById("downloaduserlogfileBtn");
+const downloaduserlogfileBtn = document.getElementById(
+  "downloaduserlogfileBtn"
+);
 downloaduserlogfileBtn.addEventListener("click", downloadPDF);
-
 
 async function downloadPDF() {
   try {
@@ -152,25 +147,25 @@ async function downloadPDF() {
             const action = user.action;
             const performedByname = user.performedBy.name;
             const performedByemail = user.performedBy.email;
-            const useremail = user.user.email;
             const userrole = user.user.role;
-            const createdat = user.createdat.slice(0, 10);
+            const createdat = user.createdAt.slice(0, 10);
 
-            if (action === 'update user') { // Use === for comparison
+            if (action === "update user role") {
+              // Use === for comparison
               return `
                 <tr style="border-bottom: 1px solid #000;">
-                  <td>${action}</td>
-                  <td> ${user.fromuser.name},${user.fromuser.email},${user.fromuser.role}---${user.user.name},${useremail},${userrole}</td>
-                  <td>${performedByname} -- ${performedByemail}</td>
-                  <td style='padding-right:30px'>${createdat}</td>
+                <td>${action}</td>
+                <td> ${user.fromuser.name},${' '} ${user.fromuser.email},${' '} ${user.fromuser.role}-To-${userrole}</td>
+                <td>${performedByname},${' '}  ${performedByemail}</td>
+                <td>${createdat}</td>
                 </tr>
               `;
             } else {
               return `
                 <tr style="border-bottom: 1px solid #000;">
-                  <td>${action}</td>
-                  <td>${useremail} -- ${userrole}</td>
-                  <td>${performedByname} -- ${performedByemail}</td>
+                <td>${action}</td>
+                <td>${user.user.email},${' '} ${userrole}</td>
+                <td>${performedByname},${' '} ${performedByemail}</td>
                   <td style='padding-right:30px;'>${createdat}</td>
                 </tr>
               `;
@@ -185,10 +180,7 @@ async function downloadPDF() {
     tempContainer.innerHTML = `<table style="border-collapse: collapse">${productsHTML}</table>`;
 
     // Generate and save the PDF file
-    html2pdf()
-      .from(tempContainer)
-      .set({ filename: 'user-logfile.pdf' })
-      .save();
+    html2pdf().from(tempContainer).set({ filename: "user-logfile.pdf" }).save();
   } catch (error) {
     console.error(error);
   }
