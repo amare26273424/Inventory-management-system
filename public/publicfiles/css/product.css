@@ -438,7 +438,7 @@ background: none;
 .full-screen-edit-section {
   display: none; 
   justify-content: center;
-  align-items: center;
+  padding-top: 50px;
   width: 100vw;
   height: 100vh;
   background-color: #f2f2f2; /* Optional background color */
@@ -447,12 +447,10 @@ background: none;
   top: 0%;
   left: 0%;
   right: 0%;
+  /* width: 80%;
+  height: 80%; */
 }
-.full-screen-edit-section  .container{
-    width: 80%;
-    height: 80%;
-   
-}
+
 
 
 

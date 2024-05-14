@@ -142,6 +142,30 @@ router.get("/users", function (req, res) {
     );
 });
 
+router.get("/getuser", async function (req, res) {
+  try {
+    const id = req.session.userId;
+
+    const user = await usercollection.findOne({ _id: id });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "user not found",
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      user: { name: user.name, email: user.email },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 router.get("/user/:id", async function (req, res) {
   try {
     const id = req.params.id;
@@ -169,6 +193,7 @@ router.get("/user/:id", async function (req, res) {
     });
   }
 });
+
 
 router.delete("/deleteuser/:id", async function (req, res) {
   const id = req.params.id;
@@ -232,7 +257,7 @@ router.put("/user/:id", async function (req, res) {
         role: user.role,
       },
       user: {
-           role: updatedUser.role,
+        role: updatedUser.role,
       },
       performedBy: req.session.userId,
     });
@@ -253,11 +278,53 @@ router.put("/user/:id", async function (req, res) {
   }
 });
 
+router.put("/updateuseraccount", async function (req, res) {
+  const id = req.session.userId;
+  const { name,email } = req.body;
+  try {
+  
+    const user = await usercollection.findOneAndUpdate(
+      { _id: id },{
+        name,email
+      }
+    );
+    user.save()
+
+    // const logEntry = new logfilecollection({
+    //   action: "update user role",
+    //   fromuser: {
+    //     name: user.name, // Replace with the actual username
+    //     email: user.email, // Replace with the actual email
+    //     role: user.role,
+    //   },
+    //   user: {
+    //     role: updatedUser.role,
+    //   },
+    //   performedBy: req.session.userId,
+    // });
+
+    // const [updatedUserData, savedLog] = await Promise.all([
+    //   user.save(),
+    //   logEntry.save(),
+    // ]);
+
+    res.status(201).json({
+      success: true,
+      message:"user account successfully updated"
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 router.put("/update-user-password", async function (req, res) {
   try {
-    const email = req.session.email;
+    const userId = req.session.userId;
     const { oldPassword, newPassword } = req.body;
-    const user = await usercollection.findOne({ email: email });
+    const user = await usercollection.findOne({ _id: userId });
 
     if (!user) {
       return res.status(404).json({
@@ -276,12 +343,12 @@ router.put("/update-user-password", async function (req, res) {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await usercollection.updateOne(
-      { email: email },
+      { _id: userId },
       { password: hashedPassword }
     );
 
     sendemail({
-      email: email,
+      email: user.email,
       subject: "AMU-ICT CENTER: Change-Password",
       message: `Hello, ${user.name}, you have successfully chnaged your password `,
     });

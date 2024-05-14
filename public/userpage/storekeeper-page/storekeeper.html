@@ -49,7 +49,7 @@
             <i class="fas fa-question-circle"></i> User Help</a
           >
           <a href="#" style="font-size: 15px" id="changepasswordlink">
-            <i class="fas fa-user-edit"></i>Change Password</a
+            <i class="fas fa-user-edit"></i>Manage Account</a
           >
 
           <a href="#" style="font-size: 15px" onclick="logoutfunction()">
@@ -108,7 +108,7 @@
       </form>
     </div>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  
   
 
     <section class="product-section" id="product" style="margin-top: 100px;">
@@ -410,39 +410,99 @@
 
 
 
-<!--  editing password -->
-<section class="full-screen-edit-section"  id="Edit-Password-section">
+ <!--  managing account -->
+ <section class="full-screen-edit-section"  id="Edit-Password-section">
+
+
   <i
-  class="fas fa-times"
-  id="editcontainerremove"
-  style="
-    color: black;
-    position: absolute;
-    top: 30px;
-    right: 50px;
-    font-size: 30px;
-  "
-></i>
-  <div class="container mb-3">
+    class="fas fa-times"
+    id="editcontainerremove"
+    style="
+      color: black;
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      font-size: 30px;
+    "
+  ></i>
+
+  <div class="container mb-3" id="EditSection">
+    <h2>Manage Account</h2>
+    <form class="centered-form" onsubmit="HandleUpdateAccount(event)">
+      <div class="mb-3">
+        <label for="useremail">User Email:</label>
+        <input
+          type="email"
+          class="form-control"
+          id="useremail"
+          placeholder="Enter email"
+          name="useremail"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="username">Name of User:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          placeholder="Name"
+          name="username"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary form-control">Update</button>
+    </form>
+    <a href="#" class="btn btn-link mt-3" onclick="toggleDivs()" style="background-color: #f0f0f0; border: none;">Change password</a>
+  </div>
+
+  <div class="container mb-3" id="ResetPasword" style="display:none">
     <h2>Change Password</h2>
     <form class="centered-form" onsubmit="HandleChangePassword(event)">
       <div class="mb-3">
         <label for="oldPassword">Old Password:</label>
-        <input type="password" id="oldPassword" name="oldPassword" class="form-control" required />
+        <input
+          type="password"
+          id="oldPassword"
+          name="oldPassword"
+          class="form-control"
+          required
+        />
       </div>
       <div class="mb-3">
-        <label for="newPassword">New Password:The password must be at least 4 characters long and contain at least 1 letter and 1 number.</label>
-        <input type="password" id="newPassword" name="newPassword" min="4" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$" class="form-control" required />
+        <label for="newPassword">New Password: The password must be at least 4 characters long and contain at least 1 letter and 1 number.</label>
+        <input
+          type="password"
+          id="newPassword"
+          name="newPassword"
+          min="4"
+          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$"
+          class="form-control"
+          required
+        />
       </div>
       <div class="mb-3">
         <label for="confirmEditPassword">Confirm Password:</label>
-        <input type="password" id="confirmEditPassword" name="confirmEditPassword" class="form-control"  required />
+        <input
+          type="password"
+          id="confirmEditPassword"
+          name="confirmEditPassword"
+          class="form-control"
+          required
+        />
       </div>
-      <button type="submit" class="btn btn-primary form-control">Submit</button>
+      <button type="submit" class="btn btn-primary form-control">Update Password</button>
+
+ 
     </form>
-    
+    <a href="#" class="btn btn-link mt-3" onclick="toggleDivs()" style="background-color: #f0f0f0; border: none;">Manage Account</a>
+
   </div>
 </section>
+
+
 
 
   <footer>
@@ -463,8 +523,9 @@
   <script src="../../publicfiles/js/storekeeperAddproduct.js"></script>
   <script src="../../publicfiles/js/rolehandler.js"></script>
   <script src="../../publicfiles/js/common.js"></script>
+  <script src="../../publicfiles/js/ManageUseAccount.js"></script>
 
-  
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>
