@@ -45,11 +45,11 @@ router.post("/adduser", async function (req, res) {
     ]);
 
     // Send email notification
-    sendemail({
-      email: email,
-      subject: "AMU-ICT CENTER",
-      message: `Hello, ${name}, you have successfully registered to AMU-ICT CENTER`,
-    });
+    // sendemail({
+    //   email: email,
+    //   subject: "AMU-ICT CENTER",
+    //   message: `Hello, ${name}, you have successfully registered to AMU-ICT CENTER`,
+    // });
 
     return res.status(200).json({
       success: true,
@@ -219,11 +219,11 @@ router.delete("/deleteuser/:id", async function (req, res) {
     await logEntry.save(); // Save log entry
 
     // Send email notification
-    sendemail({
-      email: user.email,
-      subject: "Account Deletion Notification",
-      message: `Hello, ${user.name}, your account has been deleted from our platform.`,
-    });
+    // sendemail({
+    //   email: user.email,
+    //   subject: "Account Deletion Notification",
+    //   message: `Hello, ${user.name}, your account has been deleted from our platform.`,
+    // });
 
     return res.status(200).json({
       success: true,
@@ -347,11 +347,11 @@ router.put("/update-user-password", async function (req, res) {
       { password: hashedPassword }
     );
 
-    sendemail({
-      email: user.email,
-      subject: "AMU-ICT CENTER: Change-Password",
-      message: `Hello, ${user.name}, you have successfully chnaged your password `,
-    });
+    // sendemail({
+    //   email: user.email,
+    //   subject: "AMU-ICT CENTER: Change-Password",
+    //   message: `Hello, ${user.name}, you have successfully chnaged your password `,
+    // });
 
     return res.status(200).json({
       success: true,

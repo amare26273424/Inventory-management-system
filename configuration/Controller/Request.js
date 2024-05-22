@@ -262,11 +262,11 @@ router.post("/sendalert/:id", async (req, res) => {
     const id = req.params.id;
     const request = await requestcollection.findOne({ _id: id }).populate('userId');
 
-    await sendemail({
-      email: request.email,
-      subject: "AMU-ICT CENTER: Alert",
-      message: `Hello, ${request.name} please return "${request.pname}" product with a quantity of "${request.pnumber}" for "${request.description}" as the return date has passed`,
-    });
+    // await sendemail({
+    //   email: request.email,
+    //   subject: "AMU-ICT CENTER: Alert",
+    //   message: `Hello, ${request.name} please return "${request.pname}" product with a quantity of "${request.pnumber}" for "${request.description}" as the return date has passed`,
+    // });
  
     res.status(201).json({
       success: true,
@@ -311,11 +311,11 @@ router.patch("/request/:id", (req, res) => {
   requestcollection
     .findOneAndUpdate({ _id: id }, body, { new: true })
     .then((request) => {
-      sendemail({
-        email: request.email,
-        subject: "AMU-ICT CENTER: Status of Request",
-        message: `Hello, ${request.name} the request of product "${request.pname}" from Amuict center with quentity of "${request.pnumber}" for "${request.description}" is ${request.status}  requested date on ${request.loanDate} `,
-      });
+      // sendemail({
+      //   email: request.email,
+      //   subject: "AMU-ICT CENTER: Status of Request",
+      //   message: `Hello, ${request.name} the request of product "${request.pname}" from Amuict center with quentity of "${request.pnumber}" for "${request.description}" is ${request.status}  requested date on ${request.loanDate} `,
+      // });
 
       res.status(201).json({
         success: true,
