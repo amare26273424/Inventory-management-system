@@ -16,7 +16,7 @@ async function getRequests() {
     totalRequests = requestList.length;
 
     if (!requestList || requestList.length === 0) {
-      requestContainer.innerHTML = "<h2>No requests found</h2>";
+      requestContainer.innerHTML = "<h3>No requests </h2>";
       return;
     }
 
@@ -47,8 +47,12 @@ function displayrequests(requestList) {
         <td>${purpose}</td>
         <td>${item.typeofproduct}</td>
         <td>${date}</td>
-        <td><button onClick='handleVerifyClick("${requestId}")' id='verify-${requestId}' style="background-color:green">verify</button></td>
-        <td><button onClick='handleDeclineClick("${requestId}")' id='decline-${requestId}' style="background-color:red">decline</button></td>
+        <td>  <i class="fas fa-check" title='verfiy' onClick='handleVerifyClick("${requestId}")' id='verify-${requestId}' 
+        ></i>  
+        <i class="fas fa-times" title='decline' onClick='handleDeclineClick("${requestId}")' id='decline-${requestId}' ></i>
+
+        </td>
+  
       </tr>
     `;
     })
@@ -98,27 +102,27 @@ function getCurrentPageRequests() {
 getRequests();
 
 // Function to handle the click event for the verify button
- async function handleVerifyClick(requestId) {
-   const verifyBtn = document.getElementById('verify-' + requestId);
-   const declineBtn = document.getElementById('decline-' + requestId);
+async function handleVerifyClick(requestId) {
+  const verifyBtn = document.getElementById('verify-' + requestId);
+  const declineBtn = document.getElementById('decline-' + requestId);
 
-   if (confirm("Are you sure you want to verify this task?")) {
-     verifyBtn.disabled = true;  //Disable the verify button
-     declineBtn.disabled = true;  //Also disable the decline button
-     await axios.patch(`/request/${requestId}`, {status:'approved'}).then(()=>{
+  if (confirm("Are you sure you want to verify this task?")) {
+    verifyBtn.disabled = true;  //Disable the verify button
+    declineBtn.disabled = true;  //Also disable the decline button
+    await axios.patch(`/request/${requestId}`, { status: 'approved' }).then(() => {
       toastr.success('request approved successfully', "", {
         positionClass: "toast-top-center",
         closeButton: true, // Add a close button
         progressBar: true, // Show a progress bar
         timeOut: 2000, // Set the duration for the message to be displayed
         extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
-        
+
       })
       getRequests();
-     }).catch((error)=>{
+    }).catch((error) => {
       console.log(error)
       verifyBtn.disabled = false;  //Disable the verify button
-     declineBtn.disabled = false; 
+      declineBtn.disabled = false;
       toastr.error(error.message, "", {
         positionClass: "toast-top-center",
         closeButton: true, // Add a close button
@@ -127,36 +131,36 @@ getRequests();
         extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
         css: {
           width: "300px",
-           // Set the width of the toastr
+          // Set the width of the toastr
           "background-color": "green", // Set the background color
-       
+
           // Add any other CSS properties as needed
         }
       });
-     })
-   }
- }
+    })
+  }
+}
 // Function to handle the click event for the decline button
 
 
- async function handleDeclineClick(requestId) {
-   const reason = prompt("Please provide a reason for declining this task:");
-   if (reason !== null && reason.trim() !== '') { // Check if the reason is not empty
-     const verifyBtn = document.getElementById('verify-' + requestId);
-     const declineBtn = document.getElementById('decline-' + requestId);
-     verifyBtn.disabled = true; // Disable the verify button
-     declineBtn.disabled = true;
-     await axios.patch(`/request/${requestId}`, {status:`declined b/c of ${reason}` }).then(()=>{
+async function handleDeclineClick(requestId) {
+  const reason = prompt("Please provide a reason for declining this task:");
+  if (reason !== null && reason.trim() !== '') { // Check if the reason is not empty
+    const verifyBtn = document.getElementById('verify-' + requestId);
+    const declineBtn = document.getElementById('decline-' + requestId);
+    verifyBtn.disabled = true; // Disable the verify button
+    declineBtn.disabled = true;
+    await axios.patch(`/request/${requestId}`, { status: `declined b/c of ${reason}` }).then(() => {
       toastr.success('request declined successfully', "", {
         positionClass: "toast-top-center",
         closeButton: true, // Add a close button
         progressBar: true, // Show a progress bar
         timeOut: 2000, // Set the duration for the message to be displayed
         extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
-        
+
       })
       getRequests();
-     }).catch((error)=>{
+    }).catch((error) => {
       toastr.error(error.message, "", {
         positionClass: "toast-top-center",
         closeButton: true, // Add a close button
@@ -165,14 +169,14 @@ getRequests();
         extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
         css: {
           width: "300px",
-           // Set the width of the toastr
+          // Set the width of the toastr
           "background-color": "green", // Set the background color
-       
+
           // Add any other CSS properties as needed
         }
       });
-     })
-   } else {
+    })
+  } else {
     toastr.error('please provide the reason', "", {
       positionClass: "toast-top-center",
       closeButton: true, // Add a close button
@@ -181,14 +185,14 @@ getRequests();
       extendedTimeOut: 1000, // Set the duration for the message to be displayed after hover
       css: {
         width: "300px",
-         // Set the width of the toastr
+        // Set the width of the toastr
         "background-color": "green", // Set the background color
-     
+
         // Add any other CSS properties as needed
       }
     });
-   }
- }
+  }
+}
 
 // Function to update the status
 // async function updateStatus(requestId, status, message) {

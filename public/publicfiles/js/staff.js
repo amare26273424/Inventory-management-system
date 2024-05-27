@@ -167,3 +167,33 @@ function toggleDateInputs() {
 // Set the minimum date for the input field to today
 const returnedDateInput = document.getElementById("returnedDate");
 returnedDateInput.min = new Date().toISOString().split("T")[0];
+
+
+
+
+
+
+
+// Get the 'pname' input field
+const pnameInput = document.getElementById('pname');
+
+// Add an event listener for the 'focus' event on the 'pname' input field
+pnameInput.addEventListener('focus', handlePnameFieldFocus);
+
+// Flag to track whether the alert has been shown
+let alertShown = false;
+
+function handlePnameFieldFocus() {
+  // Check if the 'pname' input field is empty and the alert hasn't been shown yet
+  if (pnameInput.value.trim() === '' && !alertShown) {
+    // Alert the user to double-click the product list
+    alert('Please double-click the product list to fill the product name.');
+
+    // Set the flag to true to prevent the alert from being shown again
+    alertShown = true;
+
+    // Scroll to the product list section
+    document.getElementById('#product').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+

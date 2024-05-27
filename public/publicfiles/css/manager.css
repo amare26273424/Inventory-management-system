@@ -27,7 +27,12 @@
   transition: 0ms;
 }
 
-#request button {
+
+
+
+
+
+.request-section button {
   padding: 10px 20px;
   font-size: 14px;
   background-color: #0082e6;
@@ -36,7 +41,88 @@
   cursor: pointer;
 }
 
-#request button:disabled {
+.request-section button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+.request-section {
+  margin: 20px auto;
+  width: 80%;
+  height: auto;
+}
+
+
+
+.request-section h2 {
+  color: #0082e6cb;
+  font-size: 40px;
+}
+
+.request-section .mb-3 input {
+  background-color: #EEF9FC;
+}
+
+.request-section select {
+  background-color: #EEF9FC;
+}
+
+.request-section button {
+  background-color: #0082e6;
+  margin-top: 15px;
+}
+
+
+.request-section table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+ @media (max-width: 680px) {
+  .request-section {
+    margin: 20px auto;
+    width: 95%;
+    
+  }
+.product-section  table{
+  font-size: 12px;
+}
+  .request-section table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+ 
+
+} 
+
+
+
+  .request-section td:last-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .request-section td:last-child i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    margin: 0 5px;
+  }
+  
+  .request-section td:last-child i.fa-check {
+    border: 3px solid green;
+    color: green;
+  }
+  
+  .request-section td:last-child i.fa-times {
+    border: 3px solid red;
+    color: red;
+  }
+  
