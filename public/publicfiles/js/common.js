@@ -1,18 +1,6 @@
 const menubar1 = document.getElementById("menubar");
 const links1 = document.querySelector(".links");
-const userhelpshow = document.getElementById("usershow");
-const CloseUserHelp = document.getElementById("userhelpremove");
 
-userhelpshow.addEventListener("click", () => {
-  document.getElementById("UserHelp").style.display = "block";
-  // Add a class to the body when userhelp is open
-  document.body.classList.add("userhelp-open");
-});
-
-CloseUserHelp.addEventListener("click", () => {
-  document.getElementById("UserHelp").style.display = "none";
-  document.body.classList.remove("userhelp-open");
-});
 
 const x = document.querySelectorAll(".links a");
 
@@ -56,5 +44,6 @@ document
   .addEventListener("click", function () {
     document.getElementById("Edit-Password-section").style.display = "none";
   });
+
 
 
