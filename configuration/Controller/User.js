@@ -67,7 +67,7 @@ router.post("/adduser", async function (req, res) {
 router.post("/login", async function (req, res) {
   try {
     const { rememberMe, email, password } = await req.body;
-    const user = await usercollection.findOne({ email });
+    const user = await usercollection.findOne({ email: { $regex: new RegExp(email, 'i') } });
     if (!user) {
       return res.status(201).json({
         success: false,

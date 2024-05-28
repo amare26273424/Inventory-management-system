@@ -3,7 +3,7 @@
     axios
       .get("/rememberlogin")
       .then(function (response) {
-        console.log(response)
+       
         // Handle the response from the server
         if (response.data.success) {
           if (response.data.role === "manager") {
